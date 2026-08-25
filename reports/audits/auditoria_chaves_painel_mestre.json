@@ -1,0 +1,49 @@
+{
+  "status": "APROVADO",
+  "epidemiologia": {
+    "linhas": 2907593,
+    "municipios": 5571,
+    "chaves_duplicadas": 0
+  },
+  "mapeamento_climatico": {
+    "unidades": 5570,
+    "chaves_duplicadas": 0
+  },
+  "clima": {
+    "linhas": 2721186,
+    "combos": 5213,
+    "chaves_duplicadas": 0
+  },
+  "cobertura": {
+    "linhas_com_clima": 2907071,
+    "linhas_sem_clima": 522,
+    "codigos_sem_combo": [
+      "2605459"
+    ],
+    "codigos_excluidos": [
+      "2605459"
+    ]
+  },
+  "temporalidade": {
+    "municipios_sem_522_semanas": {
+      "5101837": 53
+    },
+    "divergencias_data_inicio": 0,
+    "divergencias_data_fim": 0
+  },
+  "integridade_combos": {
+    "combos_sem_definicao": [],
+    "combos_sem_serie_climatica": []
+  },
+  "criterios": {
+    "sem_duplicidade_epidemiologica": true,
+    "sem_duplicidade_mapeamento": true,
+    "sem_duplicidade_climatica": true,
+    "codigos_nao_mapeados_sao_exclusoes": true,
+    "nenhum_codigo_mapeado_ausente_epidemiologia": true,
+    "todos_combos_definidos": true,
+    "todos_combos_possuem_clima": true,
+    "sem_divergencia_data_inicio": true,
+    "sem_divergencia_data_fim": true
+  }
+}
