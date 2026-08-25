@@ -1,0 +1,74 @@
+{
+  "status": "APROVADO",
+  "analise": "associação descritiva defasada entre clima e dengue",
+  "periodo": "2016-2025",
+  "metodo": {
+    "correlacao": "Spearman por unidade territorial",
+    "desfecho": "incidencia_100mil",
+    "variaveis_climaticas": [
+      "temperatura_media_c",
+      "umidade_relativa_media_pct",
+      "precipitacao_total_mm"
+    ],
+    "lags_semanas": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "interpretacao_lag": "clima observado em t-k comparado com incidência observada em t"
+  },
+  "painel": {
+    "linhas_totais": 2907593,
+    "linhas_com_clima": 2907071,
+    "linhas_sem_clima": 522,
+    "unidades_com_clima": 5570
+  },
+  "resultados": {
+    "linhas_municipais": 116970,
+    "linhas_nacionais": 21,
+    "linhas_regionais": 105,
+    "correlacoes_municipais_invalidas": 210,
+    "defasagens_maior_associacao_mediana": [
+      {
+        "variavel_climatica": "precipitacao_total_mm",
+        "lag_semanas": 8,
+        "correlacao_mediana": 0.16131474476386276,
+        "magnitude_correlacao_mediana": 0.16131474476386276,
+        "municipios_correlacao_valida": 5560
+      },
+      {
+        "variavel_climatica": "temperatura_media_c",
+        "lag_semanas": 8,
+        "correlacao_mediana": 0.1676437266631482,
+        "magnitude_correlacao_mediana": 0.1676437266631482,
+        "municipios_correlacao_valida": 5560
+      },
+      {
+        "variavel_climatica": "umidade_relativa_media_pct",
+        "lag_semanas": 4,
+        "correlacao_mediana": 0.14828917007455317,
+        "magnitude_correlacao_mediana": 0.14828917007455317,
+        "municipios_correlacao_valida": 5560
+      }
+    ]
+  },
+  "validacoes": {
+    "variaveis_congeladas_antes_execucao": true,
+    "lags_congelados_antes_execucao": true,
+    "metrica_congelada_antes_execucao": true,
+    "defasagem_exige_continuidade_semanal": true,
+    "correlacoes_calculadas_separadamente_por_municipio": true,
+    "correlacao_interpretada_como_causalidade": false,
+    "modelo_final_modificado": false
+  },
+  "artefatos": {
+    "municipios": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\associacao_clima_dengue_municipios_2016_2025.csv",
+    "nacional": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\associacao_clima_dengue_nacional_2016_2025.csv",
+    "regional": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\associacao_clima_dengue_regional_2016_2025.csv",
+    "auditoria": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\associacao_clima_dengue_2016_2025.json"
+  }
+}
