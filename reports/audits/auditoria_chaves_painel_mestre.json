@@ -17,6 +17,7 @@
   "cobertura": {
     "linhas_com_clima": 2907071,
     "linhas_sem_clima": 522,
+    "linhas_sem_combo": 522,
     "codigos_sem_combo": [
       "2605459"
     ],

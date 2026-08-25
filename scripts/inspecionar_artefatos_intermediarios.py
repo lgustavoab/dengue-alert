@@ -16,7 +16,6 @@ from dengue_alert.config.paths import (
     POPULATION_2016_2025,
 )
 
-
 PARQUETS = [
     DENGUE_WEEKLY_POPULATION,
     ERA5_WEEKLY_COMBINATIONS,
