@@ -1,0 +1,935 @@
+{
+  "status": "APROVADO",
+  "baseline": {
+    "nome": "persistencia_epidemiologica",
+    "regra": "predicao_h(t) = risco_elevado(t)",
+    "probabilidade": "score binario 0/1 igual ao estado atual"
+  },
+  "dataset": {
+    "periodo": "2018-2024",
+    "linhas": 2032685,
+    "municipios": 5569,
+    "teste_final_2025_utilizado": false
+  },
+  "metodologia": {
+    "folds": 4,
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "combinacoes": 16,
+    "metrica_principal": "Average Precision (AP)",
+    "early_warning": "somente risco_elevado(t) = False"
+  },
+  "resultados": {
+    "h1": [
+      {
+        "fold": "fold_1",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2020,
+          "linhas": 868764
+        },
+        "validacao": {
+          "ano": 2021,
+          "linhas": 284019
+        },
+        "avaliacao_geral": {
+          "observacoes": 284019,
+          "positivos": 25009,
+          "negativos": 259010,
+          "prevalencia": 0.08805396822043596,
+          "pr_auc_average_precision": 0.7245649926671164,
+          "roc_auc": 0.9105018268478364,
+          "recall": 0.835219321044424,
+          "precision": 0.8501424501424502,
+          "f1": 0.8426148167570947,
+          "balanced_accuracy": 0.9105018268478364,
+          "brier_score": 0.02747351409588795,
+          "matriz_confusao": {
+            "tn": 255328,
+            "fp": 3682,
+            "fn": 4121,
+            "tp": 20888
+          }
+        },
+        "early_warning": {
+          "observacoes": 259449,
+          "positivos": 4121,
+          "negativos": 255328,
+          "prevalencia": 0.015883661143423176,
+          "pr_auc_average_precision": 0.015883661143423176,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.015883661143423176,
+          "matriz_confusao": {
+            "tn": 255328,
+            "fp": 0,
+            "fn": 4121,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_2",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2021,
+          "linhas": 1158352
+        },
+        "validacao": {
+          "ano": 2022,
+          "linhas": 284019
+        },
+        "avaliacao_geral": {
+          "observacoes": 284019,
+          "positivos": 62392,
+          "negativos": 221627,
+          "prevalencia": 0.21967544424844818,
+          "pr_auc_average_precision": 0.7891520632127303,
+          "roc_auc": 0.9179084574461726,
+          "recall": 0.8714578792152841,
+          "precision": 0.8731512260924026,
+          "f1": 0.8723037308583942,
+          "balanced_accuracy": 0.9179084574461726,
+          "brier_score": 0.056049067139874446,
+          "matriz_confusao": {
+            "tn": 213728,
+            "fp": 7899,
+            "fn": 8020,
+            "tp": 54372
+          }
+        },
+        "early_warning": {
+          "observacoes": 221748,
+          "positivos": 8020,
+          "negativos": 213728,
+          "prevalencia": 0.03616718076374984,
+          "pr_auc_average_precision": 0.03616718076374984,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.03616718076374984,
+          "matriz_confusao": {
+            "tn": 213728,
+            "fp": 0,
+            "fn": 8020,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_3",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2022,
+          "linhas": 1447940
+        },
+        "validacao": {
+          "ano": 2023,
+          "linhas": 284019
+        },
+        "avaliacao_geral": {
+          "observacoes": 284019,
+          "positivos": 53476,
+          "negativos": 230543,
+          "prevalencia": 0.1882831782380756,
+          "pr_auc_average_precision": 0.773378120964634,
+          "roc_auc": 0.9150182291812932,
+          "recall": 0.8602737676714788,
+          "precision": 0.8684096271826334,
+          "f1": 0.8643225521601487,
+          "balanced_accuracy": 0.9150182291812932,
+          "brier_score": 0.05085223171689218,
+          "matriz_confusao": {
+            "tn": 223572,
+            "fp": 6971,
+            "fn": 7472,
+            "tp": 46004
+          }
+        },
+        "early_warning": {
+          "observacoes": 231044,
+          "positivos": 7472,
+          "negativos": 223572,
+          "prevalencia": 0.03234016031578401,
+          "pr_auc_average_precision": 0.03234016031578401,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.03234016031578401,
+          "matriz_confusao": {
+            "tn": 223572,
+            "fp": 0,
+            "fn": 7472,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_4",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2023,
+          "linhas": 1737528
+        },
+        "validacao": {
+          "ano": 2024,
+          "linhas": 284019
+        },
+        "avaliacao_geral": {
+          "observacoes": 284019,
+          "positivos": 97318,
+          "negativos": 186701,
+          "prevalencia": 0.3426460905784472,
+          "pr_auc_average_precision": 0.8523389940806821,
+          "roc_auc": 0.9284003722434832,
+          "recall": 0.9064201894819047,
+          "precision": 0.9049602462169787,
+          "f1": 0.9056896295041403,
+          "balanced_accuracy": 0.9284003722434832,
+          "brier_score": 0.0646822923818477,
+          "matriz_confusao": {
+            "tn": 177437,
+            "fp": 9264,
+            "fn": 9107,
+            "tp": 88211
+          }
+        },
+        "early_warning": {
+          "observacoes": 186544,
+          "positivos": 9107,
+          "negativos": 177437,
+          "prevalencia": 0.04881958143923149,
+          "pr_auc_average_precision": 0.04881958143923149,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.04881958143923149,
+          "matriz_confusao": {
+            "tn": 177437,
+            "fp": 0,
+            "fn": 9107,
+            "tp": 0
+          }
+        }
+      }
+    ],
+    "h2": [
+      {
+        "fold": "fold_1",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2020,
+          "linhas": 863195
+        },
+        "validacao": {
+          "ano": 2021,
+          "linhas": 278450
+        },
+        "avaliacao_geral": {
+          "observacoes": 278450,
+          "positivos": 24738,
+          "negativos": 253712,
+          "prevalencia": 0.08884180283713414,
+          "pr_auc_average_precision": 0.5507890368444682,
+          "roc_auc": 0.842959790592545,
+          "recall": 0.7103646212304956,
+          "precision": 0.7391377497371189,
+          "f1": 0.7244656071568446,
+          "balanced_accuracy": 0.8429597905925449,
+          "brier_score": 0.048005027832645,
+          "matriz_confusao": {
+            "tn": 247510,
+            "fp": 6202,
+            "fn": 7165,
+            "tp": 17573
+          }
+        },
+        "early_warning": {
+          "observacoes": 254675,
+          "positivos": 7165,
+          "negativos": 247510,
+          "prevalencia": 0.028133896142141946,
+          "pr_auc_average_precision": 0.028133896142141946,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.028133896142141946,
+          "matriz_confusao": {
+            "tn": 247510,
+            "fp": 0,
+            "fn": 7165,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_2",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2021,
+          "linhas": 1152783
+        },
+        "validacao": {
+          "ano": 2022,
+          "linhas": 278450
+        },
+        "avaliacao_geral": {
+          "observacoes": 278450,
+          "positivos": 61694,
+          "negativos": 216756,
+          "prevalencia": 0.22156221942898185,
+          "pr_auc_average_precision": 0.6512577250779412,
+          "roc_auc": 0.8549686536309632,
+          "recall": 0.7728790482056602,
+          "precision": 0.7775295556461476,
+          "f1": 0.7751973272421333,
+          "balanced_accuracy": 0.8549686536309631,
+          "brier_score": 0.09931765128389299,
+          "matriz_confusao": {
+            "tn": 203113,
+            "fp": 13643,
+            "fn": 14012,
+            "tp": 47682
+          }
+        },
+        "early_warning": {
+          "observacoes": 217125,
+          "positivos": 14012,
+          "negativos": 203113,
+          "prevalencia": 0.0645342544617156,
+          "pr_auc_average_precision": 0.0645342544617156,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.0645342544617156,
+          "matriz_confusao": {
+            "tn": 203113,
+            "fp": 0,
+            "fn": 14012,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_3",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2022,
+          "linhas": 1442371
+        },
+        "validacao": {
+          "ano": 2023,
+          "linhas": 278450
+        },
+        "avaliacao_geral": {
+          "observacoes": 278450,
+          "positivos": 52815,
+          "negativos": 225635,
+          "prevalencia": 0.18967498653259113,
+          "pr_auc_average_precision": 0.6281020642942275,
+          "roc_auc": 0.8510797757995627,
+          "recall": 0.7547666382656443,
+          "precision": 0.7705526453134363,
+          "f1": 0.7625779546237135,
+          "balanced_accuracy": 0.8510797757995627,
+          "brier_score": 0.08914347279583408,
+          "matriz_confusao": {
+            "tn": 213765,
+            "fp": 11870,
+            "fn": 12952,
+            "tp": 39863
+          }
+        },
+        "early_warning": {
+          "observacoes": 226717,
+          "positivos": 12952,
+          "negativos": 213765,
+          "prevalencia": 0.05712849058517888,
+          "pr_auc_average_precision": 0.05712849058517888,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.05712849058517888,
+          "matriz_confusao": {
+            "tn": 213765,
+            "fp": 0,
+            "fn": 12952,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_4",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2023,
+          "linhas": 1731959
+        },
+        "validacao": {
+          "ano": 2024,
+          "linhas": 278450
+        },
+        "avaliacao_geral": {
+          "observacoes": 278450,
+          "positivos": 95900,
+          "negativos": 182550,
+          "prevalencia": 0.3444065361824385,
+          "pr_auc_average_precision": 0.7561320283446263,
+          "roc_auc": 0.8758314076249767,
+          "recall": 0.8383733055265902,
+          "precision": 0.8355069677540035,
+          "f1": 0.836937682494574,
+          "balanced_accuracy": 0.8758314076249768,
+          "brier_score": 0.11251212066798348,
+          "matriz_confusao": {
+            "tn": 166721,
+            "fp": 15829,
+            "fn": 15500,
+            "tp": 80400
+          }
+        },
+        "early_warning": {
+          "observacoes": 182221,
+          "positivos": 15500,
+          "negativos": 166721,
+          "prevalencia": 0.08506154614451682,
+          "pr_auc_average_precision": 0.08506154614451682,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.08506154614451682,
+          "matriz_confusao": {
+            "tn": 166721,
+            "fp": 0,
+            "fn": 15500,
+            "tp": 0
+          }
+        }
+      }
+    ],
+    "h3": [
+      {
+        "fold": "fold_1",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2020,
+          "linhas": 857626
+        },
+        "validacao": {
+          "ano": 2021,
+          "linhas": 272881
+        },
+        "avaliacao_geral": {
+          "observacoes": 272881,
+          "positivos": 24432,
+          "negativos": 248449,
+          "prevalencia": 0.08953353293193736,
+          "pr_auc_average_precision": 0.42340156999789935,
+          "roc_auc": 0.7855450679341418,
+          "recall": 0.60420759659463,
+          "precision": 0.6421052631578947,
+          "f1": 0.622580237020792,
+          "balanced_accuracy": 0.7855450679341418,
+          "brier_score": 0.06558902965028712,
+          "matriz_confusao": {
+            "tn": 240221,
+            "fp": 8228,
+            "fn": 9670,
+            "tp": 14762
+          }
+        },
+        "early_warning": {
+          "observacoes": 249891,
+          "positivos": 9670,
+          "negativos": 240221,
+          "prevalencia": 0.03869687183612055,
+          "pr_auc_average_precision": 0.03869687183612055,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.03869687183612055,
+          "matriz_confusao": {
+            "tn": 240221,
+            "fp": 0,
+            "fn": 9670,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_2",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2021,
+          "linhas": 1147214
+        },
+        "validacao": {
+          "ano": 2022,
+          "linhas": 272881
+        },
+        "avaliacao_geral": {
+          "observacoes": 272881,
+          "positivos": 60973,
+          "negativos": 211908,
+          "prevalencia": 0.22344172001715032,
+          "pr_auc_average_precision": 0.5489000955907686,
+          "roc_auc": 0.8011187715678523,
+          "recall": 0.6888458826037754,
+          "precision": 0.6959107929880373,
+          "f1": 0.6923603155109744,
+          "balanced_accuracy": 0.8011187715678523,
+          "brier_score": 0.13678123431092673,
+          "matriz_confusao": {
+            "tn": 193555,
+            "fp": 18353,
+            "fn": 18972,
+            "tp": 42001
+          }
+        },
+        "early_warning": {
+          "observacoes": 212527,
+          "positivos": 18972,
+          "negativos": 193555,
+          "prevalencia": 0.08926865762938356,
+          "pr_auc_average_precision": 0.08926865762938356,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.08926865762938356,
+          "matriz_confusao": {
+            "tn": 193555,
+            "fp": 0,
+            "fn": 18972,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_3",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2022,
+          "linhas": 1436802
+        },
+        "validacao": {
+          "ano": 2023,
+          "linhas": 272881
+        },
+        "avaliacao_geral": {
+          "observacoes": 272881,
+          "positivos": 52094,
+          "negativos": 220787,
+          "prevalencia": 0.1909037272657312,
+          "pr_auc_average_precision": 0.5223002100579487,
+          "roc_auc": 0.7977265486870685,
+          "recall": 0.6668522286635697,
+          "precision": 0.6878601271211611,
+          "f1": 0.6771932902521516,
+          "balanced_accuracy": 0.7977265486870685,
+          "brier_score": 0.12136792228114086,
+          "matriz_confusao": {
+            "tn": 205023,
+            "fp": 15764,
+            "fn": 17355,
+            "tp": 34739
+          }
+        },
+        "early_warning": {
+          "observacoes": 222378,
+          "positivos": 17355,
+          "negativos": 205023,
+          "prevalencia": 0.07804279200280603,
+          "pr_auc_average_precision": 0.07804279200280603,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.07804279200280603,
+          "matriz_confusao": {
+            "tn": 205023,
+            "fp": 0,
+            "fn": 17355,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_4",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2023,
+          "linhas": 1726390
+        },
+        "validacao": {
+          "ano": 2024,
+          "linhas": 272881
+        },
+        "avaliacao_geral": {
+          "observacoes": 272881,
+          "positivos": 94311,
+          "negativos": 178570,
+          "prevalencia": 0.3456121899289434,
+          "pr_auc_average_precision": 0.6809265386356139,
+          "roc_auc": 0.8304780162578865,
+          "recall": 0.7804497884658206,
+          "precision": 0.7752546264600866,
+          "f1": 0.777843533029685,
+          "balanced_accuracy": 0.8304780162578864,
+          "brier_score": 0.15407448668100748,
+          "matriz_confusao": {
+            "tn": 157232,
+            "fp": 21338,
+            "fn": 20706,
+            "tp": 73605
+          }
+        },
+        "early_warning": {
+          "observacoes": 177938,
+          "positivos": 20706,
+          "negativos": 157232,
+          "prevalencia": 0.11636637480470725,
+          "pr_auc_average_precision": 0.11636637480470725,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.11636637480470725,
+          "matriz_confusao": {
+            "tn": 157232,
+            "fp": 0,
+            "fn": 20706,
+            "tp": 0
+          }
+        }
+      }
+    ],
+    "h4": [
+      {
+        "fold": "fold_1",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2020,
+          "linhas": 852057
+        },
+        "validacao": {
+          "ano": 2021,
+          "linhas": 267312
+        },
+        "avaliacao_geral": {
+          "observacoes": 267312,
+          "positivos": 24155,
+          "negativos": 243157,
+          "prevalencia": 0.09036257257437003,
+          "pr_auc_average_precision": 0.3278004677705046,
+          "roc_auc": 0.7351633510248355,
+          "recall": 0.5110329124404885,
+          "precision": 0.55498606240446,
+          "f1": 0.53210336875229,
+          "balanced_accuracy": 0.7351633510248355,
+          "brier_score": 0.08121221643622434,
+          "matriz_confusao": {
+            "tn": 233259,
+            "fp": 9898,
+            "fn": 11811,
+            "tp": 12344
+          }
+        },
+        "early_warning": {
+          "observacoes": 245070,
+          "positivos": 11811,
+          "negativos": 233259,
+          "prevalencia": 0.04819439343860938,
+          "pr_auc_average_precision": 0.04819439343860938,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.04819439343860938,
+          "matriz_confusao": {
+            "tn": 233259,
+            "fp": 0,
+            "fn": 11811,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_2",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2021,
+          "linhas": 1141645
+        },
+        "validacao": {
+          "ano": 2022,
+          "linhas": 267312
+        },
+        "avaliacao_geral": {
+          "observacoes": 267312,
+          "positivos": 60200,
+          "negativos": 207112,
+          "prevalencia": 0.2252050038905848,
+          "pr_auc_average_precision": 0.46825980601416967,
+          "roc_auc": 0.7523063689102557,
+          "recall": 0.6130564784053156,
+          "precision": 0.621668968770003,
+          "f1": 0.6173326865496881,
+          "balanced_accuracy": 0.7523063689102556,
+          "brier_score": 0.1711632848506614,
+          "matriz_confusao": {
+            "tn": 184652,
+            "fp": 22460,
+            "fn": 23294,
+            "tp": 36906
+          }
+        },
+        "early_warning": {
+          "observacoes": 207946,
+          "positivos": 23294,
+          "negativos": 184652,
+          "prevalencia": 0.11201946659228838,
+          "pr_auc_average_precision": 0.11201946659228838,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.11201946659228838,
+          "matriz_confusao": {
+            "tn": 184652,
+            "fp": 0,
+            "fn": 23294,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_3",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2022,
+          "linhas": 1431233
+        },
+        "validacao": {
+          "ano": 2023,
+          "linhas": 267312
+        },
+        "avaliacao_geral": {
+          "observacoes": 267312,
+          "positivos": 51293,
+          "negativos": 216019,
+          "prevalencia": 0.1918843897767403,
+          "pr_auc_average_precision": 0.44025490464885175,
+          "roc_auc": 0.7506086749487405,
+          "recall": 0.5895151385179265,
+          "precision": 0.6131975989617132,
+          "f1": 0.6011232046120968,
+          "balanced_accuracy": 0.7506086749487405,
+          "brier_score": 0.1501204584904531,
+          "matriz_confusao": {
+            "tn": 196945,
+            "fp": 19074,
+            "fn": 21055,
+            "tp": 30238
+          }
+        },
+        "early_warning": {
+          "observacoes": 218000,
+          "positivos": 21055,
+          "negativos": 196945,
+          "prevalencia": 0.09658256880733945,
+          "pr_auc_average_precision": 0.09658256880733945,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.09658256880733945,
+          "matriz_confusao": {
+            "tn": 196945,
+            "fp": 0,
+            "fn": 21055,
+            "tp": 0
+          }
+        }
+      },
+      {
+        "fold": "fold_4",
+        "treino": {
+          "ano_inicio": 2018,
+          "ano_fim": 2023,
+          "linhas": 1720821
+        },
+        "validacao": {
+          "ano": 2024,
+          "linhas": 267312
+        },
+        "avaliacao_geral": {
+          "observacoes": 267312,
+          "positivos": 92488,
+          "negativos": 174824,
+          "prevalencia": 0.34599269767163465,
+          "pr_auc_average_precision": 0.6195025181013033,
+          "roc_auc": 0.7901796925955457,
+          "recall": 0.7301271516304818,
+          "precision": 0.7205984356158829,
+          "f1": 0.7253315001691738,
+          "balanced_accuracy": 0.7901796925955457,
+          "brier_score": 0.19132324774046808,
+          "matriz_confusao": {
+            "tn": 148641,
+            "fp": 26183,
+            "fn": 24960,
+            "tp": 67528
+          }
+        },
+        "early_warning": {
+          "observacoes": 173601,
+          "positivos": 24960,
+          "negativos": 148641,
+          "prevalencia": 0.14377797362918415,
+          "pr_auc_average_precision": 0.14377797362918415,
+          "roc_auc": 0.5,
+          "recall": 0.0,
+          "precision": 0.0,
+          "f1": 0.0,
+          "balanced_accuracy": 0.5,
+          "brier_score": 0.14377797362918415,
+          "matriz_confusao": {
+            "tn": 148641,
+            "fp": 0,
+            "fn": 24960,
+            "tp": 0
+          }
+        }
+      }
+    ]
+  },
+  "resumo_medio_folds": {
+    "h1": {
+      "geral": {
+        "folds": 4,
+        "prevalencia": 0.20966467032135172,
+        "pr_auc_average_precision": 0.7848585427312907,
+        "roc_auc": 0.9179572214296963,
+        "recall": 0.8683427893532729,
+        "precision": 0.8741658874086162,
+        "f1": 0.8712326823199446,
+        "balanced_accuracy": 0.9179572214296963,
+        "brier_score": 0.04976427633362557
+      },
+      "early_warning": {
+        "folds": 4,
+        "prevalencia": 0.03330264591554713,
+        "pr_auc_average_precision": 0.03330264591554713,
+        "roc_auc": 0.5,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0,
+        "balanced_accuracy": 0.5,
+        "brier_score": 0.03330264591554713
+      }
+    },
+    "h2": {
+      "geral": {
+        "folds": 4,
+        "prevalencia": 0.2111213862452864,
+        "pr_auc_average_precision": 0.6465702136403159,
+        "roc_auc": 0.8562099069120119,
+        "recall": 0.7690959033070975,
+        "precision": 0.7806817296126766,
+        "f1": 0.7747946428793163,
+        "balanced_accuracy": 0.8562099069120119,
+        "brier_score": 0.08724456814508888
+      },
+      "early_warning": {
+        "folds": 4,
+        "prevalencia": 0.05871454683338831,
+        "pr_auc_average_precision": 0.05871454683338831,
+        "roc_auc": 0.5,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0,
+        "balanced_accuracy": 0.5,
+        "brier_score": 0.05871454683338831
+      }
+    },
+    "h3": {
+      "geral": {
+        "folds": 4,
+        "prevalencia": 0.21237279253594057,
+        "pr_auc_average_precision": 0.5438821035705577,
+        "roc_auc": 0.8037171011117372,
+        "recall": 0.685088874081949,
+        "precision": 0.7002827024317949,
+        "f1": 0.6924943439534008,
+        "balanced_accuracy": 0.8037171011117372,
+        "brier_score": 0.11945316823084055
+      },
+      "early_warning": {
+        "folds": 4,
+        "prevalencia": 0.08059367406825435,
+        "pr_auc_average_precision": 0.08059367406825435,
+        "roc_auc": 0.5,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0,
+        "balanced_accuracy": 0.5,
+        "brier_score": 0.08059367406825435
+      }
+    },
+    "h4": {
+      "geral": {
+        "folds": 4,
+        "prevalencia": 0.21336116597833243,
+        "pr_auc_average_precision": 0.46395442413370735,
+        "roc_auc": 0.7570645218698444,
+        "recall": 0.6109329202485532,
+        "precision": 0.6276127664380148,
+        "f1": 0.6189726900208121,
+        "balanced_accuracy": 0.7570645218698443,
+        "brier_score": 0.14845480187945173
+      },
+      "early_warning": {
+        "folds": 4,
+        "prevalencia": 0.10014360061685534,
+        "pr_auc_average_precision": 0.10014360061685534,
+        "roc_auc": 0.5,
+        "recall": 0.0,
+        "precision": 0.0,
+        "f1": 0.0,
+        "balanced_accuracy": 0.5,
+        "brier_score": 0.10014360061685534
+      }
+    }
+  },
+  "tempo_execucao_segundos": 10.876097699999264
+}

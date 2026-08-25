@@ -1,0 +1,219 @@
+{
+  "status": "APROVADO",
+  "modelo": {
+    "nome": "hist_gradient_boosting",
+    "conjunto_features": "Modelo A — epidemiológico",
+    "quantidade_features": 23
+  },
+  "protocolo": {
+    "periodo_treinamento": "2018-2023 conforme fold",
+    "periodo_oof": "2021-2024",
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "folds": 4,
+    "teste_final_2025_utilizado": false
+  },
+  "auditoria": {
+    "linhas": 4410648,
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "anos_validacao": [
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "municipios": 5569,
+    "duplicadas": 0,
+    "score_minimo": 1.0987515526176844e-173,
+    "score_maximo": 0.9999878950068316
+  },
+  "execucoes": [
+    {
+      "horizonte": 1,
+      "fold": "fold_1",
+      "treino_inicio": 2018,
+      "treino_fim": 2020,
+      "validacao_ano": 2021,
+      "linhas_treino": 868764,
+      "linhas_validacao": 284019,
+      "tempo_treinamento_segundos": 5.677859999999782,
+      "tempo_predicao_segundos": 0.5834046999989368
+    },
+    {
+      "horizonte": 1,
+      "fold": "fold_2",
+      "treino_inicio": 2018,
+      "treino_fim": 2021,
+      "validacao_ano": 2022,
+      "linhas_treino": 1158352,
+      "linhas_validacao": 284019,
+      "tempo_treinamento_segundos": 5.8466032999986055,
+      "tempo_predicao_segundos": 0.6282212000005529
+    },
+    {
+      "horizonte": 1,
+      "fold": "fold_3",
+      "treino_inicio": 2018,
+      "treino_fim": 2022,
+      "validacao_ano": 2023,
+      "linhas_treino": 1447940,
+      "linhas_validacao": 284019,
+      "tempo_treinamento_segundos": 7.399429999999484,
+      "tempo_predicao_segundos": 0.6367815000012342
+    },
+    {
+      "horizonte": 1,
+      "fold": "fold_4",
+      "treino_inicio": 2018,
+      "treino_fim": 2023,
+      "validacao_ano": 2024,
+      "linhas_treino": 1737528,
+      "linhas_validacao": 284019,
+      "tempo_treinamento_segundos": 9.474727000000712,
+      "tempo_predicao_segundos": 0.6570946000010736
+    },
+    {
+      "horizonte": 2,
+      "fold": "fold_1",
+      "treino_inicio": 2018,
+      "treino_fim": 2020,
+      "validacao_ano": 2021,
+      "linhas_treino": 863195,
+      "linhas_validacao": 278450,
+      "tempo_treinamento_segundos": 4.658616899998378,
+      "tempo_predicao_segundos": 0.6487765999991097
+    },
+    {
+      "horizonte": 2,
+      "fold": "fold_2",
+      "treino_inicio": 2018,
+      "treino_fim": 2021,
+      "validacao_ano": 2022,
+      "linhas_treino": 1152783,
+      "linhas_validacao": 278450,
+      "tempo_treinamento_segundos": 5.831140800000867,
+      "tempo_predicao_segundos": 0.5962725999997929
+    },
+    {
+      "horizonte": 2,
+      "fold": "fold_3",
+      "treino_inicio": 2018,
+      "treino_fim": 2022,
+      "validacao_ano": 2023,
+      "linhas_treino": 1442371,
+      "linhas_validacao": 278450,
+      "tempo_treinamento_segundos": 7.5733952000009594,
+      "tempo_predicao_segundos": 0.6265605000007781
+    },
+    {
+      "horizonte": 2,
+      "fold": "fold_4",
+      "treino_inicio": 2018,
+      "treino_fim": 2023,
+      "validacao_ano": 2024,
+      "linhas_treino": 1731959,
+      "linhas_validacao": 278450,
+      "tempo_treinamento_segundos": 9.522695400000885,
+      "tempo_predicao_segundos": 0.6514329000001453
+    },
+    {
+      "horizonte": 3,
+      "fold": "fold_1",
+      "treino_inicio": 2018,
+      "treino_fim": 2020,
+      "validacao_ano": 2021,
+      "linhas_treino": 857626,
+      "linhas_validacao": 272881,
+      "tempo_treinamento_segundos": 4.27538370000002,
+      "tempo_predicao_segundos": 0.5759171000008791
+    },
+    {
+      "horizonte": 3,
+      "fold": "fold_2",
+      "treino_inicio": 2018,
+      "treino_fim": 2021,
+      "validacao_ano": 2022,
+      "linhas_treino": 1147214,
+      "linhas_validacao": 272881,
+      "tempo_treinamento_segundos": 5.816410999999789,
+      "tempo_predicao_segundos": 0.5843088999990869
+    },
+    {
+      "horizonte": 3,
+      "fold": "fold_3",
+      "treino_inicio": 2018,
+      "treino_fim": 2022,
+      "validacao_ano": 2023,
+      "linhas_treino": 1436802,
+      "linhas_validacao": 272881,
+      "tempo_treinamento_segundos": 7.801317100000233,
+      "tempo_predicao_segundos": 0.623803600001338
+    },
+    {
+      "horizonte": 3,
+      "fold": "fold_4",
+      "treino_inicio": 2018,
+      "treino_fim": 2023,
+      "validacao_ano": 2024,
+      "linhas_treino": 1726390,
+      "linhas_validacao": 272881,
+      "tempo_treinamento_segundos": 9.484750200001145,
+      "tempo_predicao_segundos": 0.6230577000005724
+    },
+    {
+      "horizonte": 4,
+      "fold": "fold_1",
+      "treino_inicio": 2018,
+      "treino_fim": 2020,
+      "validacao_ano": 2021,
+      "linhas_treino": 852057,
+      "linhas_validacao": 267312,
+      "tempo_treinamento_segundos": 4.243533899998511,
+      "tempo_predicao_segundos": 0.5414254000006622
+    },
+    {
+      "horizonte": 4,
+      "fold": "fold_2",
+      "treino_inicio": 2018,
+      "treino_fim": 2021,
+      "validacao_ano": 2022,
+      "linhas_treino": 1141645,
+      "linhas_validacao": 267312,
+      "tempo_treinamento_segundos": 5.640069200000653,
+      "tempo_predicao_segundos": 0.564527000000453
+    },
+    {
+      "horizonte": 4,
+      "fold": "fold_3",
+      "treino_inicio": 2018,
+      "treino_fim": 2022,
+      "validacao_ano": 2023,
+      "linhas_treino": 1431233,
+      "linhas_validacao": 267312,
+      "tempo_treinamento_segundos": 7.892731599999024,
+      "tempo_predicao_segundos": 0.5924475000010716
+    },
+    {
+      "horizonte": 4,
+      "fold": "fold_4",
+      "treino_inicio": 2018,
+      "treino_fim": 2023,
+      "validacao_ano": 2024,
+      "linhas_treino": 1720821,
+      "linhas_validacao": 267312,
+      "tempo_treinamento_segundos": 9.37803040000108,
+      "tempo_predicao_segundos": 0.5921193999984098
+    }
+  ],
+  "arquivo_oof": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\predicoes_oof_modelo_a_hgb_2021_2024.parquet",
+  "tempo_total_segundos": 135.31250379999983
+}
