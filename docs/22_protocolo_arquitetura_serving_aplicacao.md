@@ -564,7 +564,7 @@ O conjunto bruto auditado possui:
 
 As principais regras aplicadas foram:
 
-1. remoção das observações segundo a regra de duplicidade;
+1. verificação da duplicidade lógica segundo `NDUPLIC_N`;
 2. remoção das observações com classificação final não elegível;
 3. validação do município de residência;
 4. validação da semana epidemiológica;
