@@ -1,7 +1,7 @@
 # Dengue Alert — Documentação da Fase Exploratória e de Preparação dos Dados
 
-**Projeto:** TCC em Ciência de Dados — Sistema de alerta antecipado de risco de dengue  
-**Período analisado:** 2016–2025  
+**Projeto:** TCC em Ciência de Dados — Sistema de alerta antecipado de risco de dengue
+**Período analisado:** 2016–2025
 **Escopo deste documento:** registrar o trabalho realizado **antes da criação e organização do repositório definitivo `dengue-alert`**, consolidando as fontes consultadas, os dados obtidos, as decisões metodológicas, as auditorias realizadas e os artefatos produzidos durante a fase exploratória.
 
 > **Importante:** este documento é um registro retrospectivo da fase de exploração, auditoria e preparação das fontes. Ele não substitui a metodologia final do TCC. Algumas decisões poderão ser refinadas na etapa de modelagem, desde que qualquer alteração seja documentada e reavaliada quanto a vazamento temporal, cobertura geográfica e reprodutibilidade.
@@ -56,9 +56,9 @@ Os registros de dengue utilizados na exploração foram obtidos a partir do conj
 
 Fonte oficial:
 
-- OpenDataSUS — Sinan/Dengue:  
+- OpenDataSUS — Sinan/Dengue:
   https://opendatasus.saude.gov.br/dataset/arboviroses-dengue
-- DATASUS — Doenças e Agravos de Notificação — SINAN:  
+- DATASUS — Doenças e Agravos de Notificação — SINAN:
   https://datasus.saude.gov.br/acesso-a-informacao/doencas-e-agravos-de-notificacao-de-2007-em-diante-sinan/
 
 O próprio conjunto informa que o SINAN tem como objetivo coletar, transmitir e disseminar dados produzidos pela vigilância epidemiológica e que a dengue é agravo de notificação compulsória.
@@ -1247,32 +1247,32 @@ A base de modelagem poderá ser derivada posteriormente, sem apagar a unidade ex
 
 ## Ministério da Saúde
 
-**OpenDataSUS — Sinan/Dengue**  
+**OpenDataSUS — Sinan/Dengue**
 https://opendatasus.saude.gov.br/dataset/arboviroses-dengue
 
-**DATASUS — Doenças e Agravos de Notificação (SINAN)**  
+**DATASUS — Doenças e Agravos de Notificação (SINAN)**
 https://datasus.saude.gov.br/acesso-a-informacao/doencas-e-agravos-de-notificacao-de-2007-em-diante-sinan/
 
 ## IBGE
 
-**Divisão Territorial Brasileira — DTB**  
+**Divisão Territorial Brasileira — DTB**
 https://www.ibge.gov.br/geociencias/organizacao-do-territorio/divisao-regional/23701-divisao-territorial-brasileira.html
 
-**Estimativas da População**  
+**Estimativas da População**
 https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html
 
-**Malhas Territoriais**  
+**Malhas Territoriais**
 https://www.ibge.gov.br/geociencias/organizacao-do-territorio/malhas-territoriais/15774-malhas.html
 
 ## Copernicus / ECMWF
 
-**ERA5-Land hourly data from 1950 to present**  
+**ERA5-Land hourly data from 1950 to present**
 https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land
 
-**ERA5 Land hourly time-series data from 1950 to present**  
+**ERA5 Land hourly time-series data from 1950 to present**
 https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-timeseries
 
-**DOI do ERA5-Land**  
+**DOI do ERA5-Land**
 https://doi.org/10.24381/cds.e2161bac
 
 ---
