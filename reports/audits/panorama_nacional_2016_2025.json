@@ -1,0 +1,53 @@
+{
+  "status": "APROVADO",
+  "analise": "panorama epidemiológico nacional",
+  "periodo": "2016-2025",
+  "fonte_processada": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\painel_municipal_semanal_2016_2025.parquet",
+  "painel_mestre": {
+    "linhas": 2907593,
+    "casos_provaveis": 16294913,
+    "anos": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "semanas_nacionais": 522
+  },
+  "validacoes": {
+    "total_epidemiologico_preservado": true,
+    "grade_territorial_semanal_validada": true,
+    "duplicidades": 0,
+    "incidencia_municipal_reproduzida": true,
+    "maior_diferenca_absoluta_incidencia": 0.0
+  },
+  "casos_por_ano": {
+    "2016": 1486799,
+    "2017": 241528,
+    "2018": 267765,
+    "2019": 1551370,
+    "2020": 948528,
+    "2021": 539980,
+    "2022": 1404899,
+    "2023": 1645946,
+    "2024": 6564894,
+    "2025": 1643204
+  },
+  "observacoes_metodologicas": [
+    "A população nacional é calculada uma única vez por unidade territorial e ano.",
+    "A incidência nacional é calculada como total de casos dividido pela população nacional, multiplicado por 100 mil.",
+    "O estado risco_elevado não faz parte do painel mestre e não foi reconstruído nesta etapa.",
+    "As unidades territoriais incluem a estrutura oficial preservada pelo painel do projeto."
+  ],
+  "artefatos": {
+    "anual": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\panorama_nacional_anual_2016_2025.csv",
+    "semanal": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\panorama_nacional_semanal_2016_2025.csv",
+    "auditoria": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\panorama_nacional_2016_2025.json"
+  }
+}
