@@ -1,0 +1,149 @@
+{
+  "status": "APROVADO",
+  "escopo": {
+    "desenvolvimento": "2018-2024",
+    "teste_final": "2025",
+    "teste_final_prevalencia_inspecionada": false,
+    "lag_maximo_semanas": 8
+  },
+  "conjuntos_features": {
+    "epidemiologico": {
+      "quantidade": 23,
+      "colunas": [
+        "incidencia_100mil",
+        "incidencia_100mil_lag_1",
+        "incidencia_100mil_lag_2",
+        "incidencia_100mil_lag_3",
+        "incidencia_100mil_lag_4",
+        "incidencia_100mil_lag_5",
+        "incidencia_100mil_lag_6",
+        "incidencia_100mil_lag_7",
+        "incidencia_100mil_lag_8",
+        "incidencia_media_2s",
+        "incidencia_media_4s",
+        "incidencia_media_8s",
+        "incidencia_4s_100mil",
+        "incidencia_4s_lag_1",
+        "incidencia_4s_lag_4",
+        "delta_incidencia_4s_1s",
+        "delta_incidencia_4s_4s",
+        "limiar_sazonal_p90",
+        "margem_limiar_p90",
+        "risco_elevado",
+        "semana_sin",
+        "semana_cos",
+        "log_populacao"
+      ]
+    },
+    "clima": {
+      "quantidade": 36,
+      "colunas": [
+        "temperatura_media_c_lag_0",
+        "temperatura_media_c_lag_1",
+        "temperatura_media_c_lag_2",
+        "temperatura_media_c_lag_3",
+        "temperatura_media_c_lag_4",
+        "temperatura_media_c_lag_5",
+        "temperatura_media_c_lag_6",
+        "temperatura_media_c_lag_7",
+        "temperatura_media_c_lag_8",
+        "umidade_relativa_media_pct_lag_0",
+        "umidade_relativa_media_pct_lag_1",
+        "umidade_relativa_media_pct_lag_2",
+        "umidade_relativa_media_pct_lag_3",
+        "umidade_relativa_media_pct_lag_4",
+        "umidade_relativa_media_pct_lag_5",
+        "umidade_relativa_media_pct_lag_6",
+        "umidade_relativa_media_pct_lag_7",
+        "umidade_relativa_media_pct_lag_8",
+        "precipitacao_total_mm_lag_0",
+        "precipitacao_total_mm_lag_1",
+        "precipitacao_total_mm_lag_2",
+        "precipitacao_total_mm_lag_3",
+        "precipitacao_total_mm_lag_4",
+        "precipitacao_total_mm_lag_5",
+        "precipitacao_total_mm_lag_6",
+        "precipitacao_total_mm_lag_7",
+        "precipitacao_total_mm_lag_8",
+        "temperatura_media_media_2s",
+        "temperatura_media_media_4s",
+        "temperatura_media_media_8s",
+        "umidade_relativa_media_2s",
+        "umidade_relativa_media_4s",
+        "umidade_relativa_media_8s",
+        "precipitacao_acumulada_2s",
+        "precipitacao_acumulada_4s",
+        "precipitacao_acumulada_8s"
+      ]
+    },
+    "epidemiologico_mais_clima": {
+      "quantidade": 59
+    },
+    "espacial": {
+      "quantidade": 2,
+      "colunas": [
+        "latitude_sede",
+        "longitude_sede"
+      ]
+    },
+    "total_com_espaco": {
+      "quantidade": 61
+    }
+  },
+  "desenvolvimento": {
+    "linhas": 2032685,
+    "municipios": 5569,
+    "features_completas": true,
+    "risco_atual_positivos": 377275,
+    "horizontes": {
+      "h1": {
+        "linhas_com_target": 2027116,
+        "linhas_sem_target": 5569
+      },
+      "h2": {
+        "linhas_com_target": 2021547,
+        "linhas_sem_target": 11138
+      },
+      "h3": {
+        "linhas_com_target": 2015978,
+        "linhas_sem_target": 16707
+      },
+      "h4": {
+        "linhas_com_target": 2010409,
+        "linhas_sem_target": 22276
+      }
+    }
+  },
+  "teste_final": {
+    "linhas": 295210,
+    "municipios": 5570,
+    "linhas_elegiveis": 295157,
+    "linhas_inelegiveis": 53,
+    "linhas_features_incompletas": 53,
+    "codigo_inelegivel": "5101837",
+    "prevalencia_ocultada": true,
+    "horizontes": {
+      "h1": {
+        "linhas_com_target": 289588,
+        "linhas_sem_target": 5622
+      },
+      "h2": {
+        "linhas_com_target": 284019,
+        "linhas_sem_target": 11191
+      },
+      "h3": {
+        "linhas_com_target": 278450,
+        "linhas_sem_target": 16760
+      },
+      "h4": {
+        "linhas_com_target": 272881,
+        "linhas_sem_target": 22329
+      }
+    }
+  },
+  "arquivos": {
+    "desenvolvimento": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\dataset_modelagem_2018_2024.parquet",
+    "teste_final": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\dataset_teste_final_2025.parquet"
+  },
+  "tempo_execucao_segundos": 77.78340560000015
+}

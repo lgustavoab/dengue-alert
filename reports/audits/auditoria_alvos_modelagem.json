@@ -1,0 +1,78 @@
+{
+  "status": "APROVADO",
+  "definicao": {
+    "alvo_contemporaneo": "risco_elevado",
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "desenvolvimento": "2018-2024",
+    "teste_final": "2025",
+    "teste_final_prevalencia_inspecionada": false
+  },
+  "desenvolvimento": {
+    "linhas": 2032685,
+    "municipios": 5569,
+    "positivos_risco_atual": 377275,
+    "prevalencia_risco_atual": 0.185604262342665,
+    "horizontes": {
+      "h1": {
+        "linhas_com_target": 2027116,
+        "linhas_sem_target": 5569,
+        "positivos": 377101,
+        "prevalencia": 0.18602832792992607
+      },
+      "h2": {
+        "linhas_com_target": 2021547,
+        "linhas_sem_target": 11138,
+        "positivos": 376916,
+        "prevalencia": 0.18644928858938228
+      },
+      "h3": {
+        "linhas_com_target": 2015978,
+        "linhas_sem_target": 16707,
+        "positivos": 376726,
+        "prevalencia": 0.1868700948125426
+      },
+      "h4": {
+        "linhas_com_target": 2010409,
+        "linhas_sem_target": 22276,
+        "positivos": 376530,
+        "prevalencia": 0.18729024790477958
+      }
+    }
+  },
+  "teste_final": {
+    "linhas": 295210,
+    "municipios_totais": 5570,
+    "linhas_elegiveis": 295157,
+    "linhas_inelegiveis": 53,
+    "codigo_inelegivel": "5101837",
+    "prevalencia_ocultada": true,
+    "horizontes": {
+      "h1": {
+        "linhas_com_target": 289588,
+        "linhas_sem_target": 5622
+      },
+      "h2": {
+        "linhas_com_target": 284019,
+        "linhas_sem_target": 11191
+      },
+      "h3": {
+        "linhas_com_target": 278450,
+        "linhas_sem_target": 16760
+      },
+      "h4": {
+        "linhas_com_target": 272881,
+        "linhas_sem_target": 22329
+      }
+    }
+  },
+  "arquivos": {
+    "desenvolvimento": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\alvos_modelagem_2018_2024.parquet",
+    "teste_final": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\alvos_teste_final_2025.parquet"
+  },
+  "tempo_execucao_segundos": 26.50455339999462
+}

@@ -1,0 +1,258 @@
+{
+  "status": "CONCLUIDO",
+  "escopo": {
+    "periodo": "2016-2024",
+    "ano_teste_final_excluido": 2025,
+    "somente_unidades_modelaveis_era5": true,
+    "municipios": 5569,
+    "linhas": 2611861
+  },
+  "definicao_experimental": {
+    "janela_incidencia_semanas": 4,
+    "raio_sazonal_semanas": 4,
+    "largura_nominal_janela_sazonal": 9,
+    "somente_anos_anteriores": true,
+    "anos_anteriores_minimos": 2,
+    "observacoes_historicas_minimas": 12,
+    "quantis_candidatos": {
+      "p75": 0.75,
+      "p80": 0.8,
+      "p90": 0.9
+    }
+  },
+  "candidatos": {
+    "p75": {
+      "candidato": "p75",
+      "linhas_elegiveis": 2032685,
+      "positivos": 552428,
+      "prevalencia": 0.27177255698743286,
+      "municipios_com_evento": 5551,
+      "municipios_sem_evento": 18,
+      "prevalencia_mediana_municipal": 0.273972602739726,
+      "observacoes_historicas": {
+        "minimo": 15,
+        "mediana": 45.0,
+        "maximo": 72
+      },
+      "por_ano": {
+        "2018": {
+          "linhas": 289588,
+          "positivos": 32741,
+          "prevalencia": 0.11306062405900796
+        },
+        "2019": {
+          "linhas": 289588,
+          "positivos": 87856,
+          "prevalencia": 0.303382736853737
+        },
+        "2020": {
+          "linhas": 295157,
+          "positivos": 66215,
+          "prevalencia": 0.22433823355028001
+        },
+        "2021": {
+          "linhas": 289588,
+          "positivos": 42053,
+          "prevalencia": 0.14521665262372752
+        },
+        "2022": {
+          "linhas": 289588,
+          "positivos": 95170,
+          "prevalencia": 0.3286393082586295
+        },
+        "2023": {
+          "linhas": 289588,
+          "positivos": 89587,
+          "prevalencia": 0.3093601944831968
+        },
+        "2024": {
+          "linhas": 289588,
+          "positivos": 138806,
+          "prevalencia": 0.4793223476110889
+        }
+      },
+      "por_faixa_populacional": {
+        "ate_20_mil": {
+          "linhas": 1391973,
+          "positivos": 338429,
+          "prevalencia": 0.24312899747337052,
+          "municipios": 3906
+        },
+        "20_a_100_mil": {
+          "linhas": 522502,
+          "positivos": 166573,
+          "prevalencia": 0.3187987797175896,
+          "municipios": 1538
+        },
+        "100_a_500_mil": {
+          "linhas": 101417,
+          "positivos": 40927,
+          "prevalencia": 0.40355167279647397,
+          "municipios": 303
+        },
+        "mais_de_500_mil": {
+          "linhas": 16793,
+          "positivos": 6499,
+          "prevalencia": 0.387006490799738,
+          "municipios": 50
+        }
+      }
+    },
+    "p80": {
+      "candidato": "p80",
+      "linhas_elegiveis": 2032685,
+      "positivos": 500923,
+      "prevalencia": 0.24643414990517468,
+      "municipios_com_evento": 5551,
+      "municipios_sem_evento": 18,
+      "prevalencia_mediana_municipal": 0.2465753424657534,
+      "observacoes_historicas": {
+        "minimo": 15,
+        "mediana": 45.0,
+        "maximo": 72
+      },
+      "por_ano": {
+        "2018": {
+          "linhas": 289588,
+          "positivos": 29881,
+          "prevalencia": 0.10318452422061687
+        },
+        "2019": {
+          "linhas": 289588,
+          "positivos": 82990,
+          "prevalencia": 0.28657955440142546
+        },
+        "2020": {
+          "linhas": 295157,
+          "positivos": 56290,
+          "prevalencia": 0.19071206171630692
+        },
+        "2021": {
+          "linhas": 289588,
+          "positivos": 36364,
+          "prevalencia": 0.12557150158155725
+        },
+        "2022": {
+          "linhas": 289588,
+          "positivos": 86746,
+          "prevalencia": 0.29954970509827755
+        },
+        "2023": {
+          "linhas": 289588,
+          "positivos": 79944,
+          "prevalencia": 0.2760611627553628
+        },
+        "2024": {
+          "linhas": 289588,
+          "positivos": 128708,
+          "prevalencia": 0.4444521181816926
+        }
+      },
+      "por_faixa_populacional": {
+        "ate_20_mil": {
+          "linhas": 1391973,
+          "positivos": 310317,
+          "prevalencia": 0.22293320344575648,
+          "municipios": 3906
+        },
+        "20_a_100_mil": {
+          "linhas": 522502,
+          "positivos": 148476,
+          "prevalencia": 0.284163505594237,
+          "municipios": 1538
+        },
+        "100_a_500_mil": {
+          "linhas": 101417,
+          "positivos": 36405,
+          "prevalencia": 0.35896348738377193,
+          "municipios": 303
+        },
+        "mais_de_500_mil": {
+          "linhas": 16793,
+          "positivos": 5725,
+          "prevalencia": 0.34091585779789196,
+          "municipios": 50
+        }
+      }
+    },
+    "p90": {
+      "candidato": "p90",
+      "linhas_elegiveis": 2032685,
+      "positivos": 377275,
+      "prevalencia": 0.185604262342665,
+      "municipios_com_evento": 5548,
+      "municipios_sem_evento": 21,
+      "prevalencia_mediana_municipal": 0.18356164383561643,
+      "observacoes_historicas": {
+        "minimo": 15,
+        "mediana": 45.0,
+        "maximo": 72
+      },
+      "por_ano": {
+        "2018": {
+          "linhas": 289588,
+          "positivos": 24755,
+          "prevalencia": 0.08548351451026977
+        },
+        "2019": {
+          "linhas": 289588,
+          "positivos": 69726,
+          "prevalencia": 0.24077655151456553
+        },
+        "2020": {
+          "linhas": 295157,
+          "positivos": 41812,
+          "prevalencia": 0.14166020118106634
+        },
+        "2021": {
+          "linhas": 289588,
+          "positivos": 25248,
+          "prevalencia": 0.08718593311877564
+        },
+        "2022": {
+          "linhas": 289588,
+          "positivos": 63069,
+          "prevalencia": 0.21778872052709367
+        },
+        "2023": {
+          "linhas": 289588,
+          "positivos": 54105,
+          "prevalencia": 0.1868343992154371
+        },
+        "2024": {
+          "linhas": 289588,
+          "positivos": 98560,
+          "prevalencia": 0.34034559443070844
+        }
+      },
+      "por_faixa_populacional": {
+        "ate_20_mil": {
+          "linhas": 1391973,
+          "positivos": 237759,
+          "prevalencia": 0.1708071923808867,
+          "municipios": 3906
+        },
+        "20_a_100_mil": {
+          "linhas": 522502,
+          "positivos": 108642,
+          "prevalencia": 0.2079264768364523,
+          "municipios": 1538
+        },
+        "100_a_500_mil": {
+          "linhas": 101417,
+          "positivos": 26767,
+          "prevalencia": 0.26393011033653135,
+          "municipios": 303
+        },
+        "mais_de_500_mil": {
+          "linhas": 16793,
+          "positivos": 4107,
+          "prevalencia": 0.24456618829274102,
+          "municipios": 50
+        }
+      }
+    }
+  },
+  "tempo_execucao_segundos": 24.11736699999892,
+  "observacao": "Esta análise compara definições sazonais candidatas. Nenhum percentil foi selecionado como alvo definitivo."
+}
