@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Serving derivado para consumo do frontend
+/public/data/serving/
+/public/data/serving.__staging__/
+/public/data/serving.__backup__/
