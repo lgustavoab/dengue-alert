@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "status": "APROVADO",
+  "auditoria": "serving_integrado",
+  "serving_root": "data/serving",
+  "json": {
+    "files": 11164,
+    "total_size_bytes": 221704777
+  },
+  "historical": {
+    "files": 5571,
+    "rows": 2907593,
+    "cases": 16294913,
+    "temporal_distribution": {
+      "53": 1,
+      "522": 5570
+    }
+  },
+  "prediction": {
+    "files": 5569,
+    "rows": 1124938,
+    "rows_by_horizon": {
+      "h1": 289588,
+      "h2": 284019,
+      "h3": 278450,
+      "h4": 272881
+    }
+  },
+  "territorial_relationship": {
+    "historical": 5571,
+    "prediction": 5569,
+    "historical_only": [
+      "2605459",
+      "5101837"
+    ]
+  },
+  "checks": {
+    "required_contracts": true,
+    "strict_json": true,
+    "no_nan_or_infinity": true,
+    "schema_version_consistent": true,
+    "historical_index_matches_series": true,
+    "prediction_index_matches_series": true,
+    "prediction_is_subset_of_historical": true,
+    "historical_totals_preserved": true,
+    "prediction_totals_preserved": true,
+    "prediction_rule_preserved": true
+  }
+}

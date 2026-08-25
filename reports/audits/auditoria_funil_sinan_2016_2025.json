@@ -1,0 +1,114 @@
+{
+  "status": "ESTRUTURADO_A_PARTIR_DA_AUDITORIA_EXPLORATORIA",
+  "analise": "funil de preparacao epidemiologica SINAN 2016-2025",
+  "periodo": "2016-2025",
+  "versao_processamento": "V2",
+  "proveniencia": {
+    "fonte_historica": "docs/01_fase_exploratoria_dados_dengue_alert.md",
+    "tipo_fonte": "documentacao consolidada da fase exploratoria",
+    "processamento_bruto_reexecutado_nesta_etapa": false,
+    "objetivo_deste_artefato": "estruturar resultados historicamente auditados para rastreabilidade e consumo posterior pela camada de serving",
+    "validacao_cruzada_resultado_final": "reports/audits/auditoria_painel_mestre.json"
+  },
+  "entrada_sinan": {
+    "arquivos_anuais": 10,
+    "registros_brutos": 19336281
+  },
+  "processamento_v2": {
+    "duplicidade_logica": {
+      "campo": "NDUPLIC_N",
+      "operacao_documentada": "verificacao",
+      "quantidade_removida_documentada": null,
+      "observacao": "A auditoria exploratoria registra verificacao de duplicidade logica segundo NDUPLIC_N, mas nao registra uma contagem separada de exclusoes atribuida a essa etapa."
+    },
+    "filtros_documentados": {
+      "classi_fin_5": {
+        "registros_removidos": 3002212
+      },
+      "municipio_invalido": {
+        "registros_removidos": 1149
+      },
+      "sem_pri_invalida": {
+        "registros_removidos": 79
+      },
+      "fora_periodo_2016_2025": {
+        "registros_removidos": 37896
+      }
+    },
+    "registros_mantidos_apos_filtros": 16294945,
+    "grupos_municipio_ano_semana_antes_normalizacao_territorial": 723860,
+    "codigos_sinan_6_digitos": 5621
+  },
+  "conciliacao_territorial": {
+    "referencia": "IBGE DTB 2025",
+    "unidades_territoriais_referencia": 5571,
+    "composicao_referencia": {
+      "municipios": 5569,
+      "distrito_federal": 1,
+      "distrito_estadual_fernando_de_noronha": 1
+    },
+    "primeiro_cruzamento": {
+      "codigos_sinan_distintos": 5621,
+      "codigos_associados_diretamente": 5561,
+      "codigos_nao_associados_diretamente": 60,
+      "casos_em_codigos_nao_associados": 22878,
+      "proporcao_casos_nao_associados": 0.00140399
+    },
+    "distrito_federal": {
+      "codigos_subdivisoes_identificados": 48,
+      "casos_preservados": 22846,
+      "codigo_sinan_destino": "530010",
+      "codigo_ibge_7_destino": "5300108",
+      "nome_destino": "Brasilia",
+      "tratamento": "consolidacao na unidade territorial oficial"
+    },
+    "codigos_residuais_nao_municipais": {
+      "quantidade_codigos": 12,
+      "casos_excluidos": 32,
+      "tratamento": "exclusao sem atribuicao especulativa a outro municipio"
+    }
+  },
+  "resultado_apos_normalizacao_territorial": {
+    "linhas_agregadas": 721309,
+    "codigos_sinan_representados": 5561,
+    "casos_preservados": 16294913,
+    "codigos_sem_correspondencia_ibge": 0,
+    "unidades_ibge_sem_registro_dengue": 10
+  },
+  "grade_epidemiologica": {
+    "regra_semana": "domingo a sabado; semana epidemiologica 1 definida de forma a conter o dia 4 de janeiro",
+    "anos_com_53_semanas": [
+      2020,
+      2025
+    ],
+    "linhas_observadas_antes_zero_fill": 721309,
+    "linhas_apos_zero_fill": 2907593,
+    "linhas_preenchidas_com_zero": 2186284,
+    "casos_antes_zero_fill": 16294913,
+    "casos_depois_zero_fill": 16294913,
+    "casos_preservados": true
+  },
+  "validacao_cruzada": {
+    "artefato": "reports/audits/auditoria_painel_mestre.json",
+    "linhas_painel_mestre": 2907593,
+    "unidades_territoriais_painel_mestre": 5571,
+    "casos_painel_mestre": 16294913,
+    "casos_coincidem_com_normalizacao_territorial": true,
+    "linhas_coincidem_com_grade_epidemiologica": true
+  },
+  "validacoes": {
+    "funil_aritmetico_documentado_fecha": true,
+    "casos_preservados_apos_zero_fill": true,
+    "resultado_final_confirmado_por_auditoria_estruturada": true,
+    "contagem_exclusoes_nduplic_inferida": false,
+    "processamento_bruto_reexecutado": false
+  },
+  "observacoes_metodologicas": [
+    "Este artefato nao representa uma nova execucao do processamento bruto SINAN.",
+    "Os resultados do funil foram estruturados a partir da documentacao consolidada da fase exploratoria.",
+    "O resultado final foi validado de forma cruzada contra a auditoria estruturada do painel mestre.",
+    "Nao foi inventada nem inferida uma quantidade de registros removidos por NDUPLIC_N, pois essa contagem nao esta documentada separadamente na auditoria historica.",
+    "A consolidacao das subdivisoes do Distrito Federal preservou 22.846 casos em Brasilia.",
+    "Os 32 casos pertencentes a 12 codigos residuais nao municipais foram excluidos sem associacao especulativa."
+  ]
+}

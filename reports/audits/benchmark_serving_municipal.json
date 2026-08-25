@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "status": "APROVADO",
+  "analise": "benchmark do serving historico municipal",
+  "fonte": "data/processed/painel_municipal_semanal_2016_2025.parquet",
+  "painel": {
+    "linhas": 2907593,
+    "unidades_territoriais": 5571,
+    "colunas_avaliadas": [
+      "codigo_ibge_7",
+      "ano_epidemiologico",
+      "semana_epidemiologica",
+      "data_inicio_semana",
+      "casos_provaveis",
+      "incidencia_100mil",
+      "registro_sinan_presente",
+      "zero_preenchido",
+      "populacao"
+    ],
+    "distribuicao_linhas_por_unidade": {
+      "53": 1,
+      "522": 5570
+    }
+  },
+  "json_verboso_por_municipio": {
+    "total_bytes": 608327169,
+    "total_gzip_estimado_bytes": 24306091,
+    "arquivo_minimo_bytes": 10956,
+    "arquivo_mediano_bytes": 108782.0,
+    "arquivo_mediano_gzip_bytes": 4150.0,
+    "maior_arquivo_bytes": 117735,
+    "maior_arquivo_gzip_bytes": 10841
+  },
+  "json_compacto_por_municipio": {
+    "total_bytes": 138277599,
+    "total_gzip_estimado_bytes": 16209960,
+    "arquivo_minimo_bytes": 2546,
+    "arquivo_mediano_bytes": 24394.0,
+    "arquivo_mediano_gzip_bytes": 2728.0,
+    "maior_arquivo_bytes": 33347,
+    "maior_arquivo_gzip_bytes": 8116,
+    "reducao_sem_compressao_vs_verboso": 0.7726920544625552,
+    "reducao_gzip_vs_verboso": 0.33309062325159566
+  },
+  "parquet_nacional_reduzido": {
+    "compression": "zstd",
+    "size_bytes": 5144101
+  },
+  "decisao": {
+    "formato_inicial": "json_compacto_por_municipio",
+    "arquivos_estimados": 5571,
+    "estrutura_prevista": "data/serving/historical/municipality/series/{codigo_ibge_7}.json",
+    "motivos": [
+      "Cada consulta municipal transfere apenas a serie solicitada.",
+      "O arquivo municipal mediano possui payload gzip muito pequeno.",
+      "O formato pode ser consumido diretamente pelo frontend sem biblioteca Parquet.",
+      "Arquivos estaticos podem utilizar cache do navegador e CDN."
+    ],
+    "parquet_preservado_como_alternativa": true
+  },
+  "validacoes": {
+    "linhas_esperadas": 2907593,
+    "unidades_territoriais_esperadas": 5571,
+    "semanas_padrao_por_unidade": 522,
+    "excecao_cobertura_temporal": {
+      "codigo_ibge_7": "5101837",
+      "semanas": 53
+    }
+  }
+}

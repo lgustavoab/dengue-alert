@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "status": "APROVADO",
+  "analise": "benchmark do serving preditivo municipal",
+  "fonte": "data/processed/predicoes_avaliacao_final_2025.parquet",
+  "painel": {
+    "linhas": 1124938,
+    "municipios": 5569,
+    "predicoes_por_municipio": 202,
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "colunas_avaliadas": [
+      "codigo_ibge_7",
+      "ano_epidemiologico",
+      "semana_epidemiologica",
+      "data_inicio_semana",
+      "risco_elevado",
+      "target",
+      "horizonte",
+      "score",
+      "threshold",
+      "predicao"
+    ]
+  },
+  "estrutura_por_horizonte": {
+    "h1": {
+      "linhas": 289588,
+      "semanas": 52,
+      "threshold": 0.187687
+    },
+    "h2": {
+      "linhas": 284019,
+      "semanas": 51,
+      "threshold": 0.190783
+    },
+    "h3": {
+      "linhas": 278450,
+      "semanas": 50,
+      "threshold": 0.167991
+    },
+    "h4": {
+      "linhas": 272881,
+      "semanas": 49,
+      "threshold": 0.157138
+    }
+  },
+  "json_verboso_por_municipio": {
+    "total_bytes": 231855674,
+    "total_gzip_estimado_bytes": 19545906,
+    "arquivo_minimo_bytes": 40814,
+    "arquivo_mediano_bytes": 41672.0,
+    "arquivo_mediano_gzip_bytes": 3564.0,
+    "maior_arquivo_bytes": 42009,
+    "maior_arquivo_gzip_bytes": 3749
+  },
+  "json_compacto_colunar": {
+    "total_bytes": 79710594,
+    "total_gzip_estimado_bytes": 14122231,
+    "arquivo_minimo_bytes": 13494,
+    "arquivo_mediano_bytes": 14352.0,
+    "arquivo_mediano_gzip_bytes": 2577.0,
+    "maior_arquivo_bytes": 14689,
+    "maior_arquivo_gzip_bytes": 2722
+  },
+  "json_compacto_por_horizonte": {
+    "total_bytes": 70354674,
+    "total_gzip_estimado_bytes": 14620725,
+    "arquivo_minimo_bytes": 11814,
+    "arquivo_mediano_bytes": 12672.0,
+    "arquivo_mediano_gzip_bytes": 2669.0,
+    "maior_arquivo_bytes": 13009,
+    "maior_arquivo_gzip_bytes": 2824
+  },
+  "reducoes": {
+    "compacto_colunar_vs_verboso": {
+      "sem_compressao": 0.6562059809672806,
+      "gzip": 0.2774839396035159
+    },
+    "compacto_por_horizonte_vs_verboso": {
+      "sem_compressao": 0.6965583253313007,
+      "gzip": 0.25198018449490134
+    },
+    "compacto_por_horizonte_vs_colunar": {
+      "sem_compressao": 0.11737360782934325,
+      "gzip": -0.03529853038092923
+    }
+  },
+  "parquet_nacional_reduzido": {
+    "compression": "zstd",
+    "size_bytes": 7792633
+  },
+  "decisao": {
+    "formato_inicial": "json_compacto_por_horizonte",
+    "granularidade": "um_arquivo_por_municipio",
+    "arquivos_estimados": 5569,
+    "estrutura_prevista": "data/serving/prediction/municipality/series/{codigo_ibge_7}.json",
+    "motivos": [
+      "O contrato reflete diretamente os quatro horizontes H1, H2, H3 e H4.",
+      "Horizonte e threshold não precisam ser repetidos em cada observação.",
+      "O tamanho municipal permanece muito pequeno mesmo com compressão de transporte.",
+      "A representação por horizonte é menor sem compressão que o JSON compacto colunar.",
+      "A diferença de gzip frente ao compacto colunar é pequena e não justifica perder clareza semântica."
+    ],
+    "parquet_preservado_como_alternativa": true
+  },
+  "invariantes": {
+    "linhas_esperadas": 1124938,
+    "municipios_esperados": 5569,
+    "predicoes_por_municipio": 202,
+    "ano": 2025,
+    "thresholds": {
+      "h1": 0.187687,
+      "h2": 0.190783,
+      "h3": 0.167991,
+      "h4": 0.157138
+    },
+    "regra_predicao": "score >= threshold",
+    "scores_intervalo": "[0, 1]"
+  }
+}
