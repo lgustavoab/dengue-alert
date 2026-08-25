@@ -1,0 +1,52 @@
+{
+  "status": "APROVADO",
+  "analise": "dinâmica epidemiológica do risco elevado",
+  "periodo_epidemiologico": "2018-2025",
+  "definicao_episodio": "Sequência máxima de semanas consecutivas, separadas por exatamente sete dias, com risco_elevado=True para o mesmo município.",
+  "targets": {
+    "linhas_totais": 2327895,
+    "linhas_risco_definido": 2327842,
+    "linhas_risco_ausente": 53,
+    "codigo_sem_target_elegivel": "5101837",
+    "municipios_elegiveis": 5569,
+    "semanas_em_risco": 414678
+  },
+  "episodios": {
+    "quantidade": 54269,
+    "duracao_media_semanas": 7.6411579354696055,
+    "duracao_mediana_semanas": 4.0,
+    "duracao_maxima_semanas": 110,
+    "episodios_multianuais": 3552
+  },
+  "municipios": {
+    "com_algum_risco": 5553,
+    "com_recorrencia_multianual": 5466
+  },
+  "pico_simultaneo_nacional": {
+    "data_inicio_semana": "2024-03-17",
+    "ano_epidemiologico": 2024,
+    "semana_epidemiologica": 12,
+    "municipios_em_risco": 3121,
+    "proporcao": 0.5604237744657928
+  },
+  "validacoes": {
+    "targets_recalculados": false,
+    "ausencias_convertidas_em_false": false,
+    "semanas_risco_preservadas": true,
+    "episodios_consecutivos": true,
+    "virada_ano_pode_manter_episodio": true
+  },
+  "linhas_artefatos": {
+    "episodios": 54269,
+    "municipios": 5569,
+    "serie_semanal": 2508,
+    "ano_regiao": 40
+  },
+  "artefatos": {
+    "episodios": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\episodios_risco_elevado_2018_2025.csv",
+    "municipios": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\dinamica_risco_municipio_2018_2025.csv",
+    "serie_semanal": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\serie_risco_semanal_nacional_regional_2018_2025.csv",
+    "ano_regiao": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\dinamica_risco_ano_regiao_2018_2025.csv",
+    "auditoria": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\dinamica_epidemiologica_2018_2025.json"
+  }
+}

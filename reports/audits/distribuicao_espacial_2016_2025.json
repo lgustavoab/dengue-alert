@@ -1,0 +1,51 @@
+{
+  "status": "APROVADO",
+  "analise": "distribuição espacial da dengue",
+  "periodo": "2016-2025",
+  "painel": {
+    "linhas": 2907593,
+    "casos_provaveis": 16294913
+  },
+  "agregacoes": {
+    "regiao": {
+      "grupos": 5,
+      "linhas_anuais": 50
+    },
+    "uf": {
+      "grupos": 27,
+      "linhas_anuais": 270
+    },
+    "unidade_territorial": {
+      "grupos_periodo": 5571,
+      "linhas_anuais": 55701,
+      "anos_disponiveis": {
+        "1": 1,
+        "10": 5570
+      }
+    }
+  },
+  "validacoes": {
+    "casos_preservados_regiao": true,
+    "casos_preservados_uf": true,
+    "casos_preservados_unidade_territorial": true,
+    "incidencias_recalculadas": true,
+    "incidencias_somadas": false,
+    "duplicidades_unidade_ano": 0
+  },
+  "observacoes_metodologicas": [
+    "Casos absolutos e incidência por 100 mil são mantidos como indicadores distintos.",
+    "Incidências regionais e estaduais são recalculadas a partir de casos e população agregados.",
+    "A incidência do período não é obtida pela soma das incidências anuais.",
+    "O resumo 2016-2025 utiliza média, mediana e máximo das incidências anuais para caracterização.",
+    "Unidades territoriais com menos anos disponíveis permanecem explicitamente identificadas."
+  ],
+  "artefatos": {
+    "regiao_anual": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_regiao_anual_2016_2025.csv",
+    "regiao_periodo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_regiao_periodo_2016_2025.csv",
+    "uf_anual": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_uf_anual_2016_2025.csv",
+    "uf_periodo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_uf_periodo_2016_2025.csv",
+    "municipio_anual": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_municipio_anual_2016_2025.csv",
+    "municipio_periodo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_municipio_periodo_2016_2025.csv",
+    "auditoria": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\distribuicao_espacial_2016_2025.json"
+  }
+}
