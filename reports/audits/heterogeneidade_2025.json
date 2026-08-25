@@ -1,0 +1,90 @@
+{
+  "status": "APROVADO",
+  "natureza": "análise secundária, descritiva e pós-teste",
+  "predicoes": {
+    "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\predicoes_avaliacao_final_2025.parquet",
+    "linhas": 1124938,
+    "municipios": 5569,
+    "scores_recalculados": false,
+    "modelos_retreinados": false,
+    "thresholds_alterados": false
+  },
+  "agrupadores": {
+    "regiao": "macrorregião oficial derivada do código IBGE",
+    "uf": "UF presente na predição final",
+    "porte_populacional": "<20 mil; 20-49,9 mil; 50-99,9 mil; 100-499,9 mil; >=500 mil",
+    "perfil_epidemiologico": "quartis nacionais da incidência semanal média municipal de 2018-2024"
+  },
+  "dimensoes": {
+    "regiao": {
+      "grupos": [
+        "Centro-Oeste",
+        "Nordeste",
+        "Norte",
+        "Sudeste",
+        "Sul"
+      ],
+      "quantidade_grupos": 5,
+      "linhas_resultado": 40,
+      "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\heterogeneidade_2025_regiao.csv"
+    },
+    "nome_uf_ibge": {
+      "grupos": [
+        "Acre",
+        "Alagoas",
+        "Amapá",
+        "Amazonas",
+        "Bahia",
+        "Ceará",
+        "Distrito Federal",
+        "Espírito Santo",
+        "Goiás",
+        "Maranhão",
+        "Mato Grosso",
+        "Mato Grosso do Sul",
+        "Minas Gerais",
+        "Paraná",
+        "Paraíba",
+        "Pará",
+        "Pernambuco",
+        "Piauí",
+        "Rio Grande do Norte",
+        "Rio Grande do Sul",
+        "Rio de Janeiro",
+        "Rondônia",
+        "Roraima",
+        "Santa Catarina",
+        "Sergipe",
+        "São Paulo",
+        "Tocantins"
+      ],
+      "quantidade_grupos": 27,
+      "linhas_resultado": 216,
+      "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\heterogeneidade_2025_uf.csv"
+    },
+    "porte_populacional": {
+      "grupos": [
+        "Grande",
+        "Muito grande",
+        "Muito pequeno",
+        "Médio",
+        "Pequeno"
+      ],
+      "quantidade_grupos": 5,
+      "linhas_resultado": 40,
+      "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\heterogeneidade_2025_porte_populacional.csv"
+    },
+    "quartil_epidemiologico": {
+      "grupos": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ],
+      "quantidade_grupos": 4,
+      "linhas_resultado": 32,
+      "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\heterogeneidade_2025_perfil_epidemiologico.csv"
+    }
+  },
+  "observacao": "Os resultados desta análise não alteram a avaliação final independente de 2025."
+}

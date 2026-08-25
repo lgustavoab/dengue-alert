@@ -1,0 +1,37 @@
+{
+  "status": "APROVADO",
+  "analise": "perfil epidemiológico histórico municipal",
+  "periodo": "2018-2024",
+  "metrica": {
+    "nome": "incidencia_media_semanal_2018_2024",
+    "definicao": "Média da incidência semanal por 100 mil habitantes entre 2018 e 2024."
+  },
+  "quartis": {
+    "metodo": "Pontos de corte nacionais nos percentis 25, 50 e 75 da incidência média municipal.",
+    "pontos_de_corte": {
+      "q25": 2.4213790906149733,
+      "q50": 9.99653529446034,
+      "q75": 27.689513988214337
+    },
+    "labels": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4"
+    ]
+  },
+  "auditoria": {
+    "municipios": 5569,
+    "semanas_por_municipio": 365,
+    "incidencia_media_minima": 0.0,
+    "incidencia_media_maxima": 146.42940622665225,
+    "distribuicao_quartis": {
+      "Q1": 1393,
+      "Q2": 1392,
+      "Q3": 1392,
+      "Q4": 1392
+    }
+  },
+  "observacao": "O perfil usa somente 2018-2024. Municípios sem existência histórica nesse período não recebem perfil por imputação.",
+  "arquivo": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\data\\processed\\perfil_epidemiologico_municipios_2018_2024.parquet"
+}
