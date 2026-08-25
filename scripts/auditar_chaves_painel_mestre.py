@@ -66,12 +66,8 @@ def main() -> None:
     epidemiologia["codigo_ibge_7"] = normalizar_codigo_ibge(
         epidemiologia["codigo_ibge_7"]
     )
-    mapeamento["codigo_ibge_7"] = normalizar_codigo_ibge(
-        mapeamento["codigo_ibge_7"]
-    )
-    exclusoes["codigo_ibge_7"] = normalizar_codigo_ibge(
-        exclusoes["codigo_ibge_7"]
-    )
+    mapeamento["codigo_ibge_7"] = normalizar_codigo_ibge(mapeamento["codigo_ibge_7"])
+    exclusoes["codigo_ibge_7"] = normalizar_codigo_ibge(exclusoes["codigo_ibge_7"])
 
     chave_epidemiologica = [
         "codigo_ibge_7",
@@ -85,52 +81,34 @@ def main() -> None:
         "semana_epidemiologica",
     ]
 
-    duplicadas_epidemiologia = int(
-        epidemiologia.duplicated(chave_epidemiologica).sum()
-    )
+    duplicadas_epidemiologia = int(epidemiologia.duplicated(chave_epidemiologica).sum())
 
-    duplicados_mapeamento = int(
-        mapeamento.duplicated(["codigo_ibge_7"]).sum()
-    )
+    duplicados_mapeamento = int(mapeamento.duplicated(["codigo_ibge_7"]).sum())
 
-    duplicadas_clima = int(
-        clima.duplicated(chave_climatica).sum()
-    )
+    duplicadas_clima = int(clima.duplicated(chave_climatica).sum())
 
     codigos_epi = set(epidemiologia["codigo_ibge_7"].dropna())
     codigos_mapeados = set(mapeamento["codigo_ibge_7"].dropna())
     codigos_excluidos = set(exclusoes["codigo_ibge_7"].dropna())
 
-    codigos_epi_sem_mapeamento = sorted(
-        codigos_epi - codigos_mapeados
-    )
+    codigos_epi_sem_mapeamento = sorted(codigos_epi - codigos_mapeados)
 
-    codigos_mapeamento_sem_epi = sorted(
-        codigos_mapeados - codigos_epi
-    )
+    codigos_mapeamento_sem_epi = sorted(codigos_mapeados - codigos_epi)
 
     combos_mapeamento = set(mapeamento["combo_id"])
     combos_definidos = set(combinacoes["combo_id"])
     combos_clima = set(clima["combo_id"])
 
-    combos_sem_definicao = sorted(
-        combos_mapeamento - combos_definidos
-    )
+    combos_sem_definicao = sorted(combos_mapeamento - combos_definidos)
 
-    combos_sem_serie_climatica = sorted(
-        combos_mapeamento - combos_clima
-    )
+    combos_sem_serie_climatica = sorted(combos_mapeamento - combos_clima)
 
     contagem_por_municipio = (
-        epidemiologia.groupby("codigo_ibge_7", observed=True)
-        .size()
-        .sort_values()
+        epidemiologia.groupby("codigo_ibge_7", observed=True).size().sort_values()
     )
 
     municipios_sem_522_semanas = {
-        codigo: int(qtd)
-        for codigo, qtd in contagem_por_municipio.items()
-        if qtd != 522
+        codigo: int(qtd) for codigo, qtd in contagem_por_municipio.items() if qtd != 522
     }
 
     painel = epidemiologia.merge(
@@ -164,13 +142,9 @@ def main() -> None:
         suffixes=("_epi", "_era5"),
     )
 
-    linhas_sem_clima = int(
-        painel["clima_presente"].isna().sum()
-    )
+    linhas_sem_clima = int(painel["clima_presente"].isna().sum())
 
-    linhas_com_clima = int(
-        painel["clima_presente"].notna().sum()
-    )
+    linhas_com_clima = int(painel["clima_presente"].notna().sum())
 
     com_clima = painel["clima_presente"].notna()
 
@@ -189,78 +163,57 @@ def main() -> None:
     )
 
     criterios = {
-        "sem_duplicidade_epidemiologica":
-            duplicadas_epidemiologia == 0,
-        "sem_duplicidade_mapeamento":
-            duplicados_mapeamento == 0,
-        "sem_duplicidade_climatica":
-            duplicadas_clima == 0,
-        "codigos_nao_mapeados_sao_exclusoes":
-            set(codigos_epi_sem_mapeamento) == codigos_excluidos,
-        "nenhum_codigo_mapeado_ausente_epidemiologia":
-            len(codigos_mapeamento_sem_epi) == 0,
-        "todos_combos_definidos":
-            len(combos_sem_definicao) == 0,
-        "todos_combos_possuem_clima":
-            len(combos_sem_serie_climatica) == 0,
-        "sem_divergencia_data_inicio":
-            divergencias_inicio == 0,
-        "sem_divergencia_data_fim":
-            divergencias_fim == 0,
+        "sem_duplicidade_epidemiologica": duplicadas_epidemiologia == 0,
+        "sem_duplicidade_mapeamento": duplicados_mapeamento == 0,
+        "sem_duplicidade_climatica": duplicadas_clima == 0,
+        "codigos_nao_mapeados_sao_exclusoes": set(codigos_epi_sem_mapeamento)
+        == codigos_excluidos,
+        "nenhum_codigo_mapeado_ausente_epidemiologia": len(codigos_mapeamento_sem_epi)
+        == 0,
+        "todos_combos_definidos": len(combos_sem_definicao) == 0,
+        "todos_combos_possuem_clima": len(combos_sem_serie_climatica) == 0,
+        "sem_divergencia_data_inicio": divergencias_inicio == 0,
+        "sem_divergencia_data_fim": divergencias_fim == 0,
     }
 
-    status = (
-        "APROVADO"
-        if all(criterios.values())
-        else "REPROVADO"
-    )
+    status = "APROVADO" if all(criterios.values()) else "REPROVADO"
 
     resumo = {
         "status": status,
         "epidemiologia": {
-            "linhas": int(len(epidemiologia)),
-            "municipios": int(
-                epidemiologia["codigo_ibge_7"].nunique()
-            ),
+            "linhas": len(epidemiologia),
+            "municipios": int(epidemiologia["codigo_ibge_7"].nunique()),
             "chaves_duplicadas": duplicadas_epidemiologia,
         },
         "mapeamento_climatico": {
-            "unidades": int(len(mapeamento)),
+            "unidades": len(mapeamento),
             "chaves_duplicadas": duplicados_mapeamento,
         },
         "clima": {
-            "linhas": int(len(clima)),
+            "linhas": len(clima),
             "combos": int(clima["combo_id"].nunique()),
             "chaves_duplicadas": duplicadas_clima,
         },
         "cobertura": {
             "linhas_com_clima": linhas_com_clima,
             "linhas_sem_clima": linhas_sem_clima,
+            "linhas_sem_combo": linhas_sem_combo,
             "codigos_sem_combo": codigos_sem_combo,
             "codigos_excluidos": sorted(codigos_excluidos),
         },
         "temporalidade": {
-            "municipios_sem_522_semanas":
-                municipios_sem_522_semanas,
-            "divergencias_data_inicio":
-                divergencias_inicio,
-            "divergencias_data_fim":
-                divergencias_fim,
+            "municipios_sem_522_semanas": municipios_sem_522_semanas,
+            "divergencias_data_inicio": divergencias_inicio,
+            "divergencias_data_fim": divergencias_fim,
         },
         "integridade_combos": {
-            "combos_sem_definicao":
-                combos_sem_definicao,
-            "combos_sem_serie_climatica":
-                combos_sem_serie_climatica,
+            "combos_sem_definicao": combos_sem_definicao,
+            "combos_sem_serie_climatica": combos_sem_serie_climatica,
         },
         "criterios": criterios,
     }
 
-    destino = (
-        REPORTS_DIR
-        / "audits"
-        / "auditoria_chaves_painel_mestre.json"
-    )
+    destino = REPORTS_DIR / "audits" / "auditoria_chaves_painel_mestre.json"
     destino.parent.mkdir(parents=True, exist_ok=True)
 
     with destino.open("w", encoding="utf-8") as arquivo:
@@ -274,7 +227,9 @@ def main() -> None:
     print()
     print(f"Status                         : {status}")
     print(f"Linhas epidemiológicas        : {len(epidemiologia):,}")
-    print(f"Municípios epidemiológicos    : {epidemiologia['codigo_ibge_7'].nunique():,}")
+    print(
+        f"Municípios epidemiológicos    : {epidemiologia['codigo_ibge_7'].nunique():,}"
+    )
     print(f"Duplicidades epidemiológicas  : {duplicadas_epidemiologia:,}")
     print(f"Unidades mapeadas para clima  : {len(mapeamento):,}")
     print(f"Combinações climáticas        : {clima['combo_id'].nunique():,}")
