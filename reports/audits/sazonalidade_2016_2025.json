@@ -1,0 +1,72 @@
+{
+  "status": "APROVADO",
+  "analise": "sazonalidade epidemiológica nacional e regional",
+  "periodo": "2016-2025",
+  "linhas_painel": 2907593,
+  "casos_preservados": 16294913,
+  "semanas_nacionais": 522,
+  "semanas_sazonais": 53,
+  "regioes": [
+    "Norte",
+    "Nordeste",
+    "Centro-Oeste",
+    "Sudeste",
+    "Sul"
+  ],
+  "semana_53": {
+    "anos_disponiveis": 2,
+    "observacao": "A semana 53 ocorre somente em 2020 e 2025."
+  },
+  "picos_sazonais": {
+    "nacional": {
+      "semana_maior_incidencia_media": 15,
+      "incidencia_media_100mil": 44.86281993799826,
+      "semana_maior_incidencia_mediana": 14,
+      "incidencia_mediana_100mil": 37.02136587201454
+    },
+    "regioes": {
+      "Norte": {
+        "semana_maior_incidencia_media": 7,
+        "incidencia_media_100mil": 8.39756292720158,
+        "semana_maior_incidencia_mediana": 5,
+        "incidencia_mediana_100mil": 8.610656837442061
+      },
+      "Nordeste": {
+        "semana_maior_incidencia_media": 16,
+        "incidencia_media_100mil": 12.910395684601264,
+        "semana_maior_incidencia_mediana": 20,
+        "incidencia_mediana_100mil": 10.754789329877664
+      },
+      "Centro-Oeste": {
+        "semana_maior_incidencia_media": 11,
+        "incidencia_media_100mil": 64.22225100537337,
+        "semana_maior_incidencia_mediana": 15,
+        "incidencia_mediana_100mil": 50.53747419174452
+      },
+      "Sudeste": {
+        "semana_maior_incidencia_media": 15,
+        "incidencia_media_100mil": 63.23814321613897,
+        "semana_maior_incidencia_mediana": 14,
+        "incidencia_mediana_100mil": 49.04631358146787
+      },
+      "Sul": {
+        "semana_maior_incidencia_media": 15,
+        "incidencia_media_100mil": 66.5242833738035,
+        "semana_maior_incidencia_mediana": 14,
+        "incidencia_mediana_100mil": 34.485730952722804
+      }
+    }
+  },
+  "observacoes_metodologicas": [
+    "Incidências regionais são calculadas a partir de casos agregados e população regional.",
+    "A semana 53 possui apenas dois anos e não deve ser comparada diretamente às semanas 1-52.",
+    "Média e mediana são apresentadas em conjunto porque 2024 possui magnitude epidemiológica excepcional.",
+    "A análise é descritiva e não modifica o modelo preditivo final."
+  ],
+  "artefatos": {
+    "sazonalidade_nacional": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\sazonalidade_nacional_semana_epidemiologica_2016_2025.csv",
+    "sazonalidade_regional": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\sazonalidade_regional_semana_epidemiologica_2016_2025.csv",
+    "serie_semanal_regional": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\serie_semanal_regional_2016_2025.csv",
+    "auditoria": "C:\\Users\\Pichau\\Desktop\\tcc-dengue\\reports\\audits\\sazonalidade_2016_2025.json"
+  }
+}
