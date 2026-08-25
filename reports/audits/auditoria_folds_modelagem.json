@@ -1,0 +1,346 @@
+{
+  "status": "APROVADO",
+  "dataset": {
+    "periodo": "2018-2024",
+    "linhas": 2032685,
+    "municipios": 5569
+  },
+  "metodologia": {
+    "tipo": "expanding-window",
+    "quantidade_folds": 4,
+    "horizontes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "teste_final_2025_utilizado": false
+  },
+  "resultados": {
+    "h1": {
+      "targets_disponiveis": 2027116,
+      "folds": [
+        {
+          "nome": "fold_1",
+          "horizonte": 1,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2020,
+            "linhas": 868764,
+            "municipios": 5569,
+            "linhas_por_municipio": 156
+          },
+          "validacao": {
+            "ano": 2021,
+            "linhas": 284019,
+            "municipios": 5569,
+            "linhas_por_municipio": 51
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_2",
+          "horizonte": 1,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2021,
+            "linhas": 1158352,
+            "municipios": 5569,
+            "linhas_por_municipio": 208
+          },
+          "validacao": {
+            "ano": 2022,
+            "linhas": 284019,
+            "municipios": 5569,
+            "linhas_por_municipio": 51
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_3",
+          "horizonte": 1,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2022,
+            "linhas": 1447940,
+            "municipios": 5569,
+            "linhas_por_municipio": 260
+          },
+          "validacao": {
+            "ano": 2023,
+            "linhas": 284019,
+            "municipios": 5569,
+            "linhas_por_municipio": 51
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_4",
+          "horizonte": 1,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2023,
+            "linhas": 1737528,
+            "municipios": 5569,
+            "linhas_por_municipio": 312
+          },
+          "validacao": {
+            "ano": 2024,
+            "linhas": 284019,
+            "municipios": 5569,
+            "linhas_por_municipio": 51
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        }
+      ]
+    },
+    "h2": {
+      "targets_disponiveis": 2021547,
+      "folds": [
+        {
+          "nome": "fold_1",
+          "horizonte": 2,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2020,
+            "linhas": 863195,
+            "municipios": 5569,
+            "linhas_por_municipio": 155
+          },
+          "validacao": {
+            "ano": 2021,
+            "linhas": 278450,
+            "municipios": 5569,
+            "linhas_por_municipio": 50
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_2",
+          "horizonte": 2,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2021,
+            "linhas": 1152783,
+            "municipios": 5569,
+            "linhas_por_municipio": 207
+          },
+          "validacao": {
+            "ano": 2022,
+            "linhas": 278450,
+            "municipios": 5569,
+            "linhas_por_municipio": 50
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_3",
+          "horizonte": 2,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2022,
+            "linhas": 1442371,
+            "municipios": 5569,
+            "linhas_por_municipio": 259
+          },
+          "validacao": {
+            "ano": 2023,
+            "linhas": 278450,
+            "municipios": 5569,
+            "linhas_por_municipio": 50
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_4",
+          "horizonte": 2,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2023,
+            "linhas": 1731959,
+            "municipios": 5569,
+            "linhas_por_municipio": 311
+          },
+          "validacao": {
+            "ano": 2024,
+            "linhas": 278450,
+            "municipios": 5569,
+            "linhas_por_municipio": 50
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        }
+      ]
+    },
+    "h3": {
+      "targets_disponiveis": 2015978,
+      "folds": [
+        {
+          "nome": "fold_1",
+          "horizonte": 3,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2020,
+            "linhas": 857626,
+            "municipios": 5569,
+            "linhas_por_municipio": 154
+          },
+          "validacao": {
+            "ano": 2021,
+            "linhas": 272881,
+            "municipios": 5569,
+            "linhas_por_municipio": 49
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_2",
+          "horizonte": 3,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2021,
+            "linhas": 1147214,
+            "municipios": 5569,
+            "linhas_por_municipio": 206
+          },
+          "validacao": {
+            "ano": 2022,
+            "linhas": 272881,
+            "municipios": 5569,
+            "linhas_por_municipio": 49
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_3",
+          "horizonte": 3,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2022,
+            "linhas": 1436802,
+            "municipios": 5569,
+            "linhas_por_municipio": 258
+          },
+          "validacao": {
+            "ano": 2023,
+            "linhas": 272881,
+            "municipios": 5569,
+            "linhas_por_municipio": 49
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_4",
+          "horizonte": 3,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2023,
+            "linhas": 1726390,
+            "municipios": 5569,
+            "linhas_por_municipio": 310
+          },
+          "validacao": {
+            "ano": 2024,
+            "linhas": 272881,
+            "municipios": 5569,
+            "linhas_por_municipio": 49
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        }
+      ]
+    },
+    "h4": {
+      "targets_disponiveis": 2010409,
+      "folds": [
+        {
+          "nome": "fold_1",
+          "horizonte": 4,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2020,
+            "linhas": 852057,
+            "municipios": 5569,
+            "linhas_por_municipio": 153
+          },
+          "validacao": {
+            "ano": 2021,
+            "linhas": 267312,
+            "municipios": 5569,
+            "linhas_por_municipio": 48
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_2",
+          "horizonte": 4,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2021,
+            "linhas": 1141645,
+            "municipios": 5569,
+            "linhas_por_municipio": 205
+          },
+          "validacao": {
+            "ano": 2022,
+            "linhas": 267312,
+            "municipios": 5569,
+            "linhas_por_municipio": 48
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_3",
+          "horizonte": 4,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2022,
+            "linhas": 1431233,
+            "municipios": 5569,
+            "linhas_por_municipio": 257
+          },
+          "validacao": {
+            "ano": 2023,
+            "linhas": 267312,
+            "municipios": 5569,
+            "linhas_por_municipio": 48
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        },
+        {
+          "nome": "fold_4",
+          "horizonte": 4,
+          "treino": {
+            "ano_inicio": 2018,
+            "ano_fim": 2023,
+            "linhas": 1720821,
+            "municipios": 5569,
+            "linhas_por_municipio": 309
+          },
+          "validacao": {
+            "ano": 2024,
+            "linhas": 267312,
+            "municipios": 5569,
+            "linhas_por_municipio": 48
+          },
+          "sobreposicao": 0,
+          "target_cruza_fronteira": false
+        }
+      ]
+    }
+  },
+  "tempo_execucao_segundos": 14.431086999999934
+}
