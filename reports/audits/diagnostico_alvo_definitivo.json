@@ -1,0 +1,267 @@
+{
+  "status": "APROVADO",
+  "definicao_alvo": {
+    "nome": "risco_epidemiologico_elevado",
+    "janela_incidencia_semanas": 4,
+    "percentil_historico": 0.9,
+    "raio_sazonal_semanas": 4,
+    "somente_anos_anteriores": true,
+    "anos_anteriores_minimos": 2,
+    "observacoes_historicas_minimas": 12,
+    "regra": "incidencia_4s_100mil > limiar_sazonal_p90"
+  },
+  "escopo": {
+    "periodo_elegivel": "2018-2024",
+    "ano_teste_final_excluido": 2025,
+    "linhas_elegiveis": 2032685,
+    "municipios": 5569,
+    "positivos": 377275,
+    "prevalencia": 0.185604262342665
+  },
+  "por_ano": {
+    "2018": {
+      "linhas": 289588,
+      "positivos": 24755,
+      "prevalencia": 0.08548351451026977
+    },
+    "2019": {
+      "linhas": 289588,
+      "positivos": 69726,
+      "prevalencia": 0.24077655151456553
+    },
+    "2020": {
+      "linhas": 295157,
+      "positivos": 41812,
+      "prevalencia": 0.14166020118106634
+    },
+    "2021": {
+      "linhas": 289588,
+      "positivos": 25248,
+      "prevalencia": 0.08718593311877564
+    },
+    "2022": {
+      "linhas": 289588,
+      "positivos": 63069,
+      "prevalencia": 0.21778872052709367
+    },
+    "2023": {
+      "linhas": 289588,
+      "positivos": 54105,
+      "prevalencia": 0.1868343992154371
+    },
+    "2024": {
+      "linhas": 289588,
+      "positivos": 98560,
+      "prevalencia": 0.34034559443070844
+    }
+  },
+  "episodios": {
+    "quantidade_episodios": 47728,
+    "municipios_com_episodio": 5548,
+    "duracao_semanas": {
+      "media": 7.9046890714046265,
+      "mediana": 4.0,
+      "p75": 9.0,
+      "p90": 20.0,
+      "maximo": 110
+    },
+    "distribuicao_duracao": {
+      "1_semana": 5992,
+      "2_semanas": 4112,
+      "3_semanas": 3281,
+      "4_semanas": 12950,
+      "5_a_7_semanas": 6884,
+      "8_ou_mais_semanas": 14509
+    },
+    "episodios_mais_longos": [
+      {
+        "codigo_ibge_7": "4205407",
+        "municipio": "Florianópolis",
+        "uf": "Santa Catarina",
+        "inicio": "2022-02-27",
+        "fim": "2024-03-31",
+        "duracao_semanas": 110
+      },
+      {
+        "codigo_ibge_7": "3301876",
+        "municipio": "Iguaba Grande",
+        "uf": "Rio de Janeiro",
+        "inicio": "2023-01-29",
+        "fim": "2024-12-22",
+        "duracao_semanas": 100
+      },
+      {
+        "codigo_ibge_7": "3301009",
+        "municipio": "Campos dos Goytacazes",
+        "uf": "Rio de Janeiro",
+        "inicio": "2023-01-01",
+        "fim": "2024-11-17",
+        "duracao_semanas": 99
+      },
+      {
+        "codigo_ibge_7": "4203204",
+        "municipio": "Camboriú",
+        "uf": "Santa Catarina",
+        "inicio": "2023-03-05",
+        "fim": "2024-12-22",
+        "duracao_semanas": 95
+      },
+      {
+        "codigo_ibge_7": "3203205",
+        "municipio": "Linhares",
+        "uf": "Espírito Santo",
+        "inicio": "2018-03-18",
+        "fim": "2019-12-29",
+        "duracao_semanas": 94
+      },
+      {
+        "codigo_ibge_7": "4208203",
+        "municipio": "Itajaí",
+        "uf": "Santa Catarina",
+        "inicio": "2023-03-12",
+        "fim": "2024-12-22",
+        "duracao_semanas": 94
+      },
+      {
+        "codigo_ibge_7": "4309209",
+        "municipio": "Gravataí",
+        "uf": "Rio Grande do Sul",
+        "inicio": "2023-03-19",
+        "fim": "2024-12-22",
+        "duracao_semanas": 93
+      },
+      {
+        "codigo_ibge_7": "4216206",
+        "municipio": "São Francisco do Sul",
+        "uf": "Santa Catarina",
+        "inicio": "2022-10-16",
+        "fim": "2024-07-14",
+        "duracao_semanas": 92
+      },
+      {
+        "codigo_ibge_7": "4113700",
+        "municipio": "Londrina",
+        "uf": "Paraná",
+        "inicio": "2019-05-12",
+        "fim": "2020-12-27",
+        "duracao_semanas": 86
+      },
+      {
+        "codigo_ibge_7": "1502400",
+        "municipio": "Castanhal",
+        "uf": "Pará",
+        "inicio": "2023-04-02",
+        "fim": "2024-11-10",
+        "duracao_semanas": 85
+      },
+      {
+        "codigo_ibge_7": "3523909",
+        "municipio": "Itu",
+        "uf": "São Paulo",
+        "inicio": "2023-05-07",
+        "fim": "2024-11-17",
+        "duracao_semanas": 81
+      },
+      {
+        "codigo_ibge_7": "4201307",
+        "municipio": "Araquari",
+        "uf": "Santa Catarina",
+        "inicio": "2023-02-05",
+        "fim": "2024-08-18",
+        "duracao_semanas": 81
+      },
+      {
+        "codigo_ibge_7": "3305109",
+        "municipio": "São João de Meriti",
+        "uf": "Rio de Janeiro",
+        "inicio": "2022-12-25",
+        "fim": "2024-06-30",
+        "duracao_semanas": 80
+      },
+      {
+        "codigo_ibge_7": "3300100",
+        "municipio": "Angra dos Reis",
+        "uf": "Rio de Janeiro",
+        "inicio": "2023-02-26",
+        "fim": "2024-08-25",
+        "duracao_semanas": 79
+      },
+      {
+        "codigo_ibge_7": "4314100",
+        "municipio": "Passo Fundo",
+        "uf": "Rio Grande do Sul",
+        "inicio": "2023-03-05",
+        "fim": "2024-08-18",
+        "duracao_semanas": 77
+      },
+      {
+        "codigo_ibge_7": "3204658",
+        "municipio": "São Domingos do Norte",
+        "uf": "Espírito Santo",
+        "inicio": "2023-01-01",
+        "fim": "2024-06-09",
+        "duracao_semanas": 76
+      },
+      {
+        "codigo_ibge_7": "3513504",
+        "municipio": "Cubatão",
+        "uf": "São Paulo",
+        "inicio": "2020-02-02",
+        "fim": "2021-07-11",
+        "duracao_semanas": 76
+      },
+      {
+        "codigo_ibge_7": "4202107",
+        "municipio": "Barra Velha",
+        "uf": "Santa Catarina",
+        "inicio": "2023-02-26",
+        "fim": "2024-07-28",
+        "duracao_semanas": 75
+      },
+      {
+        "codigo_ibge_7": "3145307",
+        "municipio": "Novo Cruzeiro",
+        "uf": "Minas Gerais",
+        "inicio": "2023-05-07",
+        "fim": "2024-10-06",
+        "duracao_semanas": 75
+      },
+      {
+        "codigo_ibge_7": "2910800",
+        "municipio": "Feira de Santana",
+        "uf": "Bahia",
+        "inicio": "2018-06-24",
+        "fim": "2019-11-17",
+        "duracao_semanas": 74
+      }
+    ],
+    "lacunas_temporais_na_serie": 0
+  },
+  "persistencia": {
+    "h1": {
+      "linhas_com_futuro_disponivel": 2027116,
+      "acordo_estado_atual_futuro": 0.9535315196564972,
+      "probabilidade_futuro_positivo_dado_atual_positivo": 0.8760121215343311,
+      "probabilidade_futuro_positivo_dado_atual_negativo": 0.02880444065936329
+    },
+    "h2": {
+      "linhas_com_futuro_disponivel": 2021547,
+      "acordo_estado_atual_futuro": 0.9182606192188457,
+      "probabilidade_futuro_positivo_dado_atual_positivo": 0.7822768200051208,
+      "probabilidade_futuro_positivo_dado_atual_negativo": 0.05077483765060552
+    },
+    "h3": {
+      "linhas_com_futuro_disponivel": 2015978,
+      "acordo_estado_atual_futuro": 0.8879997698387582,
+      "probabilidade_futuro_positivo_dado_atual_positivo": 0.7019707861199278,
+      "probabilidade_futuro_positivo_dado_atual_negativo": 0.06967521554873593
+    },
+    "h4": {
+      "linhas_com_futuro_disponivel": 2010409,
+      "acordo_estado_atual_futuro": 0.8610541437090662,
+      "probabilidade_futuro_positivo_dado_atual_positivo": 0.6304849822515077,
+      "probabilidade_futuro_positivo_dado_atual_negativo": 0.08652165498665126
+    }
+  },
+  "tempo_execucao_segundos": 22.43644229999336
+}
