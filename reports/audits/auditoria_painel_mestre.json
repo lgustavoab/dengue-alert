@@ -1,0 +1,69 @@
+{
+  "status": "APROVADO",
+  "painel": {
+    "linhas": 2907593,
+    "municipios": 5571,
+    "casos_provaveis": 16294913,
+    "chaves_duplicadas": 0
+  },
+  "populacao": {
+    "ausentes": 0,
+    "nao_positivas": 0
+  },
+  "clima": {
+    "linhas_com_clima": 2907071,
+    "linhas_sem_clima": 522,
+    "codigos_sem_clima": [
+      "2605459"
+    ],
+    "modelaveis_sem_clima": 0,
+    "nao_modelaveis_com_clima": 0,
+    "modelaveis_sem_combo": 0,
+    "umidade_invalida": 0,
+    "precipitacao_negativa": 0,
+    "temperatura_minima_acima_media": 0,
+    "temperatura_media_acima_maxima": 0,
+    "horas_semanais_invalidas": 0,
+    "linhas_climaticas_com_nulos": 0
+  },
+  "territorio": {
+    "fernando_de_noronha": {
+      "codigo_ibge_7": "2605459",
+      "linhas": 522,
+      "linhas_sem_clima": 522
+    },
+    "boa_esperanca_do_norte": {
+      "codigo_ibge_7": "5101837",
+      "linhas": 53,
+      "anos": [
+        2025
+      ]
+    }
+  },
+  "criterios": {
+    "quantidade_linhas": true,
+    "quantidade_municipios": true,
+    "sem_chaves_duplicadas": true,
+    "casos_preservados": true,
+    "sem_populacao_ausente": true,
+    "populacao_positiva": true,
+    "sem_flag_modelavel_ausente": true,
+    "sem_flag_clima_ausente": true,
+    "quantidade_com_clima": true,
+    "quantidade_sem_clima": true,
+    "somente_noronha_sem_clima": true,
+    "nenhum_modelavel_sem_clima": true,
+    "nenhum_nao_modelavel_com_clima": true,
+    "nenhum_modelavel_sem_combo": true,
+    "sem_umidade_invalida": true,
+    "sem_precipitacao_negativa": true,
+    "temperatura_minima_consistente": true,
+    "temperatura_maxima_consistente": true,
+    "horas_semanais_validas": true,
+    "clima_sem_valores_ausentes": true,
+    "noronha_tem_522_semanas": true,
+    "noronha_totalmente_sem_clima": true,
+    "boa_esperanca_tem_53_semanas": true,
+    "boa_esperanca_somente_2025": true
+  }
+}
