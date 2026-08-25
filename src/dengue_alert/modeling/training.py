@@ -38,6 +38,51 @@ EPIDEMIOLOGICAL_FEATURES = (
     "log_populacao",
 )
 
+CLIMATE_FEATURES = (
+    "temperatura_media_c_lag_0",
+    "temperatura_media_c_lag_1",
+    "temperatura_media_c_lag_2",
+    "temperatura_media_c_lag_3",
+    "temperatura_media_c_lag_4",
+    "temperatura_media_c_lag_5",
+    "temperatura_media_c_lag_6",
+    "temperatura_media_c_lag_7",
+    "temperatura_media_c_lag_8",
+    "umidade_relativa_media_pct_lag_0",
+    "umidade_relativa_media_pct_lag_1",
+    "umidade_relativa_media_pct_lag_2",
+    "umidade_relativa_media_pct_lag_3",
+    "umidade_relativa_media_pct_lag_4",
+    "umidade_relativa_media_pct_lag_5",
+    "umidade_relativa_media_pct_lag_6",
+    "umidade_relativa_media_pct_lag_7",
+    "umidade_relativa_media_pct_lag_8",
+    "precipitacao_total_mm_lag_0",
+    "precipitacao_total_mm_lag_1",
+    "precipitacao_total_mm_lag_2",
+    "precipitacao_total_mm_lag_3",
+    "precipitacao_total_mm_lag_4",
+    "precipitacao_total_mm_lag_5",
+    "precipitacao_total_mm_lag_6",
+    "precipitacao_total_mm_lag_7",
+    "precipitacao_total_mm_lag_8",
+    "temperatura_media_media_2s",
+    "temperatura_media_media_4s",
+    "temperatura_media_media_8s",
+    "umidade_relativa_media_2s",
+    "umidade_relativa_media_4s",
+    "umidade_relativa_media_8s",
+    "precipitacao_acumulada_2s",
+    "precipitacao_acumulada_4s",
+    "precipitacao_acumulada_8s",
+)
+
+
+EPIDEMIOLOGICAL_CLIMATE_FEATURES = (
+    *EPIDEMIOLOGICAL_FEATURES,
+    *CLIMATE_FEATURES,
+)
+
 
 def validate_feature_columns(
     dataframe: pd.DataFrame,

@@ -6,7 +6,9 @@ import pytest
 
 from dengue_alert.modeling.models import ModelName
 from dengue_alert.modeling.training import (
+    CLIMATE_FEATURES,
     DEFAULT_DECISION_THRESHOLD,
+    EPIDEMIOLOGICAL_CLIMATE_FEATURES,
     EPIDEMIOLOGICAL_FEATURES,
     evaluate_model_predictions,
     fit_candidate_model,
@@ -25,6 +27,41 @@ def test_epidemiological_feature_set_has_23_features() -> None:
     assert "temperatura_media_c_lag_0" not in EPIDEMIOLOGICAL_FEATURES
 
     assert "latitude_sede" not in EPIDEMIOLOGICAL_FEATURES
+
+
+def test_climate_feature_set_has_36_features() -> None:
+    """O bloco climático deve utilizar exatamente 36 features."""
+    assert len(CLIMATE_FEATURES) == 36
+
+    assert "temperatura_media_c_lag_0" in CLIMATE_FEATURES
+
+    assert "umidade_relativa_media_pct_lag_8" in CLIMATE_FEATURES
+
+    assert "precipitacao_acumulada_8s" in CLIMATE_FEATURES
+
+    assert "risco_elevado" not in CLIMATE_FEATURES
+
+    assert "latitude_sede" not in CLIMATE_FEATURES
+
+
+def test_model_b_feature_set_has_59_unique_features() -> None:
+    """O Modelo B deve combinar epidemiologia e clima sem duplicações."""
+    assert len(EPIDEMIOLOGICAL_CLIMATE_FEATURES) == 59
+
+    assert len(set(EPIDEMIOLOGICAL_CLIMATE_FEATURES)) == 59
+
+    assert (
+        EPIDEMIOLOGICAL_CLIMATE_FEATURES[: len(EPIDEMIOLOGICAL_FEATURES)]
+        == EPIDEMIOLOGICAL_FEATURES
+    )
+
+    assert "risco_elevado" in EPIDEMIOLOGICAL_CLIMATE_FEATURES
+
+    assert "temperatura_media_c_lag_0" in EPIDEMIOLOGICAL_CLIMATE_FEATURES
+
+    assert "latitude_sede" not in EPIDEMIOLOGICAL_CLIMATE_FEATURES
+
+    assert "longitude_sede" not in EPIDEMIOLOGICAL_CLIMATE_FEATURES
 
 
 def test_prepare_model_matrix_returns_float32() -> None:
@@ -115,7 +152,7 @@ def test_predictions_use_fixed_threshold() -> None:
 
     predictions = predictions_from_scores(
         scores,
-        threshold=(DEFAULT_DECISION_THRESHOLD),
+        threshold=DEFAULT_DECISION_THRESHOLD,
     )
 
     expected = np.array(
