@@ -1,0 +1,88 @@
+{
+  "status": "APROVADO",
+  "modelo": {
+    "algoritmo": "HistGradientBoostingClassifier",
+    "conjunto_features": "Modelo A — 23 features epidemiológicas",
+    "probabilidades": "raw",
+    "calibracao": "não adotada"
+  },
+  "protocolo_threshold": {
+    "periodo_selecao": "2021-2024 OOF",
+    "subconjunto": "early warning — risco_elevado(t) = False",
+    "criterio": "maximizar F1",
+    "regra_desempate": "maior threshold entre empates numéricos",
+    "threshold_especifico_por_horizonte": true,
+    "teste_final_2025_utilizado": false
+  },
+  "observacao_metodologica": "As métricas calculadas no período 2021-2024 representam desempenho no conjunto utilizado para seleção dos thresholds e não constituem estimativa independente de desempenho final.",
+  "thresholds": [
+    {
+      "horizonte": 1,
+      "threshold": 0.18768701290225787,
+      "periodo_selecao_inicio": 2021,
+      "periodo_selecao_fim": 2024,
+      "observacoes_early_warning": 898785,
+      "positivos_early_warning": 28720,
+      "prevalencia_early_warning": 0.03195424934773055,
+      "alertas": 34069,
+      "proporcao_alertas": 0.037905617027431476,
+      "precision_selecao": 0.3393407496551117,
+      "recall_selecao": 0.402541782729805,
+      "f1_selecao": 0.368249215626941,
+      "candidatos_threshold": 464355,
+      "criterio": "max_f1",
+      "regra_desempate": "maior_threshold"
+    },
+    {
+      "horizonte": 2,
+      "threshold": 0.19078304884119077,
+      "periodo_selecao_inicio": 2021,
+      "periodo_selecao_fim": 2024,
+      "observacoes_early_warning": 880738,
+      "positivos_early_warning": 49629,
+      "prevalencia_early_warning": 0.05634933430827329,
+      "alertas": 50948,
+      "proporcao_alertas": 0.05784694199637123,
+      "precision_selecao": 0.3719674962707074,
+      "recall_selecao": 0.38185335187088193,
+      "f1_selecao": 0.3768456008829057,
+      "candidatos_threshold": 474730,
+      "criterio": "max_f1",
+      "regra_desempate": "maior_threshold"
+    },
+    {
+      "horizonte": 3,
+      "threshold": 0.16799146567905981,
+      "periodo_selecao_inicio": 2021,
+      "periodo_selecao_fim": 2024,
+      "observacoes_early_warning": 862734,
+      "positivos_early_warning": 66703,
+      "prevalencia_early_warning": 0.07731583547188357,
+      "alertas": 77538,
+      "proporcao_alertas": 0.08987474702515491,
+      "precision_selecao": 0.32581443937166293,
+      "recall_selecao": 0.37873858746982897,
+      "f1_selecao": 0.3502887528511311,
+      "candidatos_threshold": 477999,
+      "criterio": "max_f1",
+      "regra_desempate": "maior_threshold"
+    },
+    {
+      "horizonte": 4,
+      "threshold": 0.15713786800932078,
+      "periodo_selecao_inicio": 2021,
+      "periodo_selecao_fim": 2024,
+      "observacoes_early_warning": 844617,
+      "positivos_early_warning": 81120,
+      "prevalencia_early_warning": 0.09604353215717894,
+      "alertas": 125536,
+      "proporcao_alertas": 0.1486306811252911,
+      "precision_selecao": 0.2679151797094061,
+      "recall_selecao": 0.41460798816568045,
+      "f1_selecao": 0.3254974450294209,
+      "candidatos_threshold": 480653,
+      "criterio": "max_f1",
+      "regra_desempate": "maior_threshold"
+    }
+  ]
+}
