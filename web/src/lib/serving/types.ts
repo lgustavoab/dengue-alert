@@ -47,6 +47,39 @@ export type TemporalCoverageContract = {
   };
 };
 
+export type TerritoryItem = {
+  codigo_ibge_7: string;
+  nome_municipio: string;
+  codigo_uf_ibge: string;
+  nome_uf: string;
+  regiao: string;
+  anos_disponiveis: number;
+};
+
+export type TerritoriesContract = {
+  schema_version: SchemaVersion;
+  period: string;
+  source: string[];
+  count: number;
+  data: TerritoryItem[];
+};
+
+export type HistoricalMunicipalityIndexItem = TerritoryItem & {
+  risco_historico_disponivel: boolean;
+};
+
+export type HistoricalMunicipalityIndexContract = {
+  schema_version: SchemaVersion;
+  period: string;
+  source: string[];
+  count: number;
+  risk_history: {
+    available: number;
+    unavailable: number;
+  };
+  data: HistoricalMunicipalityIndexItem[];
+};
+
 export type PredictionHorizonOverview = {
   linhas: number;
   municipios: number;
@@ -111,6 +144,26 @@ export type PredictionModelContract = {
   restricoes_interpretacao: string[];
 };
 
+export type PredictionMunicipalityIndexItem = {
+  codigo_ibge_7: string;
+  nome_municipio_ibge: string;
+  nome_uf_ibge: string;
+  predicoes: number;
+  horizontes: {
+    h1: number;
+    h2: number;
+    h3: number;
+    h4: number;
+  };
+};
+
+export type PredictionMunicipalityIndexContract = {
+  schema_version: SchemaVersion;
+  status: "APROVADO";
+  count: number;
+  items: PredictionMunicipalityIndexItem[];
+};
+
 export type HistoricalAnnualItem = {
   ano_epidemiologico: number;
   semanas_epidemiologicas: number;
@@ -133,4 +186,61 @@ export type HistoricalAnnualContract = {
   source: string[];
   count: number;
   data: HistoricalAnnualItem[];
+};
+
+export type HistoricalMunicipalitySeriesData = {
+  ano_epidemiologico: number[];
+  semana_epidemiologica: number[];
+  data_inicio_semana: string[];
+  casos_provaveis: number[];
+  incidencia_100mil: number[];
+  registro_sinan_presente: boolean[];
+  zero_preenchido: boolean[];
+  populacao: number[];
+};
+
+export type HistoricalMunicipalitySeriesContract = {
+  schema_version: SchemaVersion;
+  codigo_ibge_7: string;
+  count: number;
+  data: HistoricalMunicipalitySeriesData;
+};
+
+export type PredictionMunicipalitySeriesData = {
+  ano_epidemiologico: number[];
+  semana_epidemiologica: number[];
+  data_inicio_semana: string[];
+  risco_elevado: boolean[];
+  target: boolean[];
+  score: number[];
+  predicao: boolean[];
+};
+
+export type PredictionMunicipalitySeriesHorizon = {
+  count: number;
+  threshold: number;
+  data: PredictionMunicipalitySeriesData;
+};
+
+export type PredictionMunicipalitySeriesContract = {
+  schema_version: SchemaVersion;
+  codigo_ibge_7: string;
+  count: number;
+  horizontes: {
+    h1: PredictionMunicipalitySeriesHorizon;
+    h2: PredictionMunicipalitySeriesHorizon;
+    h3: PredictionMunicipalitySeriesHorizon;
+    h4: PredictionMunicipalitySeriesHorizon;
+  };
+};
+
+export type TerritoryFilterItem = {
+  codigoIbge7: string;
+  nomeMunicipio: string;
+  codigoUfIbge: string;
+  nomeUf: string;
+  regiao: string;
+  anosDisponiveis: number;
+  riscoHistoricoDisponivel: boolean;
+  predicaoDisponivel: boolean;
 };

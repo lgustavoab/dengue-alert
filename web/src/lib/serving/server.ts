@@ -9,11 +9,15 @@ import {
 import { servingPaths } from "@/lib/serving/paths";
 import type {
   HistoricalAnnualContract,
+  HistoricalMunicipalityIndexContract,
   PredictionModelContract,
+  PredictionMunicipalityIndexContract,
   PredictionOverviewContract,
   QualityOverviewContract,
   ServingManifest,
   TemporalCoverageContract,
+  TerritoriesContract,
+  TerritoryFilterItem,
 } from "@/lib/serving/types";
 
 const servingRoot = path.join(
@@ -61,6 +65,41 @@ async function readServingJson(
   }
 }
 
+function assertDataObject(
+  value: Record<string, unknown>,
+  contractName: string,
+): Record<string, unknown> {
+  if (
+    typeof value.data !== "object"
+    || value.data === null
+    || Array.isArray(
+      value.data,
+    )
+  ) {
+    throw new TypeError(
+      `${contractName} possui bloco data inválido.`,
+    );
+  }
+
+  return value.data as Record<
+    string,
+    unknown
+  >;
+}
+
+function assertDataArray(
+  value: Record<string, unknown>,
+  contractName: string,
+): unknown[] {
+  if (!Array.isArray(value.data)) {
+    throw new TypeError(
+      `${contractName} possui bloco data inválido.`,
+    );
+  }
+
+  return value.data;
+}
+
 export async function getServingManifest(): Promise<ServingManifest> {
   const value = await readServingJson(
     servingPaths.manifest,
@@ -94,22 +133,10 @@ export async function getQualityOverview(): Promise<QualityOverviewContract> {
     servingPaths.quality.overview,
   );
 
-  if (
-    typeof value.data !== "object"
-    || value.data === null
-    || Array.isArray(
-      value.data,
-    )
-  ) {
-    throw new TypeError(
-      "quality/overview.json possui bloco data inválido.",
-    );
-  }
-
-  const data = value.data as Record<
-    string,
-    unknown
-  >;
+  const data = assertDataObject(
+    value,
+    servingPaths.quality.overview,
+  );
 
   assertNumber(
     data.casos_finais_preservados,
@@ -139,22 +166,10 @@ export async function getTemporalCoverage(): Promise<TemporalCoverageContract> {
     servingPaths.metadata.temporalCoverage,
   );
 
-  if (
-    typeof value.data !== "object"
-    || value.data === null
-    || Array.isArray(
-      value.data,
-    )
-  ) {
-    throw new TypeError(
-      "metadata/temporal_coverage.json possui bloco data inválido.",
-    );
-  }
-
-  const data = value.data as Record<
-    string,
-    unknown
-  >;
+  const data = assertDataObject(
+    value,
+    servingPaths.metadata.temporalCoverage,
+  );
 
   assertString(
     data.periodo_historico,
@@ -167,6 +182,166 @@ export async function getTemporalCoverage(): Promise<TemporalCoverageContract> {
   );
 
   return value as TemporalCoverageContract;
+}
+
+export async function getTerritories(): Promise<TerritoriesContract> {
+  const value = await readServingJson(
+    servingPaths.metadata.territories,
+  );
+
+  assertServingContract(
+    value,
+    servingPaths.metadata.territories,
+  );
+
+  assertNumber(
+    value.count,
+    "metadata.territories.count",
+  );
+
+  const data = assertDataArray(
+    value,
+    servingPaths.metadata.territories,
+  );
+
+  if (
+    data.length
+    !== value.count
+  ) {
+    throw new Error(
+      "metadata/territories.json possui count divergente de data.length.",
+    );
+  }
+
+  return value as TerritoriesContract;
+}
+
+export async function getHistoricalMunicipalityIndex(): Promise<HistoricalMunicipalityIndexContract> {
+  const value = await readServingJson(
+    servingPaths.historical
+      .municipalityIndex,
+  );
+
+  assertServingContract(
+    value,
+    servingPaths.historical
+      .municipalityIndex,
+  );
+
+  assertNumber(
+    value.count,
+    "historical.municipality.index.count",
+  );
+
+  const data = assertDataArray(
+    value,
+    servingPaths.historical
+      .municipalityIndex,
+  );
+
+  if (
+    data.length
+    !== value.count
+  ) {
+    throw new Error(
+      "historical/municipality/index.json possui count divergente de data.length.",
+    );
+  }
+
+  return value as HistoricalMunicipalityIndexContract;
+}
+
+export async function getPredictionMunicipalityIndex(): Promise<PredictionMunicipalityIndexContract> {
+  const value = await readServingJson(
+    servingPaths.prediction
+      .municipalityIndex,
+  );
+
+  assertServingContract(
+    value,
+    servingPaths.prediction
+      .municipalityIndex,
+  );
+
+  assertNumber(
+    value.count,
+    "prediction.municipality.index.count",
+  );
+
+  if (!Array.isArray(value.items)) {
+    throw new TypeError(
+      "prediction/municipality/index.json possui items inválido.",
+    );
+  }
+
+  if (
+    value.items.length
+    !== value.count
+  ) {
+    throw new Error(
+      "prediction/municipality/index.json possui count divergente de items.length.",
+    );
+  }
+
+  return value as PredictionMunicipalityIndexContract;
+}
+
+export async function getTerritoryFilterItems(): Promise<
+  TerritoryFilterItem[]
+> {
+  const [
+    territories,
+    historicalIndex,
+    predictionIndex,
+  ] = await Promise.all([
+    getTerritories(),
+    getHistoricalMunicipalityIndex(),
+    getPredictionMunicipalityIndex(),
+  ]);
+
+  const historicalRiskByCode =
+    new Map(
+      historicalIndex.data.map(
+        (item) => [
+          item.codigo_ibge_7,
+          item
+            .risco_historico_disponivel,
+        ],
+      ),
+    );
+
+  const predictionCodes =
+    new Set(
+      predictionIndex.items.map(
+        (item) =>
+          item.codigo_ibge_7,
+      ),
+    );
+
+  return territories.data.map(
+    (territory) => ({
+      codigoIbge7:
+        territory.codigo_ibge_7,
+      nomeMunicipio:
+        territory.nome_municipio,
+      codigoUfIbge:
+        territory.codigo_uf_ibge,
+      nomeUf:
+        territory.nome_uf,
+      regiao:
+        territory.regiao,
+      anosDisponiveis:
+        territory.anos_disponiveis,
+      riscoHistoricoDisponivel:
+        historicalRiskByCode.get(
+          territory.codigo_ibge_7,
+        ) ?? false,
+      predicaoDisponivel:
+        predictionCodes.has(
+          territory.codigo_ibge_7,
+        ),
+    }),
+  );
 }
 
 export async function getPredictionOverview(): Promise<PredictionOverviewContract> {
@@ -226,12 +401,14 @@ export async function getPredictionModel(): Promise<PredictionModelContract> {
 
 export async function getHistoricalAnnual(): Promise<HistoricalAnnualContract> {
   const value = await readServingJson(
-    servingPaths.historical.panoramaAnnual,
+    servingPaths.historical
+      .panoramaAnnual,
   );
 
   assertServingContract(
     value,
-    servingPaths.historical.panoramaAnnual,
+    servingPaths.historical
+      .panoramaAnnual,
   );
 
   assertNumber(
@@ -239,9 +416,18 @@ export async function getHistoricalAnnual(): Promise<HistoricalAnnualContract> {
     "historical.panorama.annual.count",
   );
 
-  if (!Array.isArray(value.data)) {
-    throw new TypeError(
-      "historical/panorama/annual.json possui data inválido.",
+  const data = assertDataArray(
+    value,
+    servingPaths.historical
+      .panoramaAnnual,
+  );
+
+  if (
+    data.length
+    !== value.count
+  ) {
+    throw new Error(
+      "historical/panorama/annual.json possui count divergente de data.length.",
     );
   }
 
