@@ -300,7 +300,7 @@ export function HistoricalOverview({
             !== payload.count
           ) {
             throw new Error(
-              "Contrato territorial invÃ¡lido.",
+              "Contrato territorial inválido.",
             );
           }
 
@@ -336,7 +336,7 @@ export function HistoricalOverview({
               [],
 
             error:
-              "NÃ£o foi possÃ­vel carregar o Ã­ndice territorial.",
+              "Não foi possível carregar o índice territorial.",
           });
         }
       }
@@ -457,7 +457,7 @@ export function HistoricalOverview({
             !== selectedMunicipality
           ) {
             throw new Error(
-              "Contrato municipal invÃ¡lido.",
+              "Contrato municipal inválido.",
             );
           }
 
@@ -499,7 +499,7 @@ export function HistoricalOverview({
               null,
 
             error:
-              "NÃ£o foi possÃ­vel carregar a sÃ©rie histÃ³rica deste municÃ­pio.",
+              "Não foi possível carregar a série histórica deste município.",
           });
         }
       }
@@ -876,15 +876,15 @@ export function HistoricalOverview({
               aria-busy="true"
             >
               <span>
-                SÃ©rie municipal
+                Série municipal
               </span>
 
               <h2>
-                Carregando municÃ­pio
+                Carregando município
               </h2>
 
               <p>
-                A sÃ©rie epidemiolÃ³gica solicitada estÃ¡ sendo carregada sob demanda.
+                A série epidemiológica solicitada está sendo carregada sob demanda.
               </p>
             </section>
           ) : null}
@@ -896,11 +896,11 @@ export function HistoricalOverview({
               className="placeholder-section"
             >
               <span>
-                SÃ©rie municipal
+                Série municipal
               </span>
 
               <h2>
-                Dados indisponÃ­veis
+                Dados indisponíveis
               </h2>
 
               <p>
@@ -950,7 +950,7 @@ export function HistoricalOverview({
         <>
           <section
             className="metric-grid"
-            aria-label="Indicadores do panorama histÃ³rico nacional"
+            aria-label="Indicadores do panorama histórico nacional"
           >
             <MetricCard
               label="Casos no recorte"
@@ -962,14 +962,14 @@ export function HistoricalOverview({
               description={
                 selectedYear
                 === null
-                  ? "Soma nacional dos anos epidemiolÃ³gicos apresentados."
+                  ? "Soma nacional dos anos epidemiológicos apresentados."
                   : `Total nacional observado em ${selectedYear}.`
               }
             />
 
             {selectedYear !== null ? (
               <MetricCard
-                label="IncidÃªncia anual"
+                label="Incidência anual"
                 value={
                   formatDecimal(
                     nationalPeak
@@ -987,7 +987,7 @@ export function HistoricalOverview({
                       .casos_provaveis,
                   )
                 }
-                description={`${nationalPeak.ano_epidemiologico} Â· ${formatDecimal(
+                description={`${nationalPeak.ano_epidemiologico} · ${formatDecimal(
                   nationalPeak
                     .incidencia_anual_100mil,
                 )} casos por 100 mil habitantes.`}
@@ -1000,32 +1000,32 @@ export function HistoricalOverview({
                 value={
                   `SE ${nationalPeak.semana_pico}`
                 }
-                description={`Semana EpidemiolÃ³gica ${nationalPeak.semana_pico} Â· ${formatInteger(
+                description={`Semana Epidemiológica ${nationalPeak.semana_pico} · ${formatInteger(
                   nationalPeak
                     .pico_semanal_casos,
                 )} casos.`}
               />
             ) : (
               <MetricCard
-                label={`Ano mais recente Â· ${nationalLatest.ano_epidemiologico}`}
+                label={`Ano mais recente · ${nationalLatest.ano_epidemiologico}`}
                 value={
                   formatInteger(
                     nationalLatest
                       .casos_provaveis,
                   )
                 }
-                description={`Pico na Semana EpidemiolÃ³gica ${nationalLatest.semana_pico}.`}
+                description={`Pico na Semana Epidemiológica ${nationalLatest.semana_pico}.`}
               />
             )}
 
             <MetricCard
-              label="MunicÃ­pio-semanas no painel"
+              label="Município-semanas no painel"
               value={
                 formatInteger(
                   municipalityWeeks,
                 )
               }
-              description="Cobertura total do painel epidemiolÃ³gico nacional."
+              description="Cobertura total do painel epidemiológico nacional."
             />
           </section>
 
@@ -1039,7 +1039,7 @@ export function HistoricalOverview({
             </strong>
 
             <span>
-              SE significa Semana EpidemiolÃ³gica, a divisÃ£o semanal utilizada na vigilÃ¢ncia em saÃºde para organizar os registros ao longo do ano. Um ano epidemiolÃ³gico possui normalmente 52 semanas e, em alguns anos, 53.
+              SE significa Semana Epidemiológica, a divisão semanal utilizada na vigilância em saúde para organizar os registros ao longo do ano. Um ano epidemiológico possui normalmente 52 semanas e, em alguns anos, 53.
             </span>
           </div>
 
