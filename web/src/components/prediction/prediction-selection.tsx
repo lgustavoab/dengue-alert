@@ -26,6 +26,10 @@ import {
 } from "@/components/filters/select-filter";
 
 import {
+  PredictionResults,
+} from "@/components/prediction/prediction-results";
+
+import {
   filterPredictionTerritories,
   formatPredictionDate,
   formatPredictionWeekLabel,
@@ -1214,6 +1218,18 @@ export function PredictionSelection() {
             Esta é uma consulta retrospectiva de 2025. Os resultados que serão exibidos representam como o modelo teria avaliado os horizontes futuros a partir desta semana de referência, e não um alerta atual.
           </p>
         </section>
+      ) : null}
+      {selectedTerritory
+      && selectedReferenceWeek
+      && municipalitySeries ? (
+        <PredictionResults
+          series={
+            municipalitySeries
+          }
+          week={
+            selectedReferenceWeek.week
+          }
+        />
       ) : null}
     </>
   );
