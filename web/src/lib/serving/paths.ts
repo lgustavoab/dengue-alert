@@ -11,6 +11,18 @@ export const servingPaths = {
   quality: {
     overview:
       "quality/overview.json",
+
+    sinanPipeline:
+      "quality/sinan_pipeline.json",
+
+    territorialCoverage:
+      "quality/territorial_coverage.json",
+
+    populationCoverage:
+      "quality/population_coverage.json",
+
+    climateCoverage:
+      "quality/climate_coverage.json",
   },
 
   historical: {

@@ -15,6 +15,7 @@ import {
 } from "@/lib/serving/paths";
 
 import type {
+  ClimateCoverageContract,
   HistoricalAnnualContract,
   HistoricalClimateNationalLagsContract,
   HistoricalClimateRegionalLagsContract,
@@ -32,11 +33,14 @@ import type {
   PredictionModelContract,
   PredictionMunicipalityIndexContract,
   PredictionOverviewContract,
+  PopulationCoverageContract,
   QualityOverviewContract,
   ServingManifest,
   TemporalCoverageContract,
   TerritoriesContract,
+  TerritorialCoverageContract,
   TerritoryFilterItem,
+  SinanPipelineContract,
 } from "@/lib/serving/types";
 
 const servingRoot =
@@ -144,6 +148,61 @@ function assertDataArray(
   return value.data;
 }
 
+function assertObject(
+  value: unknown,
+  fieldName: string,
+): asserts value is Record<string, unknown> {
+  if (
+    typeof value !== "object"
+    || value === null
+    || Array.isArray(value)
+  ) {
+    throw new TypeError(`${fieldName} deve ser um objeto.`);
+  }
+}
+
+function assertStringArray(
+  value: unknown,
+  fieldName: string,
+): asserts value is string[] {
+  if (
+    !Array.isArray(value)
+    || !value.every((item) => typeof item === "string")
+  ) {
+    throw new TypeError(`${fieldName} deve ser uma lista de textos.`);
+  }
+}
+
+function assertNumberArray(
+  value: unknown,
+  fieldName: string,
+): asserts value is number[] {
+  if (!Array.isArray(value)) {
+    throw new TypeError(`${fieldName} deve ser uma lista numérica.`);
+  }
+
+  value.forEach((item, index) =>
+    assertNumber(item, `${fieldName}[${index}]`));
+}
+
+function assertQualityBase(
+  value: unknown,
+  relativePath: string,
+): asserts value is Record<string, unknown> {
+  assertServingContract(value, relativePath);
+  assertString(value.period, `${relativePath}.period`);
+  assertStringArray(value.source, `${relativePath}.source`);
+}
+
+function assertNumbers(
+  value: Record<string, unknown>,
+  fields: readonly string[],
+  prefix: string,
+): void {
+  fields.forEach((field) =>
+    assertNumber(value[field], `${prefix}.${field}`));
+}
+
 function assertCountMatchesData(
   value:
     Record<
@@ -228,47 +287,194 @@ export async function getServingManifest(): Promise<ServingManifest> {
 }
 
 export async function getQualityOverview(): Promise<QualityOverviewContract> {
+  const relativePath = servingPaths.quality.overview;
   const value =
     await readServingJson(
-      servingPaths
-        .quality
-        .overview,
+      relativePath,
     );
 
-  assertServingContract(
-    value,
-    servingPaths
-      .quality
-      .overview,
-  );
+  assertQualityBase(value, relativePath);
 
   const data =
     assertDataObject(
       value,
-      servingPaths
-        .quality
-        .overview,
+      relativePath,
     );
 
-  assertNumber(
-    data
-      .casos_finais_preservados,
-    "quality.overview.data.casos_finais_preservados",
-  );
-
-  assertNumber(
-    data
-      .unidades_territoriais,
-    "quality.overview.data.unidades_territoriais",
-  );
-
-  assertNumber(
-    data
-      .municipio_semanas,
-    "quality.overview.data.municipio_semanas",
-  );
+  assertNumbers(data, [
+    "registros_sinan_brutos",
+    "registros_sinan_mantidos_apos_filtros",
+    "casos_finais_preservados",
+    "unidades_territoriais",
+    "municipio_semanas",
+    "linhas_zero_fill",
+    "unidades_com_cobertura_climatica",
+    "municipio_semanas_com_clima",
+    "municipio_semanas_sem_clima",
+  ], `${relativePath}.data`);
 
   return value as QualityOverviewContract;
+}
+
+export async function getSinanPipeline(): Promise<SinanPipelineContract> {
+  const relativePath = servingPaths.quality.sinanPipeline;
+  const value = await readServingJson(relativePath);
+  assertQualityBase(value, relativePath);
+  const data = assertDataObject(value, relativePath);
+  assertNumbers(data, [
+    "registros_brutos",
+    "total_remocoes_documentadas",
+    "registros_mantidos_apos_filtros",
+    "grupos_antes_normalizacao",
+    "codigos_sinan_iniciais",
+    "casos_finais",
+  ], `${relativePath}.data`);
+
+  if (!Array.isArray(data.etapas)) {
+    throw new TypeError(`${relativePath}.data.etapas deve ser uma lista.`);
+  }
+
+  data.etapas.forEach((step, index) => {
+    assertObject(step, `${relativePath}.data.etapas[${index}]`);
+    assertString(step.id, `${relativePath}.data.etapas[${index}].id`);
+    assertString(step.label, `${relativePath}.data.etapas[${index}].label`);
+    assertString(step.operation, `${relativePath}.data.etapas[${index}].operation`);
+
+    if (step.operation !== "validation" && step.operation !== "filter") {
+      throw new TypeError(`${relativePath}.data.etapas[${index}].operation é inválida.`);
+    }
+
+    if (step.records_removed !== null) {
+      assertNumber(step.records_removed, `${relativePath}.data.etapas[${index}].records_removed`);
+    }
+
+    if (step.field !== undefined) {
+      assertString(step.field, `${relativePath}.data.etapas[${index}].field`);
+    }
+
+    if (step.note !== undefined) {
+      assertString(step.note, `${relativePath}.data.etapas[${index}].note`);
+    }
+  });
+
+  assertObject(data.zero_fill, `${relativePath}.data.zero_fill`);
+  assertNumbers(data.zero_fill, [
+    "linhas_observadas",
+    "linhas_finais",
+    "linhas_preenchidas_com_zero",
+    "casos_antes",
+    "casos_depois",
+  ], `${relativePath}.data.zero_fill`);
+
+  return value as SinanPipelineContract;
+}
+
+export async function getTerritorialCoverage(): Promise<TerritorialCoverageContract> {
+  const relativePath = servingPaths.quality.territorialCoverage;
+  const value = await readServingJson(relativePath);
+  assertQualityBase(value, relativePath);
+  const data = assertDataObject(value, relativePath);
+  assertString(data.referencia, `${relativePath}.data.referencia`);
+  assertNumbers(data, [
+    "unidades_territoriais_referencia",
+    "codigos_sinan_iniciais",
+    "codigos_associados_diretamente",
+    "codigos_nao_associados_inicialmente",
+    "casos_nao_associados_inicialmente",
+  ], `${relativePath}.data`);
+
+  assertObject(data.composicao_referencia, `${relativePath}.data.composicao_referencia`);
+  assertObject(data.distrito_federal, `${relativePath}.data.distrito_federal`);
+  assertObject(data.residuais_nao_municipais, `${relativePath}.data.residuais_nao_municipais`);
+  assertObject(data.resultado_final, `${relativePath}.data.resultado_final`);
+
+  assertNumbers(data.composicao_referencia, [
+    "municipios",
+    "distrito_federal",
+    "distrito_estadual_fernando_de_noronha",
+  ], `${relativePath}.data.composicao_referencia`);
+  assertNumbers(data.distrito_federal, [
+    "codigos_subdivisoes",
+    "casos_preservados",
+  ], `${relativePath}.data.distrito_federal`);
+  assertString(data.distrito_federal.codigo_ibge_7_destino, `${relativePath}.data.distrito_federal.codigo_ibge_7_destino`);
+  assertString(data.distrito_federal.nome_destino, `${relativePath}.data.distrito_federal.nome_destino`);
+  assertNumbers(data.residuais_nao_municipais, [
+    "quantidade_codigos",
+    "casos_excluidos",
+  ], `${relativePath}.data.residuais_nao_municipais`);
+  assertNumbers(data.resultado_final, [
+    "unidades_territoriais",
+    "unidades_com_registro_original",
+    "unidades_sem_registro_original",
+    "casos_preservados",
+  ], `${relativePath}.data.resultado_final`);
+
+  return value as TerritorialCoverageContract;
+}
+
+export async function getPopulationCoverage(): Promise<PopulationCoverageContract> {
+  const relativePath = servingPaths.quality.populationCoverage;
+  const value = await readServingJson(relativePath);
+  assertQualityBase(value, relativePath);
+  const data = assertDataObject(value, relativePath);
+  assertNumbers(data, [
+    "linhas_sem_populacao",
+    "linhas_populacao_nao_positiva",
+  ], `${relativePath}.data`);
+  assertString(data.observacao_metodologica, `${relativePath}.data.observacao_metodologica`);
+  assertObject(data.referencia_2023, `${relativePath}.data.referencia_2023`);
+  assertNumbers(data.referencia_2023, [
+    "ano_epidemiologico",
+    "ano_referencia_populacao",
+  ], `${relativePath}.data.referencia_2023`);
+
+  if (typeof data.referencia_2023.usa_referencia_censo_2022 !== "boolean") {
+    throw new TypeError(`${relativePath}.data.referencia_2023.usa_referencia_censo_2022 deve ser booleano.`);
+  }
+
+  if (!Array.isArray(data.por_ano)) {
+    throw new TypeError(`${relativePath}.data.por_ano deve ser uma lista.`);
+  }
+
+  data.por_ano.forEach((item, index) => {
+    assertObject(item, `${relativePath}.data.por_ano[${index}]`);
+    assertNumbers(item, [
+      "ano_epidemiologico",
+      "unidades_territoriais",
+      "linhas_sem_populacao",
+      "linhas_populacao_nao_positiva",
+    ], `${relativePath}.data.por_ano[${index}]`);
+    assertNumberArray(item.anos_referencia_populacao, `${relativePath}.data.por_ano[${index}].anos_referencia_populacao`);
+    assertStringArray(item.tipos_populacao, `${relativePath}.data.por_ano[${index}].tipos_populacao`);
+  });
+
+  return value as PopulationCoverageContract;
+}
+
+export async function getClimateCoverage(): Promise<ClimateCoverageContract> {
+  const relativePath = servingPaths.quality.climateCoverage;
+  const value = await readServingJson(relativePath);
+  assertQualityBase(value, relativePath);
+  const data = assertDataObject(value, relativePath);
+  assertNumbers(data, [
+    "unidades_com_mapeamento_climatico",
+    "linhas_climaticas_fonte",
+    "pontos_grade_distintos",
+    "combinacoes_grade_timezone",
+    "municipio_semanas_com_clima",
+    "municipio_semanas_sem_clima",
+  ], `${relativePath}.data`);
+  assertStringArray(data.codigos_excluidos, `${relativePath}.data.codigos_excluidos`);
+  assertObject(data.metodos_selecao_grid, `${relativePath}.data.metodos_selecao_grid`);
+  assertNumbers(data.metodos_selecao_grid, [
+    "fallback_insular_externo_ate_15km",
+    "fallback_valido_intersecta_municipio",
+    "grid_mais_proximo_valido",
+  ], `${relativePath}.data.metodos_selecao_grid`);
+  assertString(data.observacao, `${relativePath}.data.observacao`);
+
+  return value as ClimateCoverageContract;
 }
 
 export async function getTemporalCoverage(): Promise<TemporalCoverageContract> {

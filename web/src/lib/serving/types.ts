@@ -1157,3 +1157,110 @@ export type TerritoryFilterItem = {
   predicaoDisponivel:
   boolean;
 };
+
+export type QualityContractBase = {
+  schema_version: SchemaVersion;
+  period: string;
+  source: string[];
+};
+
+export type SinanPipelineStep = {
+  id: string;
+  label: string;
+  field?: string;
+  operation: "validation" | "filter";
+  records_removed: number | null;
+  note?: string;
+};
+
+export type SinanPipelineContract = QualityContractBase & {
+  data: {
+    registros_brutos: number;
+    etapas: SinanPipelineStep[];
+    total_remocoes_documentadas: number;
+    registros_mantidos_apos_filtros: number;
+    grupos_antes_normalizacao: number;
+    codigos_sinan_iniciais: number;
+    casos_finais: number;
+    zero_fill: {
+      linhas_observadas: number;
+      linhas_finais: number;
+      linhas_preenchidas_com_zero: number;
+      casos_antes: number;
+      casos_depois: number;
+    };
+  };
+};
+
+export type TerritorialCoverageContract = QualityContractBase & {
+  data: {
+    referencia: string;
+    unidades_territoriais_referencia: number;
+    composicao_referencia: {
+      municipios: number;
+      distrito_federal: number;
+      distrito_estadual_fernando_de_noronha: number;
+    };
+    codigos_sinan_iniciais: number;
+    codigos_associados_diretamente: number;
+    codigos_nao_associados_inicialmente: number;
+    casos_nao_associados_inicialmente: number;
+    distrito_federal: {
+      codigos_subdivisoes: number;
+      casos_preservados: number;
+      codigo_ibge_7_destino: string;
+      nome_destino: string;
+    };
+    residuais_nao_municipais: {
+      quantidade_codigos: number;
+      casos_excluidos: number;
+    };
+    resultado_final: {
+      unidades_territoriais: number;
+      unidades_com_registro_original: number;
+      unidades_sem_registro_original: number;
+      casos_preservados: number;
+    };
+  };
+};
+
+export type PopulationCoverageYear = {
+  ano_epidemiologico: number;
+  anos_referencia_populacao: number[];
+  tipos_populacao: string[];
+  unidades_territoriais: number;
+  linhas_sem_populacao: number;
+  linhas_populacao_nao_positiva: number;
+};
+
+export type PopulationCoverageContract = QualityContractBase & {
+  data: {
+    linhas_sem_populacao: number;
+    linhas_populacao_nao_positiva: number;
+    referencia_2023: {
+      ano_epidemiologico: number;
+      ano_referencia_populacao: number;
+      usa_referencia_censo_2022: boolean;
+    };
+    observacao_metodologica: string;
+    por_ano: PopulationCoverageYear[];
+  };
+};
+
+export type ClimateCoverageContract = QualityContractBase & {
+  data: {
+    unidades_com_mapeamento_climatico: number;
+    linhas_climaticas_fonte: number;
+    pontos_grade_distintos: number;
+    combinacoes_grade_timezone: number;
+    municipio_semanas_com_clima: number;
+    municipio_semanas_sem_clima: number;
+    codigos_excluidos: string[];
+    metodos_selecao_grid: {
+      fallback_insular_externo_ate_15km: number;
+      fallback_valido_intersecta_municipio: number;
+      grid_mais_proximo_valido: number;
+    };
+    observacao: string;
+  };
+};
