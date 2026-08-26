@@ -1,29 +1,58 @@
-import type { Metadata } from "next";
+import type {
+  Metadata,
+} from "next";
 
-import { PageIntro } from "@/components/ui/page-intro";
+import {
+  Suspense,
+} from "react";
+
+import {
+  PredictionSelection,
+} from "@/components/prediction/prediction-selection";
+
+import {
+  PageIntro,
+} from "@/components/ui/page-intro";
 
 export const metadata: Metadata = {
-  title: "Predição",
+  title:
+    "Predição",
 };
 
 export default function PredictionPage() {
   return (
-    <div className="route-page">
+    <div
+      className="route-page"
+    >
       <PageIntro
-        eyebrow="Avaliação preditiva"
-        title="Analise a probabilidade futura de risco epidemiológico elevado."
-        description="Esta área reunirá os resultados retrospectivos de 2025 para os horizontes H1, H2, H3 e H4, com consulta municipal e comparação com o estado observado."
-        note="O score representa probabilidade de risco elevado futuro. Ele não representa previsão da quantidade de casos."
+        eyebrow="Avaliação preditiva retrospectiva"
+        title="Consulte como o modelo antecipou o risco epidemiológico em 2025."
+        description="Selecione um município e uma semana epidemiológica para analisar previsões de risco elevado entre uma e quatro semanas à frente."
+        note="Os resultados pertencem ao teste retrospectivo de 2025. Eles não representam alertas atuais de 2026 nem previsão da quantidade futura de casos."
       />
 
-      <section className="placeholder-section">
-        <span>Próxima etapa</span>
-        <h2>Resultados H1–H4</h2>
-        <p>
-          Os contratos preditivos serão conectados aqui sem recalcular modelos,
-          targets ou thresholds no frontend.
-        </p>
-      </section>
+      <Suspense
+        fallback={
+          <section
+            className="placeholder-section"
+            aria-busy="true"
+          >
+            <span>
+              Predição
+            </span>
+
+            <h2>
+              Preparando consulta
+            </h2>
+
+            <p>
+              Carregando os controles da avaliação retrospectiva.
+            </p>
+          </section>
+        }
+      >
+        <PredictionSelection />
+      </Suspense>
     </div>
   );
 }
