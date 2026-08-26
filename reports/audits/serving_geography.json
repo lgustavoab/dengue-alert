@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "status": "APROVADO",
+  "source": {
+    "institution": "IBGE",
+    "dataset": "Malha Municipal 2024",
+    "file": "data/raw/geography/ibge_municipios_2024/BR_Municipios_2024.shp",
+    "crs": "EPSG:4674",
+    "source_features": 5573
+  },
+  "preparation": {
+    "invalid_source_codes": [
+      "5007802"
+    ],
+    "make_valid": {
+      "method": "structure",
+      "keep_collapsed": false
+    },
+    "removed_codes": [
+      "4300001",
+      "4300002"
+    ],
+    "territories": 5571
+  },
+  "web_geometry": {
+    "format": "TopoJSON",
+    "file": "municipalities.topojson",
+    "id_field": "CD_MUN",
+    "mapshaper_version": "0.7.55",
+    "simplification_method": "Ramer-Douglas-Peucker",
+    "simplification_interval_m": 100,
+    "keep_shapes": true,
+    "quantization": false,
+    "size_bytes": 17060991,
+    "gzip_size_bytes": 5918109,
+    "sha256": "08f602577f536d405e3c9b16a72608c7407e770694d636dadb9f996606ef56db"
+  },
+  "audit": {
+    "features": 5571,
+    "unique_codes": 5571,
+    "invalid_epsg_4674": 0,
+    "invalid_epsg_5880": 0,
+    "empty_geometries": 0,
+    "geometry_types": [
+      "MultiPolygon",
+      "Polygon"
+    ],
+    "valid_coverage": true,
+    "problematic_coverage_edges": 0
+  }
+}

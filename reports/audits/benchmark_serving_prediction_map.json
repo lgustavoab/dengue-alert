@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "status": "BENCHMARK",
+  "fonte": "data/processed/predicoes_avaliacao_final_2025.parquet",
+  "ano_epidemiologico": 2025,
+  "linhas_fonte": 1124938,
+  "municipios": 5569,
+  "arquivos_logicos": 202,
+  "estrutura_temporal": {
+    "h1": {
+      "semanas": 52,
+      "threshold": 0.187687
+    },
+    "h2": {
+      "semanas": 51,
+      "threshold": 0.190783
+    },
+    "h3": {
+      "semanas": 50,
+      "threshold": 0.167991
+    },
+    "h4": {
+      "semanas": 49,
+      "threshold": 0.157138
+    }
+  },
+  "formatos": {
+    "verbose": {
+      "arquivos": 202,
+      "total_bytes": 82361233,
+      "total_gzip_bytes": 14127854,
+      "min_bytes": 403698,
+      "median_bytes": 407249.5,
+      "max_bytes": 413555,
+      "min_gzip_bytes": 63334,
+      "median_gzip_bytes": 70017.0,
+      "max_gzip_bytes": 76227
+    },
+    "columnar": {
+      "arquivos": 202,
+      "total_bytes": 40746809,
+      "total_gzip_bytes": 12283716,
+      "min_bytes": 197686,
+      "median_bytes": 201237.5,
+      "max_bytes": 207543,
+      "min_gzip_bytes": 54572,
+      "median_gzip_bytes": 61036.0,
+      "max_gzip_bytes": 66886
+    }
+  },
+  "reducao_columnar_vs_verbose": {
+    "raw_pct": 50.52671321712728,
+    "gzip_pct": 13.053206806921992
+  },
+  "amostras": {
+    "h1_se20": {
+      "horizonte": 1,
+      "semana_epidemiologica": 20,
+      "count": 5569,
+      "alertas": 687,
+      "score_min": 6.217491150462107e-05,
+      "score_median": 0.002361234641304112,
+      "score_max": 0.9996893622127644,
+      "verbose_bytes": 413004,
+      "verbose_gzip_bytes": 76139,
+      "columnar_bytes": 206992,
+      "columnar_gzip_bytes": 66886
+    },
+    "h1_se49": {
+      "horizonte": 1,
+      "semana_epidemiologica": 49,
+      "count": 5569,
+      "alertas": 1013,
+      "score_min": 7.173436332003945e-05,
+      "score_median": 0.01956150607747844,
+      "score_max": 0.9996622570101213,
+      "verbose_bytes": 408505,
+      "verbose_gzip_bytes": 65891,
+      "columnar_bytes": 202493,
+      "columnar_gzip_bytes": 56844
+    },
+    "h4_se20": {
+      "horizonte": 4,
+      "semana_epidemiologica": 20,
+      "count": 5569,
+      "alertas": 1223,
+      "score_min": 0.0010585236069317505,
+      "score_median": 0.04589870791871456,
+      "score_max": 0.9943545188860211,
+      "verbose_bytes": 406465,
+      "verbose_gzip_bytes": 75857,
+      "columnar_bytes": 200453,
+      "columnar_gzip_bytes": 66406
+    }
+  }
+}

@@ -15,4 +15,8 @@ export const navigationItems = [
     label: "Predição",
     href: "/predicao",
   },
+  {
+    label: "Mapa",
+    href: "/mapa",
+  },
 ] as const;
