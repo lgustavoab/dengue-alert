@@ -7,12 +7,15 @@ import {
 import {
   FilterBar,
 } from "@/components/filters/filter-bar";
+
 import {
   MunicipalityCombobox,
 } from "@/components/filters/municipality-combobox";
+
 import {
   SelectFilter,
 } from "@/components/filters/select-filter";
+
 import type {
   TerritoryFilterItem,
 } from "@/lib/serving/types";
@@ -20,16 +23,32 @@ import type {
 import styles from "./filters.module.css";
 
 type TerritorialFiltersProps = {
-  items: TerritoryFilterItem[];
-  territoriesLoading: boolean;
-  territoriesError: string | null;
+  items:
+    TerritoryFilterItem[];
 
-  selectedRegion: string;
-  selectedUf: string;
-  selectedMunicipality: string | null;
-  selectedYear: number | null;
+  territoriesLoading:
+    boolean;
 
-  availableYears: number[];
+  territoriesError:
+    string | null;
+
+  selectedRegion:
+    string;
+
+  selectedUf:
+    string;
+
+  selectedMunicipality:
+    string | null;
+
+  selectedYear:
+    number | null;
+
+  availableYears:
+    number[];
+
+  yearDisabled?:
+    boolean;
 
   onRegionChange: (
     value: string,
@@ -47,7 +66,8 @@ type TerritorialFiltersProps = {
     value: number | null,
   ) => void;
 
-  onReset: () => void;
+  onReset:
+    () => void;
 };
 
 export function TerritorialFilters({
@@ -59,6 +79,7 @@ export function TerritorialFilters({
   selectedMunicipality,
   selectedYear,
   availableYears,
+  yearDisabled = false,
   onRegionChange,
   onUfChange,
   onMunicipalityChange,
@@ -85,14 +106,20 @@ export function TerritorialFilters({
 
         return [
           {
-            value: "",
+            value:
+              "",
+
             label:
               "Todas as regiões",
           },
+
           ...regions.map(
             (region) => ({
-              value: region,
-              label: region,
+              value:
+                region,
+
+              label:
+                region,
             }),
           ),
         ];
@@ -153,17 +180,23 @@ export function TerritorialFilters({
     useMemo(
       () => [
         {
-          value: "",
+          value:
+            "",
+
           label:
             "Todas as UFs",
         },
+
         ...ufItems.map(
           ([
             code,
             name,
           ]) => ({
-            value: code,
-            label: name,
+            value:
+              code,
+
+            label:
+              name,
           }),
         ),
       ],
@@ -205,34 +238,54 @@ export function TerritorialFilters({
 
   const yearOptions =
     useMemo(
-      () => [
-        {
-          value: "all",
-          label:
-            "Todos os anos",
-        },
-        ...[
-          ...availableYears,
-        ]
-          .sort(
-            (a, b) =>
-              b - a,
-          )
-          .map(
-            (year) => ({
+      () => {
+        if (
+          yearDisabled
+        ) {
+          return [
+            {
               value:
-                String(
-                  year,
-                ),
+                "all",
+
               label:
-                String(
-                  year,
-                ),
-            }),
-          ),
-      ],
+                "Indisponível neste recorte",
+            },
+          ];
+        }
+
+        return [
+          {
+            value:
+              "all",
+
+            label:
+              "Todos os anos",
+          },
+
+          ...[
+            ...availableYears,
+          ]
+            .sort(
+              (a, b) =>
+                b - a,
+            )
+            .map(
+              (year) => ({
+                value:
+                  String(
+                    year,
+                  ),
+
+                label:
+                  String(
+                    year,
+                  ),
+              })),
+        ];
+      },
       [
         availableYears,
+        yearDisabled,
       ],
     );
 
@@ -254,12 +307,16 @@ export function TerritorialFilters({
   let contextLabel =
     "Brasil";
 
-  if (selectedRegion) {
+  if (
+    selectedRegion
+  ) {
     contextLabel =
       selectedRegion;
   }
 
-  if (selectedUf) {
+  if (
+    selectedUf
+  ) {
     const uf =
       ufItems.find(
         ([code]) =>
@@ -267,13 +324,17 @@ export function TerritorialFilters({
           === selectedUf,
       );
 
-    if (uf) {
+    if (
+      uf
+    ) {
       contextLabel =
         uf[1];
     }
   }
 
-  if (selectedTerritory) {
+  if (
+    selectedTerritory
+  ) {
     contextLabel =
       `${selectedTerritory.nomeMunicipio} — ${selectedTerritory.nomeUf}`;
   }
@@ -288,7 +349,7 @@ export function TerritorialFilters({
     <>
       <FilterBar
         title="Filtros históricos"
-        description="Região e UF ajudam a localizar o território. A seleção de município altera o recorte analítico."
+        description="Selecione Região, UF ou Município para alterar o recorte territorial das análises disponíveis."
         hasActiveFilters={
           hasActiveFilters
         }
@@ -375,14 +436,16 @@ export function TerritorialFilters({
               yearOptions
             }
             disabled={
-              availableYears.length
+              yearDisabled
+              || availableYears.length
               === 0
             }
             onChange={(
               value,
             ) =>
               onYearChange(
-                value === "all"
+                value
+                === "all"
                   ? null
                   : Number(
                       value,
@@ -409,7 +472,9 @@ export function TerritorialFilters({
             styles.filterError
           }
         >
-          {territoriesError}
+          {
+            territoriesError
+          }
         </p>
       ) : null}
 
@@ -423,7 +488,9 @@ export function TerritorialFilters({
         </span>
 
         <strong>
-          {contextLabel}
+          {
+            contextLabel
+          }
 
           {selectedYear
           !== null

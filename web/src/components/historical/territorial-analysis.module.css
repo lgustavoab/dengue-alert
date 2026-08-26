@@ -1,0 +1,281 @@
+.section {
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.heading {
+  display: flex;
+  margin-bottom: 1.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.headingContent {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  color: var(--brand-strong);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.heading p {
+  max-width: 450px;
+  margin: 0;
+  color: var(--foreground-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.comparison {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  padding: 1rem;
+}
+
+.comparisonHeader {
+  margin-bottom: 1rem;
+}
+
+.comparisonHeader h3 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.comparisonHeader p {
+  margin: 0.3rem 0 0;
+  color: var(--foreground-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.rows {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns:
+    minmax(110px, 180px)
+    minmax(0, 1fr)
+    110px;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem;
+}
+
+.selectedRow {
+  background: var(--surface);
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track {
+  height: 0.65rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-strong);
+}
+
+.bar {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand);
+}
+
+.value {
+  color: var(--foreground-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.note {
+  margin-top: 1rem;
+  border-left: 3px solid var(--brand);
+  border-radius:
+    0
+    var(--radius-sm)
+    var(--radius-sm)
+    0;
+  background: var(--surface-muted);
+  padding: 0.8rem 1rem;
+  color: var(--foreground-soft);
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+.seasonality {
+  margin-top: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  padding: 1rem;
+}
+
+.seasonalityHeader {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.seasonalityHeader h3 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.seasonalityHeader p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--foreground-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.svgWrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gridLine {
+  stroke: var(--border);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.band {
+  fill: var(--brand-soft);
+  opacity: 0.8;
+}
+
+.line {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.point {
+  fill: var(--surface);
+  stroke: var(--brand);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.peakPoint {
+  fill: var(--brand);
+  stroke: var(--surface);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.axisText {
+  fill: var(--foreground-muted);
+  font-size: 12px;
+}
+
+.legend {
+  display: flex;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--foreground-muted);
+  font-size: 0.7rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendLine {
+  width: 22px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--brand);
+}
+
+.legendBand {
+  width: 22px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--brand-soft);
+}
+
+@media (max-width: 900px) {
+  .heading,
+  .seasonalityHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .section {
+    padding: 1rem;
+  }
+
+  .row {
+    grid-template-columns:
+      minmax(90px, 130px)
+      minmax(0, 1fr)
+      86px;
+    gap: 0.5rem;
+  }
+
+  .name,
+  .value {
+    font-size: 0.68rem;
+  }
+
+  .axisText {
+    font-size: 14px;
+  }
+}

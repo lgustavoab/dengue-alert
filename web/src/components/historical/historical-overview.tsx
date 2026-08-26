@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import {
   usePathname,
   useRouter,
@@ -15,34 +16,81 @@ import {
 import {
   TerritorialFilters,
 } from "@/components/filters/territorial-filters";
+
 import {
   AnnualPanorama,
 } from "@/components/historical/annual-panorama";
+
 import {
   MunicipalityPanorama,
 } from "@/components/historical/municipality-panorama";
+
+import {
+  SeasonalityChart,
+} from "@/components/historical/seasonality-chart";
+
+import {
+  TerritorialAnalysis,
+} from "@/components/historical/territorial-analysis";
+
+import {
+  WeeklyEvolution,
+} from "@/components/historical/weekly-evolution";
+
 import {
   MetricCard,
 } from "@/components/ui/metric-card";
+
 import {
   formatDecimal,
   formatInteger,
 } from "@/lib/serving/formatters";
+
 import type {
   HistoricalAnnualItem,
   HistoricalMunicipalitySeriesContract,
+  HistoricalSeasonalityNationalItem,
+  HistoricalSeasonalityRegionalItem,
+  HistoricalSpatialRegionItem,
+  HistoricalSpatialStateItem,
+  HistoricalWeeklyItem,
   TerritoryFilterItem,
 } from "@/lib/serving/types";
 
+import styles from "./historical-dashboard.module.css";
+
 type HistoricalOverviewProps = {
-  annualData: HistoricalAnnualItem[];
-  municipalityWeeks: number;
+  annualData:
+    HistoricalAnnualItem[];
+
+  weeklyData:
+    HistoricalWeeklyItem[];
+
+  seasonalityData:
+    HistoricalSeasonalityNationalItem[];
+
+  regionalSeasonalityData:
+    HistoricalSeasonalityRegionalItem[];
+
+  regionsData:
+    HistoricalSpatialRegionItem[];
+
+  statesData:
+    HistoricalSpatialStateItem[];
+
+  municipalityWeeks:
+    number;
 };
 
 type TerritoryResponse = {
-  schema_version: "1.0";
-  count: number;
-  items: TerritoryFilterItem[];
+  schema_version:
+    "1.0";
+
+  count:
+    number;
+
+  items:
+    TerritoryFilterItem[];
 };
 
 type LoadingStatus =
@@ -52,22 +100,38 @@ type LoadingStatus =
   | "error";
 
 type TerritoriesState = {
-  status: LoadingStatus;
-  items: TerritoryFilterItem[];
-  error: string | null;
+  status:
+    LoadingStatus;
+
+  items:
+    TerritoryFilterItem[];
+
+  error:
+    string | null;
 };
 
 type MunicipalitySeriesState = {
-  code: string | null;
-  status: LoadingStatus;
+  code:
+    string | null;
+
+  status:
+    LoadingStatus;
+
   data:
-  | HistoricalMunicipalitySeriesContract
-  | null;
-  error: string | null;
+    HistoricalMunicipalitySeriesContract
+    | null;
+
+  error:
+    string | null;
 };
 
 export function HistoricalOverview({
   annualData,
+  weeklyData,
+  seasonalityData,
+  regionalSeasonalityData,
+  regionsData,
+  statesData,
   municipalityWeeks,
 }: HistoricalOverviewProps) {
   const router =
@@ -82,21 +146,35 @@ export function HistoricalOverview({
   const [
     territoriesState,
     setTerritoriesState,
-  ] = useState<TerritoriesState>({
-    status: "loading",
-    items: [],
-    error: null,
-  });
+  ] =
+    useState<TerritoriesState>({
+      status:
+        "loading",
+
+      items:
+        [],
+
+      error:
+        null,
+    });
 
   const [
     municipalitySeriesState,
     setMunicipalitySeriesState,
-  ] = useState<MunicipalitySeriesState>({
-    code: null,
-    status: "idle",
-    data: null,
-    error: null,
-  });
+  ] =
+    useState<MunicipalitySeriesState>({
+      code:
+        null,
+
+      status:
+        "idle",
+
+      data:
+        null,
+
+      error:
+        null,
+    });
 
   const territories =
     territoriesState.items;
@@ -125,8 +203,8 @@ export function HistoricalOverview({
     yearParameter === null
       ? null
       : Number(
-        yearParameter,
-      );
+          yearParameter,
+        );
 
   const replaceParameters =
     useCallback(
@@ -172,7 +250,8 @@ export function HistoricalOverview({
             ? `${pathname}?${query}`
             : pathname,
           {
-            scroll: false,
+            scroll:
+              false,
           },
         );
       },
@@ -199,13 +278,16 @@ export function HistoricalOverview({
               },
             );
 
-          if (!response.ok) {
+          if (
+            !response.ok
+          ) {
             throw new Error(
               `HTTP ${response.status}`,
             );
           }
 
-          const payload: TerritoryResponse =
+          const payload:
+            TerritoryResponse =
             await response.json();
 
           if (
@@ -218,14 +300,19 @@ export function HistoricalOverview({
             !== payload.count
           ) {
             throw new Error(
-              "Contrato territorial inválido.",
+              "Contrato territorial invÃ¡lido.",
             );
           }
 
           setTerritoriesState({
-            status: "ready",
-            items: payload.items,
-            error: null,
+            status:
+              "ready",
+
+            items:
+              payload.items,
+
+            error:
+              null,
           });
         } catch (error) {
           if (
@@ -242,10 +329,14 @@ export function HistoricalOverview({
           );
 
           setTerritoriesState({
-            status: "error",
-            items: [],
+            status:
+              "error",
+
+            items:
+              [],
+
             error:
-              "Não foi possível carregar o índice territorial.",
+              "NÃ£o foi possÃ­vel carregar o Ã­ndice territorial.",
           });
         }
       }
@@ -282,9 +373,12 @@ export function HistoricalOverview({
         return;
       }
 
-      if (!selectedTerritory) {
+      if (
+        !selectedTerritory
+      ) {
         replaceParameters({
-          municipio: null,
+          municipio:
+            null,
         });
 
         return;
@@ -294,10 +388,8 @@ export function HistoricalOverview({
         selectedTerritory.regiao;
 
       const expectedUf =
-        String(
-          selectedTerritory
-            .codigoUfIbge,
-        );
+        selectedTerritory
+          .codigoUfIbge;
 
       if (
         selectedRegion
@@ -308,6 +400,7 @@ export function HistoricalOverview({
         replaceParameters({
           regiao:
             expectedRegion,
+
           uf:
             expectedUf,
         });
@@ -345,13 +438,16 @@ export function HistoricalOverview({
               },
             );
 
-          if (!response.ok) {
+          if (
+            !response.ok
+          ) {
             throw new Error(
               `HTTP ${response.status}`,
             );
           }
 
-          const payload: HistoricalMunicipalitySeriesContract =
+          const payload:
+            HistoricalMunicipalitySeriesContract =
             await response.json();
 
           if (
@@ -361,16 +457,22 @@ export function HistoricalOverview({
             !== selectedMunicipality
           ) {
             throw new Error(
-              "Contrato municipal inválido.",
+              "Contrato municipal invÃ¡lido.",
             );
           }
 
           setMunicipalitySeriesState({
             code:
               selectedMunicipality,
-            status: "ready",
-            data: payload,
-            error: null,
+
+            status:
+              "ready",
+
+            data:
+              payload,
+
+            error:
+              null,
           });
         } catch (error) {
           if (
@@ -389,10 +491,15 @@ export function HistoricalOverview({
           setMunicipalitySeriesState({
             code:
               selectedMunicipality,
-            status: "error",
-            data: null,
+
+            status:
+              "error",
+
+            data:
+              null,
+
             error:
-              "Não foi possível carregar a série histórica deste município.",
+              "NÃ£o foi possÃ­vel carregar a sÃ©rie histÃ³rica deste municÃ­pio.",
           });
         }
       }
@@ -409,8 +516,8 @@ export function HistoricalOverview({
 
   const municipalitySeries =
     selectedMunicipality
-      && municipalitySeriesState.code
-      === selectedMunicipality
+    && municipalitySeriesState.code
+    === selectedMunicipality
       ? municipalitySeriesState.data
       : null;
 
@@ -425,8 +532,8 @@ export function HistoricalOverview({
 
   const seriesError =
     selectedMunicipality
-      && municipalitySeriesState.code
-      === selectedMunicipality
+    && municipalitySeriesState.code
+    === selectedMunicipality
       ? municipalitySeriesState.error
       : null;
 
@@ -468,19 +575,46 @@ export function HistoricalOverview({
       ],
     );
 
+  const aggregateTerritorialScope =
+    !selectedMunicipality
+    && Boolean(
+      selectedRegion
+      || selectedUf,
+    );
+
   const availableYears =
-    selectedMunicipality
-      ? municipalityYears
-      : nationalYears;
+  useMemo(
+    () => {
+      if (
+        selectedMunicipality
+      ) {
+        return municipalityYears;
+      }
+
+      if (
+        aggregateTerritorialScope
+      ) {
+        return [];
+      }
+
+      return nationalYears;
+    },
+    [
+      aggregateTerritorialScope,
+      municipalityYears,
+      nationalYears,
+      selectedMunicipality,
+    ],
+  );
 
   const selectedYear =
     rawYear !== null
-      && Number.isInteger(
-        rawYear,
-      )
-      && availableYears.includes(
-        rawYear,
-      )
+    && Number.isInteger(
+      rawYear,
+    )
+    && availableYears.includes(
+      rawYear,
+    )
       ? rawYear
       : null;
 
@@ -489,6 +623,17 @@ export function HistoricalOverview({
       if (
         rawYear === null
       ) {
+        return;
+      }
+
+      if (
+        aggregateTerritorialScope
+      ) {
+        replaceParameters({
+          ano:
+            null,
+        });
+
         return;
       }
 
@@ -508,11 +653,13 @@ export function HistoricalOverview({
         )
       ) {
         replaceParameters({
-          ano: null,
+          ano:
+            null,
         });
       }
     },
     [
+      aggregateTerritorialScope,
       availableYears,
       rawYear,
       replaceParameters,
@@ -527,8 +674,15 @@ export function HistoricalOverview({
     replaceParameters({
       regiao:
         value || null,
-      uf: null,
-      municipio: null,
+
+      uf:
+        null,
+
+      municipio:
+        null,
+
+      ano:
+        null,
     });
   }
 
@@ -538,16 +692,27 @@ export function HistoricalOverview({
     replaceParameters({
       uf:
         value || null,
-      municipio: null,
+
+      municipio:
+        null,
+
+      ano:
+        null,
     });
   }
 
   function handleMunicipalityChange(
     code: string | null,
   ) {
-    if (code === null) {
+    if (
+      code === null
+    ) {
       replaceParameters({
-        municipio: null,
+        municipio:
+          null,
+
+        ano:
+          null,
       });
 
       return;
@@ -560,20 +725,26 @@ export function HistoricalOverview({
           === code,
       );
 
-    if (!territory) {
+    if (
+      !territory
+    ) {
       return;
     }
 
     replaceParameters({
       regiao:
         territory.regiao,
+
       uf:
-        String(
-          territory
-            .codigoUfIbge,
-        ),
+        territory
+          .codigoUfIbge,
+
       municipio:
-        territory.codigoIbge7,
+        territory
+          .codigoIbge7,
+
+      ano:
+        null,
     });
   }
 
@@ -585,17 +756,24 @@ export function HistoricalOverview({
         year === null
           ? null
           : String(
-            year,
-          ),
+              year,
+            ),
     });
   }
 
   function handleReset() {
     replaceParameters({
-      regiao: null,
-      uf: null,
-      municipio: null,
-      ano: null,
+      regiao:
+        null,
+
+      uf:
+        null,
+
+      municipio:
+        null,
+
+      ano:
+        null,
     });
   }
 
@@ -603,11 +781,11 @@ export function HistoricalOverview({
     selectedYear === null
       ? annualData
       : annualData.filter(
-        (item) =>
-          item
-            .ano_epidemiologico
-          === selectedYear,
-      );
+          (item) =>
+            item
+              .ano_epidemiologico
+            === selectedYear,
+        );
 
   const nationalPeak =
     filteredAnnualData.reduce(
@@ -615,15 +793,18 @@ export function HistoricalOverview({
         current,
         item,
       ) =>
-        item.casos_provaveis
-          > current.casos_provaveis
+        item
+          .casos_provaveis
+        > current
+          .casos_provaveis
           ? item
           : current,
     );
 
   const nationalLatest =
     filteredAnnualData[
-    filteredAnnualData.length - 1
+      filteredAnnualData.length
+      - 1
     ];
 
   const nationalTotalCases =
@@ -633,7 +814,8 @@ export function HistoricalOverview({
         item,
       ) =>
         total
-        + item.casos_provaveis,
+        + item
+          .casos_provaveis,
       0,
     );
 
@@ -665,6 +847,9 @@ export function HistoricalOverview({
         availableYears={
           availableYears
         }
+        yearDisabled={
+          aggregateTerritorialScope
+        }
         onRegionChange={
           handleRegionChange
         }
@@ -685,50 +870,51 @@ export function HistoricalOverview({
       {selectedMunicipality ? (
         <>
           {seriesStatus
-            === "loading" ? (
+          === "loading" ? (
             <section
               className="placeholder-section"
               aria-busy="true"
             >
               <span>
-                Série municipal
+                SÃ©rie municipal
               </span>
 
               <h2>
-                Carregando município
+                Carregando municÃ­pio
               </h2>
 
               <p>
-                A série epidemiológica solicitada está sendo carregada sob
-                demanda.
+                A sÃ©rie epidemiolÃ³gica solicitada estÃ¡ sendo carregada sob demanda.
               </p>
             </section>
           ) : null}
 
           {seriesStatus
             === "error"
-            && seriesError ? (
+          && seriesError ? (
             <section
               className="placeholder-section"
             >
               <span>
-                Série municipal
+                SÃ©rie municipal
               </span>
 
               <h2>
-                Dados indisponíveis
+                Dados indisponÃ­veis
               </h2>
 
               <p>
-                {seriesError}
+                {
+                  seriesError
+                }
               </p>
             </section>
           ) : null}
 
           {seriesStatus
             === "ready"
-            && municipalitySeries
-            && selectedTerritory ? (
+          && municipalitySeries
+          && selectedTerritory ? (
             <MunicipalityPanorama
               territory={
                 selectedTerritory
@@ -742,83 +928,154 @@ export function HistoricalOverview({
             />
           ) : null}
         </>
+      ) : aggregateTerritorialScope ? (
+        <TerritorialAnalysis
+          regions={
+            regionsData
+          }
+          states={
+            statesData
+          }
+          regionalSeasonality={
+            regionalSeasonalityData
+          }
+          selectedRegion={
+            selectedRegion
+          }
+          selectedUf={
+            selectedUf
+          }
+        />
       ) : (
         <>
           <section
             className="metric-grid"
-            aria-label="Indicadores do panorama histórico nacional"
+            aria-label="Indicadores do panorama histÃ³rico nacional"
           >
             <MetricCard
               label="Casos no recorte"
-              value={formatInteger(
-                nationalTotalCases,
-              )}
+              value={
+                formatInteger(
+                  nationalTotalCases,
+                )
+              }
               description={
                 selectedYear
-                  === null
-                  ? "Soma nacional dos anos epidemiológicos apresentados."
+                === null
+                  ? "Soma nacional dos anos epidemiolÃ³gicos apresentados."
                   : `Total nacional observado em ${selectedYear}.`
               }
             />
 
-            {selectedYear
-              !== null ? (
+            {selectedYear !== null ? (
               <MetricCard
-                label="Incidência anual"
-                value={formatDecimal(
-                  nationalPeak
-                    .incidencia_anual_100mil,
-                )}
+                label="IncidÃªncia anual"
+                value={
+                  formatDecimal(
+                    nationalPeak
+                      .incidencia_anual_100mil,
+                  )
+                }
                 description="Casos por 100 mil habitantes no ano selecionado."
               />
             ) : (
               <MetricCard
                 label="Maior volume anual"
-                value={formatInteger(
-                  nationalPeak
-                    .casos_provaveis,
-                )}
-                description={`${nationalPeak.ano_epidemiologico} · ${formatDecimal(
+                value={
+                  formatInteger(
+                    nationalPeak
+                      .casos_provaveis,
+                  )
+                }
+                description={`${nationalPeak.ano_epidemiologico} Â· ${formatDecimal(
                   nationalPeak
                     .incidencia_anual_100mil,
                 )} casos por 100 mil habitantes.`}
               />
             )}
 
-            {selectedYear
-              !== null ? (
+            {selectedYear !== null ? (
               <MetricCard
                 label="Pico semanal"
-                value={`SE ${nationalPeak.semana_pico}`}
-                description={`${formatInteger(
+                value={
+                  `SE ${nationalPeak.semana_pico}`
+                }
+                description={`Semana EpidemiolÃ³gica ${nationalPeak.semana_pico} Â· ${formatInteger(
                   nationalPeak
                     .pico_semanal_casos,
-                )} casos na semana de maior volume.`}
+                )} casos.`}
               />
             ) : (
               <MetricCard
-                label={`Ano mais recente · ${nationalLatest.ano_epidemiologico}`}
-                value={formatInteger(
-                  nationalLatest
-                    .casos_provaveis,
-                )}
-                description={`Pico na SE ${nationalLatest.semana_pico}.`}
+                label={`Ano mais recente Â· ${nationalLatest.ano_epidemiologico}`}
+                value={
+                  formatInteger(
+                    nationalLatest
+                      .casos_provaveis,
+                  )
+                }
+                description={`Pico na Semana EpidemiolÃ³gica ${nationalLatest.semana_pico}.`}
               />
             )}
 
             <MetricCard
-              label="Município-semanas no painel"
-              value={formatInteger(
-                municipalityWeeks,
-              )}
-              description="Cobertura total do painel epidemiológico nacional."
+              label="MunicÃ­pio-semanas no painel"
+              value={
+                formatInteger(
+                  municipalityWeeks,
+                )
+              }
+              description="Cobertura total do painel epidemiolÃ³gico nacional."
             />
           </section>
+
+          <div
+            className={
+              styles.weekExplanation
+            }
+          >
+            <strong>
+              O que significa SE?
+            </strong>
+
+            <span>
+              SE significa Semana EpidemiolÃ³gica, a divisÃ£o semanal utilizada na vigilÃ¢ncia em saÃºde para organizar os registros ao longo do ano. Um ano epidemiolÃ³gico possui normalmente 52 semanas e, em alguns anos, 53.
+            </span>
+          </div>
 
           <AnnualPanorama
             data={
               filteredAnnualData
             }
+          />
+
+          <WeeklyEvolution
+            data={
+              weeklyData
+            }
+            selectedYear={
+              selectedYear
+            }
+          />
+
+          <SeasonalityChart
+            data={
+              seasonalityData
+            }
+          />
+
+          <TerritorialAnalysis
+            regions={
+              regionsData
+            }
+            states={
+              statesData
+            }
+            regionalSeasonality={
+              regionalSeasonalityData
+            }
+            selectedRegion=""
+            selectedUf=""
           />
         </>
       )}
