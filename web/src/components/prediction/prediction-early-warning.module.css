@@ -1,0 +1,233 @@
+.section {
+  margin-top: 1.5rem;
+}
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--brand-strong);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1.1rem;
+}
+
+.heading p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--foreground-muted);
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.explanation {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.explanation > div {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  padding: 0.8rem 0.9rem;
+}
+
+.explanation strong {
+  display: block;
+  color: var(--foreground);
+  font-size: 0.72rem;
+}
+
+.explanation p {
+  margin: 0.3rem 0 0;
+  color: var(--foreground-muted);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 0.9rem;
+}
+
+.card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.cardHeader {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+
+.horizon {
+  display: block;
+  color: var(--foreground);
+  font-size: 1.05rem;
+  font-weight: 850;
+}
+
+.distance {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--foreground-muted);
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.contextGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.contextItem {
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  padding: 0.65rem 0.75rem;
+}
+
+.contextItem span {
+  display: block;
+  min-height: 2.4em;
+  color: var(--foreground-muted);
+  font-size: 0.59rem;
+  font-weight: 750;
+  letter-spacing: 0.035em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.contextItem strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--foreground);
+  font-size: 0.82rem;
+}
+
+.comparison {
+  margin-top: 0.8rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.comparisonHeader,
+.comparisonRow {
+  display: grid;
+  grid-template-columns:
+    1.2fr
+    1fr
+    1fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.6rem 0.7rem;
+}
+
+.comparisonHeader {
+  background: var(--surface-muted);
+  color: var(--foreground-muted);
+  font-size: 0.59rem;
+  text-transform: uppercase;
+}
+
+.comparisonHeader strong {
+  text-align: right;
+}
+
+.comparisonRow {
+  border-top: 1px solid var(--border);
+  font-size: 0.7rem;
+}
+
+.comparisonRow span {
+  color: var(--foreground-muted);
+}
+
+.comparisonRow strong {
+  color: var(--foreground);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  margin: 0.9rem 0 0;
+  border-left: 3px solid var(--accent);
+  border-radius:
+    0
+    var(--radius-sm)
+    var(--radius-sm)
+    0;
+  background: var(--accent-soft);
+  padding: 0.75rem 0.9rem;
+  color: var(--foreground-soft);
+  font-size: 0.71rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 950px) {
+  .heading {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .explanation {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .contextGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contextItem span {
+    min-height: 0;
+  }
+
+  .comparisonHeader,
+  .comparisonRow {
+    grid-template-columns:
+      1.15fr
+      0.9fr
+      0.9fr;
+  }
+}

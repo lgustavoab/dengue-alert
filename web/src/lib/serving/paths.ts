@@ -58,6 +58,9 @@ export const servingPaths = {
     overview:
       "prediction/evaluation/overview.json",
 
+    byHorizon:
+      "prediction/evaluation/by_horizon.json",
+
     model:
       "prediction/metadata/model.json",
 

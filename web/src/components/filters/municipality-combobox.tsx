@@ -1,8 +1,13 @@
 "use client";
 
 import {
+  useId,
   useMemo,
   useState,
+} from "react";
+
+import type {
+  KeyboardEvent,
 } from "react";
 
 import type {
@@ -49,6 +54,12 @@ export function MunicipalityCombobox({
   onChange,
   disabled = false,
 }: MunicipalityComboboxProps) {
+  const inputId =
+    useId();
+
+  const listboxId =
+    useId();
+
   const [
     query,
     setQuery,
@@ -63,6 +74,11 @@ export function MunicipalityCombobox({
     isEditing,
     setIsEditing,
   ] = useState(false);
+
+  const [
+    activeIndex,
+    setActiveIndex,
+  ] = useState(-1);
 
   const selectedItem =
     useMemo(
@@ -83,8 +99,8 @@ export function MunicipalityCombobox({
       ? query
       : selectedItem
         ? getMunicipalityLabel(
-            selectedItem,
-          )
+          selectedItem,
+        )
         : "";
 
   const filteredItems =
@@ -139,11 +155,20 @@ export function MunicipalityCombobox({
     );
 
   function handleFocus() {
+    const selectedIndex =
+      selectedItem
+        ? filteredItems.findIndex(
+          (item) =>
+            item.codigoIbge7
+            === selectedItem.codigoIbge7,
+        )
+        : -1;
+
     setQuery(
       selectedItem
         ? getMunicipalityLabel(
-            selectedItem,
-          )
+          selectedItem,
+        )
         : "",
     );
 
@@ -153,6 +178,14 @@ export function MunicipalityCombobox({
 
     setOpen(
       true,
+    );
+
+    setActiveIndex(
+      selectedIndex >= 0
+        ? selectedIndex
+        : filteredItems.length > 0
+          ? 0
+          : -1,
     );
   }
 
@@ -166,6 +199,10 @@ export function MunicipalityCombobox({
     );
 
     setQuery("");
+
+    setActiveIndex(
+      -1,
+    );
   }
 
   function handleInputChange(
@@ -183,12 +220,16 @@ export function MunicipalityCombobox({
       true,
     );
 
+    setActiveIndex(
+      0,
+    );
+
     if (
       selectedItem
       && value
-        !== getMunicipalityLabel(
-          selectedItem,
-        )
+      !== getMunicipalityLabel(
+        selectedItem,
+      )
     ) {
       onChange(
         null,
@@ -206,11 +247,15 @@ export function MunicipalityCombobox({
     );
 
     setIsEditing(
-      true,
+      false,
     );
 
     setOpen(
       false,
+    );
+
+    setActiveIndex(
+      -1,
     );
 
     onChange(
@@ -218,11 +263,129 @@ export function MunicipalityCombobox({
     );
   }
 
+  function handleKeyDown(
+    event: KeyboardEvent<HTMLInputElement>,
+  ) {
+    if (
+      disabled
+    ) {
+      return;
+    }
+
+    if (
+      event.key
+      === "ArrowDown"
+    ) {
+      event.preventDefault();
+
+      if (
+        filteredItems.length
+        === 0
+      ) {
+        return;
+      }
+
+      setOpen(
+        true,
+      );
+
+      setActiveIndex(
+        (current) =>
+          current < 0
+            ? 0
+            : (
+              current + 1
+            )
+            % filteredItems.length,
+      );
+
+      return;
+    }
+
+    if (
+      event.key
+      === "ArrowUp"
+    ) {
+      event.preventDefault();
+
+      if (
+        filteredItems.length
+        === 0
+      ) {
+        return;
+      }
+
+      setOpen(
+        true,
+      );
+
+      setActiveIndex(
+        (current) =>
+          current <= 0
+            ? filteredItems.length - 1
+            : current - 1,
+      );
+
+      return;
+    }
+
+    if (
+      event.key
+      === "Enter"
+      && open
+      && activeIndex >= 0
+      && activeIndex
+      < filteredItems.length
+    ) {
+      event.preventDefault();
+
+      handleSelect(
+        filteredItems[
+        activeIndex
+        ],
+      );
+
+      return;
+    }
+
+    if (
+      event.key
+      === "Escape"
+      && open
+    ) {
+      event.preventDefault();
+
+      setOpen(
+        false,
+      );
+
+      setIsEditing(
+        false,
+      );
+
+      setQuery("");
+
+      setActiveIndex(
+        -1,
+      );
+    }
+  }
+
+  const activeItem =
+    open
+      && activeIndex >= 0
+      && activeIndex
+      < filteredItems.length
+      ? filteredItems[
+      activeIndex
+      ]
+      : null;
+
   return (
     <div className={styles.field}>
       <label
         className={styles.label}
-        htmlFor="municipality-search"
+        htmlFor={inputId}
       >
         Município
       </label>
@@ -233,12 +396,17 @@ export function MunicipalityCombobox({
         }
       >
         <input
-          id="municipality-search"
+          id={inputId}
           type="search"
           role="combobox"
           aria-autocomplete="list"
           aria-expanded={open}
-          aria-controls="municipality-options"
+          aria-controls={listboxId}
+          aria-activedescendant={
+            activeItem
+              ? `${listboxId}-${activeItem.codigoIbge7}`
+              : undefined
+          }
           className={
             styles.comboboxInput
           }
@@ -260,6 +428,9 @@ export function MunicipalityCombobox({
           onBlur={
             handleBlur
           }
+          onKeyDown={
+            handleKeyDown
+          }
           onChange={(event) =>
             handleInputChange(
               event.target.value,
@@ -268,10 +439,11 @@ export function MunicipalityCombobox({
         />
 
         {open
-        && !disabled ? (
+          && !disabled ? (
           <div
-            id="municipality-options"
+            id={listboxId}
             role="listbox"
+            aria-label="Municípios encontrados"
             className={
               styles.comboboxOptions
             }
@@ -282,21 +454,35 @@ export function MunicipalityCombobox({
             }
           >
             {filteredItems.length
-            > 0 ? (
+              > 0 ? (
               filteredItems.map(
-                (item) => (
-                  <button
+                (
+                  item,
+                  index,
+                ) => (
+                  <div
+                    id={`${listboxId}-${item.codigoIbge7}`}
                     key={
                       item.codigoIbge7
                     }
-                    type="button"
                     role="option"
                     aria-selected={
                       item.codigoIbge7
                       === selectedCode
                     }
+                    data-active={
+                      index
+                        === activeIndex
+                        ? "true"
+                        : undefined
+                    }
                     className={
                       styles.comboboxOption
+                    }
+                    onMouseEnter={() =>
+                      setActiveIndex(
+                        index,
+                      )
                     }
                     onClick={() =>
                       handleSelect(
@@ -325,11 +511,11 @@ export function MunicipalityCombobox({
                       {" · "}
                       {item.anosDisponiveis}
                       {item.anosDisponiveis
-                      === 1
+                        === 1
                         ? " ano"
                         : " anos"}
                     </span>
-                  </button>
+                  </div>
                 ),
               )
             ) : (

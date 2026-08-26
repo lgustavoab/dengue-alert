@@ -28,6 +28,7 @@ import type {
   HistoricalSpatialRegionsContract,
   HistoricalSpatialStatesContract,
   HistoricalWeeklyContract,
+  PredictionByHorizonContract,
   PredictionModelContract,
   PredictionMunicipalityIndexContract,
   PredictionOverviewContract,
@@ -103,9 +104,9 @@ function assertDataObject(
 > {
   if (
     typeof value.data
-      !== "object"
+    !== "object"
     || value.data
-      === null
+    === null
     || Array.isArray(
       value.data,
     )
@@ -330,10 +331,10 @@ export async function getHistoricalMunicipalityIndex(): Promise<HistoricalMunici
   if (
     typeof value
       .risk_history
-      !== "object"
+    !== "object"
     || value
       .risk_history
-      === null
+    === null
     || Array.isArray(
       value
         .risk_history,
@@ -477,6 +478,93 @@ export async function getTerritoryFilterItems(): Promise<
     );
 }
 
+export async function getPredictionByHorizon(): Promise<PredictionByHorizonContract> {
+  const value =
+    await readServingJson(
+      servingPaths
+        .prediction
+        .byHorizon,
+    );
+
+  assertServingContract(
+    value,
+    servingPaths
+      .prediction
+      .byHorizon,
+  );
+
+  if (
+    typeof value
+      .horizontes
+    !== "object"
+    || value
+      .horizontes
+    === null
+    || Array.isArray(
+      value
+        .horizontes,
+    )
+  ) {
+    throw new TypeError(
+      "prediction/evaluation/by_horizon.json possui horizontes inválidos.",
+    );
+  }
+
+  const horizons =
+    value.horizontes as Record<
+      string,
+      unknown
+    >;
+
+  for (
+    const key
+    of [
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+    ] as const
+  ) {
+    const horizon =
+      horizons[
+      key
+      ];
+
+    if (
+      typeof horizon
+      !== "object"
+      || horizon
+      === null
+      || Array.isArray(
+        horizon,
+      )
+    ) {
+      throw new TypeError(
+        `prediction/evaluation/by_horizon.json possui ${key} inválido.`,
+      );
+    }
+
+    const record =
+      horizon as Record<
+        string,
+        unknown
+      >;
+
+    assertNumber(
+      record.horizonte,
+      `prediction.by_horizon.${key}.horizonte`,
+    );
+
+    assertNumber(
+      record
+        .threshold_modelo,
+      `prediction.by_horizon.${key}.threshold_modelo`,
+    );
+  }
+
+  return value as PredictionByHorizonContract;
+}
+
 export async function getPredictionOverview(): Promise<PredictionOverviewContract> {
   const value =
     await readServingJson(
@@ -534,7 +622,7 @@ export async function getPredictionModel(): Promise<PredictionModelContract> {
   if (
     typeof value
       .retrospectivo
-      !== "boolean"
+    !== "boolean"
   ) {
     throw new TypeError(
       "prediction/model.json possui campo retrospectivo inválido.",
@@ -661,9 +749,9 @@ export async function getHistoricalRiskEpisodeDuration(): Promise<HistoricalRisk
 
   if (
     typeof value.summary
-      !== "object"
+    !== "object"
     || value.summary
-      === null
+    === null
     || Array.isArray(
       value.summary,
     )

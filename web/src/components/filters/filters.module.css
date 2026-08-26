@@ -165,6 +165,7 @@
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
+    box-shadow 160ms ease,
     color 160ms ease;
 }
 
@@ -172,6 +173,12 @@
   border-color: var(--border-strong);
   background: var(--surface-strong);
   color: var(--foreground);
+}
+
+.reset:focus-visible {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgb(18 107 112 / 0.12);
 }
 
 .reset:disabled {
@@ -239,8 +246,14 @@
 }
 
 .comboboxOption:hover,
+.comboboxOption[data-active="true"],
 .comboboxOption[aria-selected="true"] {
   background: var(--surface-muted);
+}
+
+.comboboxOption[data-active="true"] {
+  box-shadow:
+    inset 3px 0 0 var(--brand);
 }
 
 .comboboxOptionMain {
