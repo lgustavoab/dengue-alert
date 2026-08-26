@@ -9,7 +9,7 @@ export type ServingManifestFile = {
 
 export type ServingManifest = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   status: "APROVADO";
   source: string;
   destination: string;
@@ -17,1006 +17,1143 @@ export type ServingManifest = {
   total_size_bytes: number;
   excluded: string[];
   files:
-    ServingManifestFile[];
+  ServingManifestFile[];
 };
 
 export type QualityOverviewContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   data: {
     registros_sinan_brutos:
-      number;
+    number;
 
     registros_sinan_mantidos_apos_filtros:
-      number;
+    number;
 
     casos_finais_preservados:
-      number;
+    number;
 
     unidades_territoriais:
-      number;
+    number;
 
     municipio_semanas:
-      number;
+    number;
 
     linhas_zero_fill:
-      number;
+    number;
 
     unidades_com_cobertura_climatica:
-      number;
+    number;
 
     municipio_semanas_com_clima:
-      number;
+    number;
 
     municipio_semanas_sem_clima:
-      number;
+    number;
   };
 };
 
 export type TemporalCoverageContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   data: {
     periodo_historico:
-      string;
+    string;
 
     anos:
-      number[];
+    number[];
 
     semanas_nacionais:
-      number;
+    number;
 
     anos_com_53_semanas:
-      number[];
+    number[];
 
     regra_semana_epidemiologica:
-      string;
+    string;
   };
 };
 
 export type TerritoryItem = {
   codigo_ibge_7:
-    string;
+  string;
 
   nome_municipio:
-    string;
+  string;
 
   codigo_uf_ibge:
-    string;
+  string;
 
   nome_uf:
-    string;
+  string;
 
   regiao:
-    string;
+  string;
 
   anos_disponiveis:
-    number;
+  number;
 };
 
 export type TerritoriesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    TerritoryItem[];
+  TerritoryItem[];
 };
 
 export type HistoricalMunicipalityIndexItem =
   TerritoryItem & {
     risco_historico_disponivel:
-      boolean;
+    boolean;
   };
 
 export type HistoricalMunicipalityIndexContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
 
   risk_history: {
     available:
-      number;
+    number;
 
     unavailable:
-      number;
+    number;
   };
 
   data:
-    HistoricalMunicipalityIndexItem[];
+  HistoricalMunicipalityIndexItem[];
 };
 
 export type HistoricalAnnualItem = {
   ano_epidemiologico:
-    number;
+  number;
 
   semanas_epidemiologicas:
-    number;
+  number;
 
   casos_provaveis:
-    number;
+  number;
 
   populacao_nacional:
-    number;
+  number;
 
   incidencia_anual_100mil:
-    number;
+  number;
 
   media_semanal_casos:
-    number;
+  number;
 
   pico_semanal_casos:
-    number;
+  number;
 
   semana_pico:
-    number;
+  number;
 
   data_inicio_semana_pico:
-    string;
+  string;
 
   unidades_territoriais:
-    number;
+  number;
 
   unidades_territoriais_com_casos:
-    number;
+  number;
 
   proporcao_unidades_com_casos:
-    number;
+  number;
 
   participacao_casos_periodo:
-    number;
+  number;
 };
 
 export type HistoricalAnnualContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalAnnualItem[];
+  HistoricalAnnualItem[];
 };
 
 export type HistoricalWeeklyItem = {
   ano_epidemiologico:
-    number;
+  number;
 
   semana_epidemiologica:
-    number;
+  number;
 
   data_inicio_semana:
-    string;
+  string;
 
   data_fim_semana:
-    string;
+  string;
 
   casos_provaveis:
-    number;
+  number;
 
   unidades_territoriais:
-    number;
+  number;
 
   unidades_territoriais_com_casos:
-    number;
+  number;
 
   populacao_nacional:
-    number;
+  number;
 
   incidencia_nacional_100mil:
-    number;
+  number;
 
   proporcao_unidades_com_casos:
-    number;
+  number;
 };
 
 export type HistoricalWeeklyContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalWeeklyItem[];
+  HistoricalWeeklyItem[];
 };
 
 export type HistoricalSeasonalityNationalItem = {
   semana_epidemiologica:
-    number;
+  number;
 
   anos_disponiveis:
-    number;
+  number;
 
   casos_media:
-    number;
+  number;
 
   casos_mediana:
-    number;
+  number;
 
   casos_minimo:
-    number;
+  number;
 
   casos_maximo:
-    number;
+  number;
 
   incidencia_media_100mil:
-    number;
+  number;
 
   incidencia_mediana_100mil:
-    number;
+  number;
 
   incidencia_q25_100mil:
-    number;
+  number;
 
   incidencia_q75_100mil:
-    number;
+  number;
 
   incidencia_minima_100mil:
-    number;
+  number;
 
   incidencia_maxima_100mil:
-    number;
+  number;
 };
 
 export type HistoricalSeasonalityNationalContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalSeasonalityNationalItem[];
+  HistoricalSeasonalityNationalItem[];
 };
 
 export type HistoricalSeasonalityRegionalItem = {
   regiao:
-    string;
+  string;
 
   semana_epidemiologica:
-    number;
+  number;
 
   anos_disponiveis:
-    number;
+  number;
 
   casos_media:
-    number;
+  number;
 
   casos_mediana:
-    number;
+  number;
 
   incidencia_media_100mil:
-    number;
+  number;
 
   incidencia_mediana_100mil:
-    number;
+  number;
 
   incidencia_q25_100mil:
-    number;
+  number;
 
   incidencia_q75_100mil:
-    number;
+  number;
 
   incidencia_minima_100mil:
-    number;
+  number;
 
   incidencia_maxima_100mil:
-    number;
+  number;
 };
 
 export type HistoricalSeasonalityRegionalContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalSeasonalityRegionalItem[];
+  HistoricalSeasonalityRegionalItem[];
 };
 
 export type HistoricalSpatialRegionItem = {
   regiao:
-    string;
+  string;
 
   anos_disponiveis:
-    number;
+  number;
 
   anos_com_casos:
-    number;
+  number;
 
   casos_periodo:
-    number;
+  number;
 
   populacao_media:
-    number;
+  number;
 
   incidencia_media_anual_100mil:
-    number;
+  number;
 
   incidencia_mediana_anual_100mil:
-    number;
+  number;
 
   incidencia_maxima_anual_100mil:
-    number;
+  number;
 
   ano_maior_incidencia:
-    number;
+  number;
 
   incidencia_ano_pico_100mil:
-    number;
+  number;
 
   participacao_casos_periodo:
-    number;
+  number;
 };
 
 export type HistoricalSpatialRegionsContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalSpatialRegionItem[];
+  HistoricalSpatialRegionItem[];
 };
 
 export type HistoricalSpatialStateItem = {
   codigo_uf_ibge:
-    string;
+  string;
 
   nome_uf:
-    string;
+  string;
 
   regiao:
-    string;
+  string;
 
   anos_disponiveis:
-    number;
+  number;
 
   anos_com_casos:
-    number;
+  number;
 
   casos_periodo:
-    number;
+  number;
 
   populacao_media:
-    number;
+  number;
 
   incidencia_media_anual_100mil:
-    number;
+  number;
 
   incidencia_mediana_anual_100mil:
-    number;
+  number;
 
   incidencia_maxima_anual_100mil:
-    number;
+  number;
 
   ano_maior_incidencia:
-    number;
+  number;
 
   incidencia_ano_pico_100mil:
-    number;
+  number;
 
   participacao_casos_periodo:
-    number;
+  number;
 };
 
 export type HistoricalSpatialStatesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalSpatialStateItem[];
+  HistoricalSpatialStateItem[];
 };
 
 export type HistoricalSpatialMunicipalityItem = {
   codigo_ibge_7:
-    string;
+  string;
 
   nome_municipio:
-    string;
+  string;
 
   codigo_uf_ibge:
-    string;
+  string;
 
   nome_uf:
-    string;
+  string;
 
   regiao:
-    string;
+  string;
 
   anos_disponiveis:
-    number;
+  number;
 
   anos_com_casos:
-    number;
+  number;
 
   casos_periodo:
-    number;
+  number;
 
   populacao_media:
-    number;
+  number;
 
   incidencia_media_anual_100mil:
-    number;
+  number;
 
   incidencia_mediana_anual_100mil:
-    number;
+  number;
 
   incidencia_maxima_anual_100mil:
-    number;
+  number;
 
   ano_maior_incidencia:
-    number;
+  number;
 
   incidencia_ano_pico_100mil:
-    number;
+  number;
 
   participacao_casos_periodo:
-    number;
+  number;
 };
 
 export type HistoricalSpatialMunicipalitiesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalSpatialMunicipalityItem[];
+  HistoricalSpatialMunicipalityItem[];
 };
 
 export type HistoricalRiskWeeklyItem = {
   escala:
-    string;
+  string;
 
   grupo:
-    string;
+  string;
 
   ano_epidemiologico:
-    number;
+  number;
 
   semana_epidemiologica:
-    number;
+  number;
 
   data_inicio_semana:
-    string;
+  string;
 
   unidades_elegiveis:
-    number;
+  number;
 
   unidades_em_risco:
-    number;
+  number;
 
   proporcao_unidades_em_risco:
-    number;
+  number;
 
   incidencia_4s_media_100mil:
-    number;
+  number;
 
   incidencia_4s_mediana_100mil:
-    number;
+  number;
 
   limiar_p90_mediano_100mil:
-    number;
+  number;
 };
 
 export type HistoricalRiskWeeklyContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalRiskWeeklyItem[];
+  HistoricalRiskWeeklyItem[];
 };
 
 export type HistoricalRiskMunicipalityItem = {
   codigo_ibge_7:
-    string;
+  string;
 
   nome_municipio:
-    string;
+  string;
 
   codigo_uf_ibge:
-    string;
+  string;
 
   nome_uf:
-    string;
+  string;
 
   regiao:
-    string;
+  string;
 
   observacoes_elegiveis:
-    number;
+  number;
 
   anos_elegiveis:
-    number;
+  number;
 
   semanas_risco:
-    number;
+  number;
 
   proporcao_semanas_risco:
-    number;
+  number;
 
   anos_com_risco:
-    number;
+  number;
 
   primeira_semana_risco:
-    string | null;
+  string | null;
 
   ultima_semana_risco:
-    string | null;
+  string | null;
 
   episodios:
-    number;
+  number;
 
   duracao_media_episodio:
-    number | null;
+  number | null;
 
   duracao_mediana_episodio:
-    number | null;
+  number | null;
 
   duracao_maxima_episodio:
-    number | null;
+  number | null;
 
   episodios_multianuais:
-    number;
+  number;
 
   recorrencia_multianual:
-    boolean;
+  boolean;
 };
 
 export type HistoricalRiskMunicipalitiesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalRiskMunicipalityItem[];
+  HistoricalRiskMunicipalityItem[];
 };
 
 export type HistoricalRiskEpisodeDurationSummary = {
   quantidade_episodios:
-    number;
+  number;
 
   semanas_risco:
-    number;
+  number;
 
   minimo:
-    number;
+  number;
 
   media:
-    number;
+  number;
 
   p25:
-    number;
+  number;
 
   mediana:
-    number;
+  number;
 
   p75:
-    number;
+  number;
 
   p90:
-    number;
+  number;
 
   p95:
-    number;
+  number;
 
   p99:
-    number;
+  number;
 
   maximo:
-    number;
+  number;
 };
 
 export type HistoricalRiskEpisodeDurationItem = {
   duracao_semanas:
-    number;
+  number;
 
   episodios:
-    number;
+  number;
 };
 
 export type HistoricalRiskEpisodeDurationContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
 
   summary:
-    HistoricalRiskEpisodeDurationSummary;
+  HistoricalRiskEpisodeDurationSummary;
 
   distribution:
-    HistoricalRiskEpisodeDurationItem[];
+  HistoricalRiskEpisodeDurationItem[];
 };
 
 export type HistoricalClimateLagItem = {
   variavel_climatica:
-    string;
+  string;
 
   lag_semanas:
-    number;
+  number;
 
   municipios_total:
-    number;
+  number;
 
   municipios_correlacao_valida:
-    number;
+  number;
 
   observacoes_validas_mediana:
-    number;
+  number;
 
   correlacao_media:
-    number;
+  number;
 
   correlacao_mediana:
-    number;
+  number;
 
   correlacao_p10:
-    number;
+  number;
 
   correlacao_p25:
-    number;
+  number;
 
   correlacao_p75:
-    number;
+  number;
 
   correlacao_p90:
-    number;
+  number;
 
   proporcao_correlacao_positiva:
-    number;
+  number;
 
   proporcao_correlacao_negativa:
-    number;
+  number;
 };
 
 export type HistoricalClimateNationalLagsContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalClimateLagItem[];
+  HistoricalClimateLagItem[];
 };
 
 export type HistoricalClimateRegionalLagItem =
   HistoricalClimateLagItem & {
     regiao:
-      string;
+    string;
   };
 
 export type HistoricalClimateRegionalLagsContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
   period: string;
   source: string[];
   count: number;
   data:
-    HistoricalClimateRegionalLagItem[];
+  HistoricalClimateRegionalLagItem[];
 };
 
 export type HistoricalMunicipalitySeriesData = {
   ano_epidemiologico:
-    number[];
+  number[];
 
   semana_epidemiologica:
-    number[];
+  number[];
 
   data_inicio_semana:
-    string[];
+  string[];
 
   casos_provaveis:
-    number[];
+  number[];
 
   incidencia_100mil:
-    number[];
+  number[];
 
   registro_sinan_presente:
-    boolean[];
+  boolean[];
 
   zero_preenchido:
-    boolean[];
+  boolean[];
 
   populacao:
-    number[];
+  number[];
 };
 
 export type HistoricalMunicipalitySeriesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
 
   codigo_ibge_7:
-    string;
+  string;
 
   count:
-    number;
+  number;
 
   data:
-    HistoricalMunicipalitySeriesData;
+  HistoricalMunicipalitySeriesData;
+};
+
+export type PredictionConfusionMatrix = {
+  tn:
+  number;
+
+  fp:
+  number;
+
+  fn:
+  number;
+
+  tp:
+  number;
+};
+
+export type PredictionEvaluationMetrics = {
+  observacoes:
+  number;
+
+  positivos:
+  number;
+
+  negativos:
+  number;
+
+  prevalencia:
+  number;
+
+  pr_auc_average_precision:
+  number;
+
+  roc_auc:
+  number;
+
+  recall:
+  number;
+
+  precision:
+  number;
+
+  f1:
+  number;
+
+  balanced_accuracy:
+  number;
+
+  brier_score:
+  number;
+
+  matriz_confusao:
+  PredictionConfusionMatrix;
+};
+
+export type PredictionEarlyWarningMetrics =
+  PredictionEvaluationMetrics & {
+    alertas:
+    number | null;
+
+    proporcao_alertas:
+    number | null;
+  };
+
+export type PredictionFinalModelEvaluation = {
+  nome:
+  string;
+
+  linhas_treino:
+  number;
+
+  linhas_teste:
+  number;
+
+  geral:
+  PredictionEvaluationMetrics;
+
+  early_warning:
+  PredictionEarlyWarningMetrics;
+};
+
+export type PredictionPersistenceEvaluation = {
+  nome:
+  string;
+
+  threshold:
+  number;
+
+  linhas_teste:
+  number;
+
+  geral:
+  PredictionEvaluationMetrics;
+
+  early_warning:
+  PredictionEarlyWarningMetrics;
+};
+
+export type PredictionEvaluationHorizon = {
+  horizonte:
+  number;
+
+  threshold_modelo:
+  number;
+
+  modelo_final:
+  PredictionFinalModelEvaluation;
+
+  baseline_persistencia:
+  PredictionPersistenceEvaluation;
+};
+
+export type PredictionByHorizonContract = {
+  schema_version:
+  SchemaVersion;
+
+  status:
+  "APROVADO";
+
+  avaliacao:
+  string;
+
+  horizontes: {
+    h1:
+    PredictionEvaluationHorizon;
+
+    h2:
+    PredictionEvaluationHorizon;
+
+    h3:
+    PredictionEvaluationHorizon;
+
+    h4:
+    PredictionEvaluationHorizon;
+  };
 };
 
 export type PredictionHorizonOverview = {
   linhas:
-    number;
+  number;
 
   municipios:
-    number;
+  number;
 
   semanas_origem:
-    number;
+  number;
 
   data_inicio_min:
-    string;
+  string;
 
   data_inicio_max:
-    string;
+  string;
 
   threshold:
-    number;
+  number;
 
   target_positivos:
-    number;
+  number;
 
   predicoes_positivas:
-    number;
+  number;
 
   early_warning_elegiveis:
-    number;
+  number;
 
   early_warning_alertas:
-    number;
+  number;
 
   score_min:
-    number;
+  number;
 
   score_max:
-    number;
+  number;
 };
 
 export type PredictionOverviewContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
 
   status:
-    "APROVADO";
+  "APROVADO";
 
   avaliacao:
-    string;
+  string;
 
   ano:
-    number;
+  number;
 
   linhas:
-    number;
+  number;
 
   municipios:
-    number;
+  number;
 
   horizontes: {
     h1:
-      PredictionHorizonOverview;
+    PredictionHorizonOverview;
 
     h2:
-      PredictionHorizonOverview;
+    PredictionHorizonOverview;
 
     h3:
-      PredictionHorizonOverview;
+    PredictionHorizonOverview;
 
     h4:
-      PredictionHorizonOverview;
+    PredictionHorizonOverview;
   };
 };
 
 export type PredictionModelHorizon = {
   horizonte:
-    number;
+  number;
 
   semanas_a_frente:
-    number;
+  number;
 
   threshold:
-    number;
+  number;
 };
 
 export type PredictionModelContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
 
   status:
-    "APROVADO";
+  "APROVADO";
 
   tipo:
-    string;
+  string;
 
   ano_referencia:
-    number;
+  number;
 
   retrospectivo:
-    boolean;
+  boolean;
 
   modelo: {
     algoritmo:
-      string;
+    string;
 
     features:
-      string;
+    string;
 
     calibracao:
-      string;
+    string;
 
     probabilidades:
-      string;
+    string;
   };
 
   protocolo: {
     desenvolvimento:
-      string;
+    string;
 
     teste_final:
-      string;
+    string;
 
     thresholds_congelados:
-      boolean;
+    boolean;
 
     teste_final_utilizado_na_selecao:
-      boolean;
+    boolean;
   };
 
   horizontes:
-    PredictionModelHorizon[];
+  PredictionModelHorizon[];
 
   semantica: {
+    score:
+    string;
+
     predicao:
-      string;
+    string;
 
     risco_elevado:
-      string;
+    string;
 
     target:
-      string;
+    string;
 
     early_warning:
-      string;
+    string;
   };
 
   restricoes_interpretacao:
-    string[];
+  string[];
 };
 
 export type PredictionMunicipalityIndexItem = {
   codigo_ibge_7:
-    string;
+  string;
 
   nome_municipio_ibge:
-    string;
+  string;
 
   nome_uf_ibge:
-    string;
+  string;
 
   predicoes:
-    number;
+  number;
 
   horizontes: {
     h1:
-      number;
+    number;
 
     h2:
-      number;
+    number;
 
     h3:
-      number;
+    number;
 
     h4:
-      number;
+    number;
   };
 };
 
 export type PredictionMunicipalityIndexContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
 
   status:
-    "APROVADO";
+  "APROVADO";
 
   count:
-    number;
+  number;
 
   items:
-    PredictionMunicipalityIndexItem[];
+  PredictionMunicipalityIndexItem[];
 };
 
 export type PredictionMunicipalitySeriesData = {
   ano_epidemiologico:
-    number[];
+  number[];
 
   semana_epidemiologica:
-    number[];
+  number[];
 
   data_inicio_semana:
-    string[];
+  string[];
 
   risco_elevado:
-    boolean[];
+  boolean[];
 
   target:
-    boolean[];
+  boolean[];
 
   score:
-    number[];
+  number[];
 
   predicao:
-    boolean[];
+  boolean[];
 };
 
 export type PredictionMunicipalitySeriesHorizon = {
   count:
-    number;
+  number;
 
   threshold:
-    number;
+  number;
 
   data:
-    PredictionMunicipalitySeriesData;
+  PredictionMunicipalitySeriesData;
 };
 
 export type PredictionMunicipalitySeriesContract = {
   schema_version:
-    SchemaVersion;
+  SchemaVersion;
 
   codigo_ibge_7:
-    string;
+  string;
 
   count:
-    number;
+  number;
 
   horizontes: {
     h1:
-      PredictionMunicipalitySeriesHorizon;
+    PredictionMunicipalitySeriesHorizon;
 
     h2:
-      PredictionMunicipalitySeriesHorizon;
+    PredictionMunicipalitySeriesHorizon;
 
     h3:
-      PredictionMunicipalitySeriesHorizon;
+    PredictionMunicipalitySeriesHorizon;
 
     h4:
-      PredictionMunicipalitySeriesHorizon;
+    PredictionMunicipalitySeriesHorizon;
   };
 };
 
 export type TerritoryFilterItem = {
   codigoIbge7:
-    string;
+  string;
 
   nomeMunicipio:
-    string;
+  string;
 
   codigoUfIbge:
-    string;
+  string;
 
   nomeUf:
-    string;
+  string;
 
   regiao:
-    string;
+  string;
 
   anosDisponiveis:
-    number;
+  number;
 
   riscoHistoricoDisponivel:
-    boolean;
+  boolean;
 
   predicaoDisponivel:
-    boolean;
+  boolean;
 };
