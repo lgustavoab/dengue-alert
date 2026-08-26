@@ -11,6 +11,10 @@ import {
 } from "@/components/historical/historical-overview";
 
 import {
+  HistoricalRiskSection,
+} from "@/components/historical/historical-risk-section";
+
+import {
   PageIntro,
 } from "@/components/ui/page-intro";
 
@@ -20,6 +24,9 @@ import {
 
 import {
   getHistoricalAnnual,
+  getHistoricalRiskEpisodeDuration,
+  getHistoricalRiskMunicipalities,
+  getHistoricalRiskWeekly,
   getHistoricalSeasonalityNational,
   getHistoricalSeasonalityRegional,
   getHistoricalSpatialRegions,
@@ -41,6 +48,9 @@ export default async function HistoricalPage() {
     regionalSeasonality,
     regions,
     states,
+    riskWeekly,
+    riskMunicipalities,
+    riskEpisodeDuration,
     quality,
   ] =
     await Promise.all([
@@ -50,6 +60,9 @@ export default async function HistoricalPage() {
       getHistoricalSeasonalityRegional(),
       getHistoricalSpatialRegions(),
       getHistoricalSpatialStates(),
+      getHistoricalRiskWeekly(),
+      getHistoricalRiskMunicipalities(),
+      getHistoricalRiskEpisodeDuration(),
       getQualityOverview(),
     ]);
 
@@ -104,6 +117,33 @@ export default async function HistoricalPage() {
   ) {
     throw new Error(
       "Contrato espacial das UFs sem dados.",
+    );
+  }
+
+  if (
+    riskWeekly.data.length
+    === 0
+  ) {
+    throw new Error(
+      "Contrato semanal de risco histórico sem dados.",
+    );
+  }
+
+  if (
+    riskMunicipalities.data.length
+    === 0
+  ) {
+    throw new Error(
+      "Contrato municipal de risco histórico sem dados.",
+    );
+  }
+
+  if (
+    riskEpisodeDuration.distribution.length
+    === 0
+  ) {
+    throw new Error(
+      "Distribuição da duração dos episódios de risco sem dados.",
     );
   }
 
@@ -162,6 +202,21 @@ export default async function HistoricalPage() {
           municipalityWeeks={
             quality.data
               .municipio_semanas
+          }
+        />
+
+        <HistoricalRiskSection
+          weeklyData={
+            riskWeekly.data
+          }
+          municipalities={
+            riskMunicipalities.data
+          }
+          episodeSummary={
+            riskEpisodeDuration.summary
+          }
+          episodeDistribution={
+            riskEpisodeDuration.distribution
           }
         />
       </Suspense>
