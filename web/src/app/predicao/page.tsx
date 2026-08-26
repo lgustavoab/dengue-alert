@@ -11,15 +11,26 @@ import {
 } from "@/components/prediction/prediction-selection";
 
 import {
+  PredictionPerformance,
+} from "@/components/prediction/prediction-performance";
+
+import {
   PageIntro,
 } from "@/components/ui/page-intro";
+
+import {
+  getPredictionByHorizon,
+} from "@/lib/serving/server";
 
 export const metadata: Metadata = {
   title:
     "Predição",
 };
 
-export default function PredictionPage() {
+export default async function PredictionPage() {
+  const predictionByHorizon =
+    await getPredictionByHorizon();
+
   return (
     <div
       className="route-page"
@@ -53,6 +64,12 @@ export default function PredictionPage() {
       >
         <PredictionSelection />
       </Suspense>
+
+      <PredictionPerformance
+        evaluation={
+          predictionByHorizon
+        }
+      />
     </div>
   );
 }
