@@ -7,6 +7,10 @@ import {
 } from "react";
 
 import {
+  HistoricalClimateSection,
+} from "@/components/historical/historical-climate-section";
+
+import {
   HistoricalOverview,
 } from "@/components/historical/historical-overview";
 
@@ -24,6 +28,8 @@ import {
 
 import {
   getHistoricalAnnual,
+  getHistoricalClimateNationalLags,
+  getHistoricalClimateRegionalLags,
   getHistoricalRiskEpisodeDuration,
   getHistoricalRiskMunicipalities,
   getHistoricalRiskWeekly,
@@ -51,6 +57,8 @@ export default async function HistoricalPage() {
     riskWeekly,
     riskMunicipalities,
     riskEpisodeDuration,
+    climateNational,
+    climateRegional,
     quality,
   ] =
     await Promise.all([
@@ -63,6 +71,8 @@ export default async function HistoricalPage() {
       getHistoricalRiskWeekly(),
       getHistoricalRiskMunicipalities(),
       getHistoricalRiskEpisodeDuration(),
+      getHistoricalClimateNationalLags(),
+      getHistoricalClimateRegionalLags(),
       getQualityOverview(),
     ]);
 
@@ -139,11 +149,31 @@ export default async function HistoricalPage() {
   }
 
   if (
-    riskEpisodeDuration.distribution.length
+    riskEpisodeDuration
+      .distribution
+      .length
     === 0
   ) {
     throw new Error(
       "Distribuição da duração dos episódios de risco sem dados.",
+    );
+  }
+
+  if (
+    climateNational.data.length
+    === 0
+  ) {
+    throw new Error(
+      "Contrato nacional de clima e dengue sem dados.",
+    );
+  }
+
+  if (
+    climateRegional.data.length
+    === 0
+  ) {
+    throw new Error(
+      "Contrato regional de clima e dengue sem dados.",
     );
   }
 
@@ -156,7 +186,7 @@ export default async function HistoricalPage() {
         title="Entenda como a dengue se comportou ao longo do tempo."
         description={`Panorama de ${formatPeriod(
           annual.period,
-        )}, com evolução epidemiológica, sazonalidade e comparações territoriais produzidas a partir dos contratos históricos validados.`}
+        )}, com evolução epidemiológica, sazonalidade, comparações territoriais, dinâmica histórica de risco e associações climáticas produzidas a partir dos contratos históricos validados.`}
         note="Os dados desta área representam observações históricas tratadas e validadas. Não são previsões."
       />
 
@@ -217,6 +247,15 @@ export default async function HistoricalPage() {
           }
           episodeDistribution={
             riskEpisodeDuration.distribution
+          }
+        />
+
+        <HistoricalClimateSection
+          nationalData={
+            climateNational.data
+          }
+          regionalData={
+            climateRegional.data
           }
         />
       </Suspense>
