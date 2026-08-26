@@ -569,6 +569,16 @@
   color: var(--foreground-soft);
 }
 
+.selectionUnavailable {
+  margin-top: 1rem;
+  border: 1px solid rgb(164 63 63 / 0.3);
+  border-radius: var(--radius-sm);
+  background: var(--danger-soft);
+  padding: 0.85rem;
+  color: var(--danger);
+  line-height: 1.5;
+}
+
 .interpretation {
   margin-top: 0.85rem;
   border-top: 1px solid var(--border);
