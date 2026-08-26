@@ -30,6 +30,14 @@ import {
 } from "@/components/prediction/prediction-results";
 
 import {
+  PredictionRetrospective,
+} from "@/components/prediction/prediction-retrospective";
+
+import {
+  PredictionScoreEvolution,
+} from "@/components/prediction/prediction-score-evolution";
+
+import {
   filterPredictionTerritories,
   formatPredictionDate,
   formatPredictionWeekLabel,
@@ -1227,6 +1235,32 @@ export function PredictionSelection() {
             municipalitySeries
           }
           week={
+            selectedReferenceWeek.week
+          }
+        />
+      ) : null}
+
+      {selectedTerritory
+      && selectedReferenceWeek
+      && municipalitySeries ? (
+        <PredictionRetrospective
+          series={
+            municipalitySeries
+          }
+          week={
+            selectedReferenceWeek.week
+          }
+        />
+      ) : null}
+
+      {selectedTerritory
+      && selectedReferenceWeek
+      && municipalitySeries ? (
+        <PredictionScoreEvolution
+          series={
+            municipalitySeries
+          }
+          selectedWeek={
             selectedReferenceWeek.week
           }
         />

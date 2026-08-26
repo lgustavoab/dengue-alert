@@ -207,6 +207,36 @@ export function getPredictionPoint(
   };
 }
 
+export function getPredictionHorizonPoints(
+  series: PredictionMunicipalitySeriesContract,
+  horizon: PredictionHorizonKey,
+): PredictionPoint[] {
+  return series
+    .horizontes[
+      horizon
+    ]
+    .data
+    .semana_epidemiologica
+    .map(
+      (week) =>
+        getPredictionPoint(
+          series,
+          horizon,
+          week,
+        ),
+    )
+    .filter(
+      (point): point is PredictionPoint =>
+        point !== null,
+    );
+}
+
+export function predictionMatchesObservedTarget(
+  point: PredictionPoint,
+): boolean {
+  return point.prediction
+    === point.target;
+}
 export function formatPredictionDate(
   value: string,
 ): string {

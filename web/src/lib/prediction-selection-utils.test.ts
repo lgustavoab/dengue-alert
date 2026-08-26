@@ -9,8 +9,10 @@ import {
   findPredictionReferenceWeek,
   formatPredictionWeekLabel,
   getAvailableHorizonsForWeek,
+  getPredictionHorizonPoints,
   getPredictionPoint,
   getPredictionReferenceWeeks,
+  predictionMatchesObservedTarget,
   PREDICTION_HORIZONS,
 } from "@/lib/prediction-selection-utils";
 
@@ -378,6 +380,99 @@ describe(
             );
           }
         }
+      },
+    );
+    it(
+      "extrai a serie completa de cada horizonte preservando a cobertura retrospectiva",
+      async () => {
+        const series =
+          await getPredictionMunicipalitySeries(
+            "3537305",
+          );
+
+        const expectedLengths = {
+          h1:
+            52,
+
+          h2:
+            51,
+
+          h3:
+            50,
+
+          h4:
+            49,
+        } as const;
+
+        for (
+          const horizon
+          of PREDICTION_HORIZONS
+        ) {
+          const points =
+            getPredictionHorizonPoints(
+              series,
+              horizon,
+            );
+
+          expect(
+            points,
+          ).toHaveLength(
+            expectedLengths[
+              horizon
+            ],
+          );
+
+          expect(
+            points.every(
+              (point) =>
+                point.horizon
+                === horizon,
+            ),
+          ).toBe(
+            true,
+          );
+        }
+      },
+    );
+
+    it(
+      "compara a previsao binaria com o estado futuro realmente observado",
+      async () => {
+        const series =
+          await getPredictionMunicipalitySeries(
+            "3537305",
+          );
+
+        const point =
+          getPredictionPoint(
+            series,
+            "h1",
+            1,
+          );
+
+        expect(
+          point,
+        ).not.toBeNull();
+
+        expect(
+          predictionMatchesObservedTarget(
+            point!,
+          ),
+        ).toBe(
+          point!.prediction
+          === point!.target,
+        );
+
+        expect(
+          predictionMatchesObservedTarget({
+            ...point!,
+
+            target:
+              !point!.prediction,
+          }),
+        ).toBe(
+          false,
+        );
       },
     );
   },
