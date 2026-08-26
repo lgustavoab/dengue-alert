@@ -60,39 +60,39 @@ type LoadingStatus =
 
 type TerritoryResponse = {
   schema_version:
-    "1.0";
+  "1.0";
 
   count:
-    number;
+  number;
 
   items:
-    TerritoryFilterItem[];
+  TerritoryFilterItem[];
 };
 
 type TerritoriesState = {
   status:
-    LoadingStatus;
+  LoadingStatus;
 
   items:
-    TerritoryFilterItem[];
+  TerritoryFilterItem[];
 
   error:
-    string | null;
+  string | null;
 };
 
 type PredictionSeriesState = {
   code:
-    string | null;
+  string | null;
 
   status:
-    LoadingStatus;
+  LoadingStatus;
 
   data:
-    PredictionMunicipalitySeriesContract
-    | null;
+  PredictionMunicipalitySeriesContract
+  | null;
 
   error:
-    string | null;
+  string | null;
 };
 
 export function PredictionSelection() {
@@ -162,8 +162,8 @@ export function PredictionSelection() {
     weekParameter === null
       ? null
       : Number(
-          weekParameter,
-        );
+        weekParameter,
+      );
 
   const replaceParameters =
     useCallback(
@@ -386,10 +386,10 @@ export function PredictionSelection() {
         const filtered =
           selectedRegion
             ? territories.filter(
-                (item) =>
-                  item.regiao
-                  === selectedRegion,
-              )
+              (item) =>
+                item.regiao
+                === selectedRegion,
+            )
             : territories;
 
         const byCode =
@@ -639,8 +639,8 @@ export function PredictionSelection() {
 
   const municipalitySeries =
     selectedMunicipality
-    && seriesState.code
-    === selectedMunicipality
+      && seriesState.code
+      === selectedMunicipality
       ? seriesState.data
       : null;
 
@@ -655,8 +655,8 @@ export function PredictionSelection() {
 
   const seriesError =
     selectedMunicipality
-    && seriesState.code
-    === selectedMunicipality
+      && seriesState.code
+      === selectedMunicipality
       ? seriesState.error
       : null;
 
@@ -665,8 +665,8 @@ export function PredictionSelection() {
       () =>
         municipalitySeries
           ? getPredictionReferenceWeeks(
-              municipalitySeries,
-            )
+            municipalitySeries,
+          )
           : [],
       [
         municipalitySeries,
@@ -675,14 +675,14 @@ export function PredictionSelection() {
 
   const selectedWeek =
     rawWeek !== null
-    && Number.isInteger(
-      rawWeek,
-    )
-    && referenceWeeks.some(
-      (item) =>
-        item.week
-        === rawWeek,
-    )
+      && Number.isInteger(
+        rawWeek,
+      )
+      && referenceWeeks.some(
+        (item) =>
+          item.week
+          === rawWeek,
+      )
       ? rawWeek
       : null;
 
@@ -760,18 +760,18 @@ export function PredictionSelection() {
     selectedWeek === null
       ? null
       : referenceWeeks.find(
-          (item) =>
-            item.week
-            === selectedWeek,
-        ) ?? null;
+        (item) =>
+          item.week
+          === selectedWeek,
+      ) ?? null;
 
   const availableHorizons =
     municipalitySeries
-    && selectedWeek !== null
+      && selectedWeek !== null
       ? getAvailableHorizonsForWeek(
-          municipalitySeries,
-          selectedWeek,
-        )
+        municipalitySeries,
+        selectedWeek,
+      )
       : [];
 
   function handleRegionChange(
@@ -1012,8 +1012,8 @@ export function PredictionSelection() {
               selectedWeek === null
                 ? ""
                 : String(
-                    selectedWeek,
-                  )
+                  selectedWeek,
+                )
             }
             options={
               weekOptions
@@ -1031,11 +1031,13 @@ export function PredictionSelection() {
       </FilterBar>
 
       {territoriesState.status
-      === "loading" ? (
+        === "loading" ? (
         <p
           className={
             styles.status
           }
+          role="status"
+          aria-live="polite"
         >
           Carregando municípios com avaliação preditiva disponível…
         </p>
@@ -1046,6 +1048,7 @@ export function PredictionSelection() {
           className={
             styles.error
           }
+          role="alert"
         >
           {
             territoriesState.error
@@ -1054,11 +1057,13 @@ export function PredictionSelection() {
       ) : null}
 
       {seriesStatus
-      === "loading" ? (
+        === "loading" ? (
         <p
           className={
             styles.status
           }
+          role="status"
+          aria-live="polite"
         >
           Carregando a série retrospectiva do município selecionado…
         </p>
@@ -1069,6 +1074,7 @@ export function PredictionSelection() {
           className={
             styles.error
           }
+          role="alert"
         >
           {
             seriesError
@@ -1101,10 +1107,10 @@ export function PredictionSelection() {
       ) : null}
 
       {selectedTerritory
-      && seriesStatus
-      === "ready"
-      && selectedWeek
-      === null ? (
+        && seriesStatus
+        === "ready"
+        && selectedWeek
+        === null ? (
         <section
           className={
             styles.context
@@ -1137,8 +1143,8 @@ export function PredictionSelection() {
       ) : null}
 
       {selectedTerritory
-      && selectedReferenceWeek
-      && municipalitySeries ? (
+        && selectedReferenceWeek
+        && municipalitySeries ? (
         <section
           className={
             styles.context
@@ -1228,8 +1234,8 @@ export function PredictionSelection() {
         </section>
       ) : null}
       {selectedTerritory
-      && selectedReferenceWeek
-      && municipalitySeries ? (
+        && selectedReferenceWeek
+        && municipalitySeries ? (
         <PredictionResults
           series={
             municipalitySeries
@@ -1241,8 +1247,8 @@ export function PredictionSelection() {
       ) : null}
 
       {selectedTerritory
-      && selectedReferenceWeek
-      && municipalitySeries ? (
+        && selectedReferenceWeek
+        && municipalitySeries ? (
         <PredictionRetrospective
           series={
             municipalitySeries
@@ -1254,8 +1260,8 @@ export function PredictionSelection() {
       ) : null}
 
       {selectedTerritory
-      && selectedReferenceWeek
-      && municipalitySeries ? (
+        && selectedReferenceWeek
+        && municipalitySeries ? (
         <PredictionScoreEvolution
           series={
             municipalitySeries
