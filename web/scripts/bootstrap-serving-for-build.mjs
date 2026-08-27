@@ -4,6 +4,11 @@ import { fileURLToPath } from "node:url";
 
 const webRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const repositoryRoot = path.dirname(webRoot);
+const runtimeRoot = path.join(
+  webRoot,
+  ".runtime",
+  "serving",
+);
 const bootstrapScript = path.join(
   repositoryRoot,
   "scripts",
@@ -24,6 +29,8 @@ for (const command of pythonCommands) {
       ...(archivePath
         ? ["--archive", path.resolve(repositoryRoot, archivePath)]
         : []),
+      "--destination",
+      runtimeRoot,
       "--sync-web",
     ],
     {

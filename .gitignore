@@ -48,6 +48,7 @@ node_modules/
 .next/
 out/
 coverage/
+/web/.runtime/
 
 # Operating system
 Thumbs.db

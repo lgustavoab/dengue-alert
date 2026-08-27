@@ -6,8 +6,10 @@ import path from "node:path";
 export const servingRuntimeVersion =
   "serving-runtime-v1.0.0";
 
+const webRoot = process.cwd();
+
 const projectRoot = path.resolve(
-  process.cwd(),
+  webRoot,
   "..",
 );
 
@@ -33,9 +35,16 @@ export function getServingRuntimeRoot(): string {
   }
 
   return path.join(
-    projectRoot,
-    "dist",
-    servingRuntimeVersion,
+    webRoot,
+    ".runtime",
+    "serving",
+  );
+}
+
+export function requiresServingRuntime(): boolean {
+  return (
+    process.env.VERCEL === "1"
+    || process.env.NODE_ENV === "production"
   );
 }
 
@@ -76,10 +85,18 @@ export async function hasServingRuntime(): Promise<boolean> {
 
 export async function getActiveServingRoot(): Promise<string> {
   if (
-    await hasServingRuntime()
+    requiresServingRuntime()
+    || await hasServingRuntime()
   ) {
     return getServingRuntimeRoot();
   }
 
   return canonicalServingRoot;
+}
+
+export async function shouldUseServingRuntime(): Promise<boolean> {
+  return (
+    requiresServingRuntime()
+    || await hasServingRuntime()
+  );
 }

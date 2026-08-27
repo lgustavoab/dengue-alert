@@ -9,8 +9,8 @@ import path from "node:path";
 
 import {
   getServingRuntimeRoot,
-  hasServingRuntime,
   servingRuntimeVersion,
+  shouldUseServingRuntime,
 } from "@/lib/serving/runtime-paths";
 
 type MunicipalityCollection =
@@ -387,7 +387,7 @@ export async function getRuntimeMunicipalityPayload(
   code: string,
 ): Promise<RuntimePayloadResult> {
   if (
-    !await hasServingRuntime()
+    !await shouldUseServingRuntime()
   ) {
     return {
       available: false,

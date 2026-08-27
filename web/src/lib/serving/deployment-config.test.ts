@@ -13,7 +13,9 @@ import nextConfig from "../../../next.config";
 
 describe("configuração de deployment do serving", () => {
   it("mantém o tracing explícito e restrito por rota", () => {
-    expect(nextConfig.outputFileTracingRoot).toBe(path.join(process.cwd(), ".."));
+    expect(nextConfig).not.toHaveProperty(
+      "outputFileTracingRoot",
+    );
     expect(nextConfig.outputFileTracingIncludes).toEqual({
       "/api/serving/territories": [
         "public/data/serving/metadata/territories.json",
@@ -21,18 +23,18 @@ describe("configuração de deployment do serving", () => {
         "public/data/serving/prediction/municipality/index.json",
       ],
       "/api/serving/historical/municipality/*": [
-        "../dist/serving-runtime-v1.0.0/historical/municipalities.ndjson",
-        "../dist/serving-runtime-v1.0.0/historical/municipalities.index.json",
+        ".runtime/serving/historical/municipalities.ndjson",
+        ".runtime/serving/historical/municipalities.index.json",
       ],
       "/api/serving/prediction/municipality/*": [
-        "../dist/serving-runtime-v1.0.0/prediction/municipalities.ndjson",
-        "../dist/serving-runtime-v1.0.0/prediction/municipalities.index.json",
+        ".runtime/serving/prediction/municipalities.ndjson",
+        ".runtime/serving/prediction/municipalities.index.json",
       ],
       "/api/serving/prediction/map": [
-        "../dist/serving-runtime-v1.0.0/prediction/map/index.json",
+        ".runtime/serving/prediction/map/index.json",
       ],
       "/api/serving/prediction/map/*/*": [
-        "../dist/serving-runtime-v1.0.0/prediction/map/h*/se*.json",
+        ".runtime/serving/prediction/map/h*/se*.json",
       ],
     });
     expect(nextConfig.outputFileTracingExcludes).toEqual({
@@ -40,20 +42,16 @@ describe("configuração de deployment do serving", () => {
         "public/data/serving/**/*",
       ],
       "/api/serving/historical/municipality/*": [
-        "../data/serving/**/*",
-        "../dist/serving-runtime-v1.0.0/**/*",
+        ".runtime/serving/**/*",
       ],
       "/api/serving/prediction/municipality/*": [
-        "../data/serving/**/*",
-        "../dist/serving-runtime-v1.0.0/**/*",
+        ".runtime/serving/**/*",
       ],
       "/api/serving/prediction/map": [
-        "../data/serving/prediction/map/**/*",
-        "../dist/serving-runtime-v1.0.0/**/*",
+        ".runtime/serving/**/*",
       ],
       "/api/serving/prediction/map/*/*": [
-        "../data/serving/prediction/map/**/*",
-        "../dist/serving-runtime-v1.0.0/**/*",
+        ".runtime/serving/**/*",
       ],
     });
     expect(nextConfig).not.toHaveProperty("output");
@@ -66,15 +64,12 @@ describe("configuração de deployment do serving", () => {
       "municipality/series",
     );
     expect(serializedIncludes).not.toContain(
-      "../data/serving/historical",
-    );
-    expect(serializedIncludes).not.toContain(
-      "../data/serving/prediction/municipality",
+      "../",
     );
   });
 
   it("mantém artefatos locais fora do upload da Vercel", () => {
-    const ignoredPaths = new Set(
+    const uploadRules = new Set(
       readFileSync(
         path.join(process.cwd(), "..", ".vercelignore"),
         "utf-8",
@@ -83,13 +78,28 @@ describe("configuração de deployment do serving", () => {
         .filter(Boolean),
     );
 
-    expect([...ignoredPaths]).toEqual(expect.arrayContaining([
+    expect([...uploadRules]).toEqual(expect.arrayContaining([
       "/.venv/",
       "/SINAN/",
       "/data/",
       "/web/.next/",
       "/web/node_modules/",
       "/web/public/data/serving/",
+      "/web/.runtime/",
+      "/.gitattributes",
+      "/.python-version",
+      "/README.md",
+      "/pyproject.toml",
+      "/uv.lock",
+      "/scripts/*",
+      "!/scripts/bootstrap_serving_runtime.py",
+      "!/scripts/package_serving_runtime.py",
+      "!/scripts/package_serving_snapshot.py",
+      "!/scripts/sync_web_serving.py",
+      "!/scripts/sync_web_geography.py",
+      "/artifacts/serving/*",
+      "!/artifacts/serving/serving-runtime-v1.0.0-distribution.json",
+      "!/artifacts/serving/serving-runtime-v1.0.0.json",
     ]));
   });
 
@@ -133,6 +143,16 @@ describe("configuração de deployment do serving", () => {
     );
     expect(
       wrapper,
+    ).toContain(
+      '".runtime"',
+    );
+    expect(
+      wrapper,
+    ).toContain(
+      '"--destination"',
+    );
+    expect(
+      wrapper,
     ).not.toContain(
       "bootstrap_serving_snapshot.py",
     );
@@ -140,6 +160,20 @@ describe("configuração de deployment do serving", () => {
       wrapper,
     ).not.toContain(
       "serving-v1.0.0.zip",
+    );
+  });
+
+  it("exclui artefatos gerados da detecção de fontes do Tailwind", () => {
+    const globalStyles = readFileSync(
+      path.join(process.cwd(), "src", "app", "globals.css"),
+      "utf-8",
+    );
+
+    expect(globalStyles).toContain(
+      '@source not "../../.runtime";',
+    );
+    expect(globalStyles).toContain(
+      '@source not "../../public/data/serving";',
     );
   });
 });
