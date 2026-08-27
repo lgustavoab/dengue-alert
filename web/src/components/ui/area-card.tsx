@@ -33,7 +33,11 @@ export function AreaCard({
         </div>
       </div>
 
-      <Link href={href} className="area-card__link">
+      <Link
+        href={href}
+        className="area-card__link"
+        aria-label={`Explorar ${title}`}
+      >
         Explorar área
         <span aria-hidden="true">→</span>
       </Link>
