@@ -80,7 +80,7 @@ export function QualityOverview({
           id="quality-overview-title"
           eyebrow={`Visão geral · ${formatPeriod(overview.period)}`}
           title="Rastreabilidade da base analítica"
-          description="Indicadores estruturais consolidados antes das análises históricas e preditivas. Todos os valores vêm do contrato de visão geral auditado."
+          description="Indicadores estruturais consolidados antes das análises históricas e preditivas. Todos os valores vêm dos dados de visão geral previamente auditados."
         />
         <div className="metric-grid">
           <MetricCard label="Registros SINAN brutos" value={formatInteger(overviewData.registros_sinan_brutos)} description="Base inicial antes dos filtros documentados." />

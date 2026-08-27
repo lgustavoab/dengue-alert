@@ -1082,7 +1082,7 @@ export function HistoricalRiskAnalysis({
                 styles.note
               }
             >
-              O resumo municipal de risco utiliza todo o período histórico elegível do contrato. Por isso, ele não deve ser interpretado como a situação atual do município.
+              O resumo municipal de risco utiliza todo o período histórico elegível disponível. Por isso, ele não deve ser interpretado como a situação atual do município.
             </p>
           </>
         ) : (
@@ -1091,7 +1091,7 @@ export function HistoricalRiskAnalysis({
               styles.unavailable
             }
           >
-            Não existe resumo histórico de risco elegível para este município no contrato serving. Isso pode ocorrer quando a unidade não possui histórico suficiente para a definição do alvo.
+            Não existe resumo histórico de risco elegível disponível para este município. Isso pode ocorrer quando a unidade não possui histórico suficiente para a definição do alvo.
           </div>
         )
       ) : (
