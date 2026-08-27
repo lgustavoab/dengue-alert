@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.error
+import urllib.parse
+import urllib.request
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -27,6 +31,15 @@ from package_serving_runtime import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_DISTRIBUTION_PATH = (
+    PROJECT_ROOT / "artifacts" / "serving" / "serving-runtime-v1.0.0-distribution.json"
+)
+SOURCE_SNAPSHOT_VERSION = "serving-v1.0.0"
+RELEASE_BASE_URL = (
+    f"https://github.com/lgustavoab/dengue-alert/releases/download/{RUNTIME_VERSION}"
+)
+DOWNLOAD_CHUNK_SIZE = 1024 * 1024
+DOWNLOAD_TIMEOUT_SECONDS = 300
 SYNC_SCRIPTS = (
     "sync_web_serving.py",
     "sync_web_geography.py",
@@ -45,6 +58,7 @@ class RuntimeBootstrapResult:
     destination: Path
     archive_sha256: str | None
     archive_size_bytes: int | None
+    source: str
     synced_web: bool
 
 
@@ -96,6 +110,170 @@ def validate_archive_sidecar(archive_path: Path) -> tuple[str, int]:
         raise RuntimeBootstrapError("SHA-256 externo diverge do archive runtime")
 
     return digest, size
+
+
+def load_distribution_descriptor(path: Path) -> dict[str, Any]:
+    """Carrega e valida o descriptor imutável da Release runtime."""
+    try:
+        descriptor = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RuntimeBootstrapError(
+            f"Descriptor de distribuição inválido: {path}"
+        ) from error
+
+    expected_values = {
+        "schema_version": "1.0",
+        "runtime_version": RUNTIME_VERSION,
+        "source_snapshot_version": SOURCE_SNAPSHOT_VERSION,
+        "asset_name": f"{RUNTIME_VERSION}.zip",
+        "checksum_asset_name": f"{RUNTIME_VERSION}.zip.sha256",
+    }
+
+    if not isinstance(descriptor, dict):
+        raise RuntimeBootstrapError("Descriptor de distribuição não é objeto JSON")
+
+    for field, expected in expected_values.items():
+        if descriptor.get(field) != expected:
+            raise RuntimeBootstrapError(
+                f"Descriptor de distribuição incompatível: {field}"
+            )
+
+    for field in (
+        "archive_size_bytes",
+        "checksum_size_bytes",
+        "file_count",
+        "uncompressed_size_bytes",
+    ):
+        value = descriptor.get(field)
+
+        if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+            raise RuntimeBootstrapError(
+                f"Descriptor possui valor numérico inválido: {field}"
+            )
+
+    for field in ("archive_sha256", "checksum_sha256"):
+        value = descriptor.get(field)
+
+        if (
+            not isinstance(value, str)
+            or len(value) != 64
+            or any(character not in "0123456789abcdef" for character in value)
+        ):
+            raise RuntimeBootstrapError(f"Descriptor possui SHA-256 inválido: {field}")
+
+    expected_urls = {
+        "download_url": f"{RELEASE_BASE_URL}/{descriptor['asset_name']}",
+        "checksum_url": f"{RELEASE_BASE_URL}/{descriptor['checksum_asset_name']}",
+    }
+
+    for field, expected in expected_urls.items():
+        value = descriptor.get(field)
+
+        if value != expected or urllib.parse.urlparse(value).scheme != "https":
+            raise RuntimeBootstrapError(f"Descriptor possui URL inválida: {field}")
+
+    return descriptor
+
+
+def download_verified_file(
+    url: str,
+    destination: Path,
+    expected_size: int,
+    expected_sha256: str,
+) -> None:
+    """Baixa um asset HTTPS com limite exato e validação SHA-256."""
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "Dengue-Alert-Runtime-Bootstrap/1.0"},
+    )
+    digest = hashlib.sha256()
+    size = 0
+
+    try:
+        with (
+            urllib.request.urlopen(request, timeout=DOWNLOAD_TIMEOUT_SECONDS) as source,
+            destination.open("xb") as target,
+        ):
+            content_length = source.headers.get("Content-Length")
+
+            if content_length is not None and int(content_length) != expected_size:
+                raise RuntimeBootstrapError(
+                    f"Tamanho HTTP divergente para {destination.name}"
+                )
+
+            while chunk := source.read(DOWNLOAD_CHUNK_SIZE):
+                size += len(chunk)
+
+                if size > expected_size:
+                    raise RuntimeBootstrapError(
+                        f"Download excedeu o tamanho esperado: {destination.name}"
+                    )
+
+                digest.update(chunk)
+                target.write(chunk)
+    except RuntimeBootstrapError:
+        destination.unlink(missing_ok=True)
+        raise
+    except (OSError, urllib.error.URLError, ValueError) as error:
+        destination.unlink(missing_ok=True)
+        raise RuntimeBootstrapError(
+            f"Falha ao baixar runtime: {destination.name}"
+        ) from error
+
+    if size != expected_size or digest.hexdigest() != expected_sha256:
+        destination.unlink(missing_ok=True)
+        raise RuntimeBootstrapError(
+            f"Tamanho ou SHA-256 remoto divergente: {destination.name}"
+        )
+
+
+def download_runtime_release(
+    descriptor: dict[str, Any],
+    destination: Path,
+) -> Path:
+    """Baixa ZIP e sidecar públicos para uma staging efêmera."""
+    archive_path = destination / descriptor["asset_name"]
+    sidecar_path = destination / descriptor["checksum_asset_name"]
+    download_verified_file(
+        descriptor["download_url"],
+        archive_path,
+        descriptor["archive_size_bytes"],
+        descriptor["archive_sha256"],
+    )
+    download_verified_file(
+        descriptor["checksum_url"],
+        sidecar_path,
+        descriptor["checksum_size_bytes"],
+        descriptor["checksum_sha256"],
+    )
+    digest, size = validate_archive_sidecar(archive_path)
+
+    if (
+        digest != descriptor["archive_sha256"]
+        or size != descriptor["archive_size_bytes"]
+    ):
+        raise RuntimeBootstrapError("Sidecar remoto diverge do descriptor")
+
+    return archive_path
+
+
+def validate_distribution_inventory(
+    runtime_root: Path,
+    descriptor: dict[str, Any],
+) -> None:
+    """Confirma o inventário extraído declarado pela distribuição."""
+    files = [path for path in runtime_root.rglob("*") if path.is_file()]
+    total_size = sum(path.stat().st_size for path in files)
+
+    if len(files) != descriptor["file_count"]:
+        raise RuntimeBootstrapError(
+            "Quantidade extraída diverge do descriptor de distribuição"
+        )
+
+    if total_size != descriptor["uncompressed_size_bytes"]:
+        raise RuntimeBootstrapError(
+            "Tamanho extraído diverge do descriptor de distribuição"
+        )
 
 
 def _safe_extract_destination(root: Path, archive_name: str) -> Path:
@@ -184,6 +362,7 @@ def run_web_sync(project_root: Path, runtime_root: Path) -> None:
 def bootstrap_runtime(
     archive_path: Path | None,
     manifest_path: Path = DEFAULT_MANIFEST_PATH,
+    distribution_path: Path = DEFAULT_DISTRIBUTION_PATH,
     destination: Path = DEFAULT_OUTPUT_ROOT,
     project_root: Path = PROJECT_ROOT,
     sync_web: bool = False,
@@ -202,18 +381,55 @@ def bootstrap_runtime(
             destination=destination,
             archive_sha256=None,
             archive_size_bytes=None,
+            source="existing",
             synced_web=sync_web,
         )
 
-    if archive_path is None:
-        raise RuntimeBootstrapError(
-            "Runtime ausente; informe --archive local. A fonte remota será ativada "
-            "somente após a publicação autorizada do runtime."
-        )
-
-    archive_path = archive_path.resolve(strict=True)
-    archive_sha256, archive_size = validate_archive_sidecar(archive_path)
     destination.parent.mkdir(parents=True, exist_ok=True)
+
+    if archive_path is None:
+        descriptor = load_distribution_descriptor(distribution_path)
+
+        with tempfile.TemporaryDirectory(
+            prefix=f".{RUNTIME_VERSION}-download.",
+            dir=destination.parent,
+        ) as temporary:
+            archive_path = download_runtime_release(
+                descriptor,
+                Path(temporary),
+            )
+            return install_runtime_archive(
+                archive_path,
+                manifest,
+                destination,
+                project_root,
+                sync_web,
+                source="remote",
+                distribution_descriptor=descriptor,
+            )
+
+    return install_runtime_archive(
+        archive_path.resolve(strict=True),
+        manifest,
+        destination,
+        project_root,
+        sync_web,
+        source="local",
+        distribution_descriptor=None,
+    )
+
+
+def install_runtime_archive(
+    archive_path: Path,
+    manifest: dict[str, Any],
+    destination: Path,
+    project_root: Path,
+    sync_web: bool,
+    source: str,
+    distribution_descriptor: dict[str, Any] | None,
+) -> RuntimeBootstrapResult:
+    """Valida e instala um archive local ou baixado em staging."""
+    archive_sha256, archive_size = validate_archive_sidecar(archive_path)
 
     with tempfile.TemporaryDirectory(
         prefix=f".{RUNTIME_VERSION}-restore.",
@@ -225,6 +441,13 @@ def bootstrap_runtime(
             staging_parent,
             manifest,
         )
+
+        if distribution_descriptor is not None:
+            validate_distribution_inventory(
+                restored_root,
+                distribution_descriptor,
+            )
+
         restored_root.replace(destination)
 
     validate_runtime_tree(destination, manifest)
@@ -237,6 +460,7 @@ def bootstrap_runtime(
         destination=destination,
         archive_sha256=archive_sha256,
         archive_size_bytes=archive_size,
+        source=source,
         synced_web=sync_web,
     )
 
@@ -246,6 +470,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST_PATH)
+    parser.add_argument(
+        "--distribution",
+        type=Path,
+        default=DEFAULT_DISTRIBUTION_PATH,
+    )
     parser.add_argument("--destination", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--sync-web", action="store_true")
     return parser.parse_args()
@@ -257,6 +486,7 @@ def main() -> None:
     result = bootstrap_runtime(
         archive_path=args.archive,
         manifest_path=args.manifest,
+        distribution_path=args.distribution,
         destination=args.destination,
         project_root=PROJECT_ROOT,
         sync_web=args.sync_web,
@@ -268,6 +498,7 @@ def main() -> None:
                 "archive_size_bytes": result.archive_size_bytes,
                 "destination": str(result.destination),
                 "runtime_version": RUNTIME_VERSION,
+                "source": result.source,
                 "status": result.status,
                 "synced_web": result.synced_web,
             },

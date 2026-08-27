@@ -125,17 +125,25 @@ O fluxo alvo é:
 
 ```text
 Vercel
-→ bootstrap de serving-runtime-v1.0.0
+→ descriptor versionado da distribuição
+→ Release pública serving-runtime-v1.0.0
+→ download e validação do ZIP + sidecar SHA-256
 → aproximadamente 235 arquivos extraídos
 → reconstrução dos 27 assets públicos
 → next build
 ```
 
-Durante a Fase 15C.7c, o wrapper aceita somente um archive local explícito por `DENGUE_SERVING_RUNTIME_ARCHIVE` ou um runtime já instalado e validado. Não existe URL remota fictícia e o snapshot canônico de 11.369 arquivos não é baixado pelo novo `build:vercel`.
+O descriptor de distribuição é versionado separadamente em:
 
-A ativação remota depende de uma futura Release separada, descriptor com URL HTTPS, tamanho e SHA-256, e autorização explícita em subfase posterior.
+```text
+artifacts/serving/serving-runtime-v1.0.0-distribution.json
+```
 
-## 9. Git e distribuição futura
+Ele aponta para a URL pública e permanente da Release, registra tamanhos e SHA-256 do ZIP e do sidecar e identifica `serving-v1.0.0` como snapshot canônico de origem. O bootstrap recusa versão, nomes, URLs, tamanhos ou hashes divergentes, extrai em staging segura e valida novamente o manifest e todos os arquivos internos.
+
+Sem `--archive`, `bootstrap_serving_runtime.py` usa essa distribuição remota. Um archive local explícito continua disponível para testes controlados por `--archive` ou `DENGUE_SERVING_RUNTIME_ARCHIVE`. O snapshot canônico de 11.369 arquivos nunca é baixado por `build:vercel`.
+
+## 9. Git e distribuição
 
 O Git versiona somente:
 
@@ -143,7 +151,10 @@ O Git versiona somente:
 - leitor TypeScript;
 - testes;
 - manifest técnico pequeno;
+- descriptor pequeno da distribuição pública;
 - configuração de tracing;
 - este protocolo.
 
-Packs, árvore extraída e ZIP permanecem em `dist/`, já ignorado. A futura distribuição deverá usar outra Release e outro asset, por exemplo `serving-runtime-v1.0.0.zip`, sem alterar a Release canônica `serving-v1.0.0`.
+Packs, árvore extraída e ZIP permanecem em `dist/`, já ignorado. A Release pública [`serving-runtime-v1.0.0`](https://github.com/lgustavoab/dengue-alert/releases/tag/serving-runtime-v1.0.0) contém somente `serving-runtime-v1.0.0.zip` e seu sidecar SHA-256. Ela é uma derivação operacional imutável; qualquer mudança futura exige nova versão.
+
+A Release canônica `serving-v1.0.0` permanece separada e inalterada. O runtime não a substitui, não altera os contratos científicos e não introduz object storage ou Large Functions.
