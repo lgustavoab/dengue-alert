@@ -104,15 +104,20 @@ adicionados ao repositório.
 
 O descriptor externo
 `artifacts/serving/serving-v1.0.0-distribution.json` registra versão, nome,
-tamanho e SHA-256 reais do asset local. Ele permanece separado do manifest
-interno e ainda não possui URL ou tag de Release.
+tamanho, SHA-256 e a URL HTTPS estável do asset publicado. Ele permanece
+separado do manifest interno, portanto a localização de distribuição não altera
+a identidade nem os hashes científicos.
+
+A versão está publicada na Release
+`https://github.com/lgustavoab/dengue-alert/releases/tag/serving-v1.0.0`. O ZIP
+canônico é `serving-v1.0.0.zip`, com 53.427.094 bytes e SHA-256
+`68eb1ffc3fc7d3104c8099467d01a0ef1a3cb282f5768af8dd95bc6697d08f4f`.
+Essa versão é imutável; qualquer conteúdo diferente exige uma nova versão.
 
 O bootstrap seguro está descrito em `docs/40_protocolo_bootstrap_serving.md`.
-Ele aceita arquivo local ou URL HTTPS explícita, verifica o descriptor antes de
-abrir o ZIP e somente promove uma restauração integralmente validada.
-
-Uma fase posterior poderá publicar o ZIP como asset de uma GitHub Release e
-acrescentar ao processo uma URL real. Este protocolo não publica o artefato.
+Ele usa por padrão a URL HTTPS do descriptor, também aceita arquivo local ou URL
+HTTPS explícita, verifica o descriptor antes de abrir o ZIP e somente promove
+uma restauração integralmente validada.
 
 ## Conteúdo versionado no Git
 
@@ -122,7 +127,7 @@ São versionados apenas:
 - o script de bootstrap;
 - seus testes;
 - o manifest JSON completo;
-- o descriptor externo sem URL;
+- o descriptor externo com URL HTTPS estável;
 - este protocolo técnico.
 
 Permanecem fora do Git o serving canônico, o ZIP, o sidecar de hash, cópias

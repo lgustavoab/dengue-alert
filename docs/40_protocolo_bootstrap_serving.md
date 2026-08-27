@@ -16,11 +16,17 @@ Três elementos independentes participam da validação:
    controles externos.
 
 O descriptor atual é
-`artifacts/serving/serving-v1.0.0-distribution.json`. Ele contém dados reais do
-asset local `serving-v1.0.0.zip`, mas deliberadamente não contém URL. A URL só
-será registrada quando uma Release real existir.
+`artifacts/serving/serving-v1.0.0-distribution.json`. Ele contém os dados reais
+e a URL HTTPS estável do asset `serving-v1.0.0.zip` publicado na GitHub Release
+`serving-v1.0.0`.
 
 ## Interface
+
+Instalação pela URL registrada no descriptor:
+
+```text
+uv run python scripts/bootstrap_serving_snapshot.py
+```
 
 Validação e instalação a partir do snapshot local:
 
@@ -53,8 +59,8 @@ uv run python scripts/bootstrap_serving_snapshot.py \
   --sync-web
 ```
 
-Uma fonte remota futura poderá ser informada por `--url <URL-HTTPS>`. Não há URL
-padrão ou fictícia no código ou nos artefatos versionados.
+Uma URL HTTPS explícita ainda pode ser informada por `--url <URL-HTTPS>`. Essa
+opção substitui a URL do descriptor apenas para a execução atual.
 
 `--project-root` e `--destination` permitem validação em workspace isolado. O
 sync exige que o destino seja exatamente `<project-root>/data/serving`.
@@ -107,11 +113,15 @@ fora de 2xx, `Content-Length` divergente, redirecionamento final não HTTPS,
 arquivo parcial ou hash incorreto interrompem a execução e removem a cópia
 temporária.
 
-## Limite atual de clean clone
+## Prova em ambiente limpo
 
-O bootstrap está tecnicamente pronto e o snapshot local restaura um workspace
-sem serving. O caminho HTTPS possui testes isolados sem dependência de Internet.
+A Fase 15C.5 validou o fluxo em um segundo workspace sem `data/serving`, sem
+`dist` e sem cópia manual de dados do workspace original. O ZIP foi obtido pela
+URL pública da Release, validado integralmente, promovido para `data/serving` e
+sincronizado para `web/public/data/serving`. Dependências instaladas pelos
+lockfiles, lint, testes, build e smoke test confirmaram a aplicação executável.
 
-Um clone obtido pela Internet ainda não recupera o snapshot automaticamente,
-pois não existe GitHub Release nem URL real. Publicação e validação completa de
-clean clone pertencem à Fase 15C.5.
+Essa prova estabelece a reprodutibilidade do produto: Git, dependências
+versionadas, snapshot publicado e bootstrap produzem a aplicação buildável. Ela
+não afirma que o pipeline científico bruto inteiro seja reproduzível pelo Git;
+`data/raw`, `data/interim` e `data/processed` continuam fora desse escopo.

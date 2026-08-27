@@ -59,6 +59,7 @@ class DistributionDescriptor:
     schema_version: str
     snapshot_version: str
     asset_name: str
+    download_url: str
     archive_sha256: str
     archive_size_bytes: int
     scientific_file_count: int
@@ -101,6 +102,7 @@ def load_distribution_descriptor(path: Path) -> DistributionDescriptor:
         "schema_version",
         "snapshot_version",
         "asset_name",
+        "download_url",
         "archive_sha256",
         "archive_size_bytes",
         "scientific_file_count",
@@ -114,6 +116,7 @@ def load_distribution_descriptor(path: Path) -> DistributionDescriptor:
         "schema_version",
         "snapshot_version",
         "asset_name",
+        "download_url",
         "archive_sha256",
     )
 
@@ -149,10 +152,14 @@ def load_distribution_descriptor(path: Path) -> DistributionDescriptor:
     if re.fullmatch(r"[0-9a-f]{64}", archive_sha256) is None:
         raise BootstrapError("SHA-256 externo inválido no descriptor")
 
+    download_url = payload["download_url"]
+    _validate_https_url(download_url)
+
     return DistributionDescriptor(
         schema_version=payload["schema_version"],
         snapshot_version=payload["snapshot_version"],
         asset_name=asset_name,
+        download_url=download_url,
         archive_sha256=archive_sha256,
         archive_size_bytes=payload["archive_size_bytes"],
         scientific_file_count=payload["scientific_file_count"],
@@ -393,12 +400,16 @@ def _obtain_archive(
     descriptor: DistributionDescriptor,
 ) -> Path:
     """Seleciona arquivo local ou baixa cópia temporária HTTPS."""
-    if (local_archive is None) == (url is None):
-        raise BootstrapError("Informe exatamente uma fonte: --archive ou --url")
+    if local_archive is not None and url is not None:
+        raise BootstrapError(
+            "Informe no máximo uma fonte explícita: --archive ou --url"
+        )
 
     if local_archive is not None:
         validate_external_archive(local_archive, descriptor)
         return local_archive
+
+    remote_url = url or descriptor.download_url
 
     temporary = Path(
         stack.enter_context(
@@ -406,7 +417,7 @@ def _obtain_archive(
         )
     )
     downloaded = temporary / descriptor.asset_name
-    download_https_snapshot(str(url), downloaded, descriptor)
+    download_https_snapshot(remote_url, downloaded, descriptor)
     return downloaded
 
 
@@ -495,7 +506,7 @@ def bootstrap_snapshot(
 def parse_args() -> argparse.Namespace:
     """Define a interface local/remota, verify, replace e sync."""
     parser = argparse.ArgumentParser(description=__doc__)
-    source = parser.add_mutually_exclusive_group(required=True)
+    source = parser.add_mutually_exclusive_group()
     source.add_argument("--archive", type=Path)
     source.add_argument("--url")
     parser.add_argument("--descriptor", type=Path, default=DEFAULT_DESCRIPTOR_PATH)

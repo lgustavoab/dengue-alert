@@ -70,6 +70,7 @@ def create_bundle(tmp_path: Path) -> dict[str, Any]:
         "schema_version": snapshot.SCHEMA_VERSION,
         "snapshot_version": snapshot.SNAPSHOT_VERSION,
         "asset_name": archive_path.name,
+        "download_url": "https://example.test/snapshot.zip",
         "archive_sha256": result.archive_sha256,
         "archive_size_bytes": result.archive_size_bytes,
         "scientific_file_count": result.file_count,
@@ -149,6 +150,81 @@ def test_valid_local_bootstrap_installs_missing_destination(tmp_path: Path) -> N
         )
         == "valid"
     )
+
+
+def test_distribution_descriptor_uses_published_https_asset() -> None:
+    """Descriptor versionado deve apontar para o asset público e estável."""
+    descriptor = bootstrap.load_distribution_descriptor(
+        bootstrap.DEFAULT_DESCRIPTOR_PATH
+    )
+
+    assert descriptor.download_url == (
+        "https://github.com/lgustavoab/dengue-alert/releases/download/"
+        "serving-v1.0.0/serving-v1.0.0.zip"
+    )
+    assert descriptor.snapshot_version == "serving-v1.0.0"
+    assert descriptor.archive_sha256 == (
+        "68eb1ffc3fc7d3104c8099467d01a0ef1a3cb282f5768af8dd95bc6697d08f4f"
+    )
+
+
+def test_descriptor_rejects_insecure_download_url(tmp_path: Path) -> None:
+    """URL registrada no descriptor não pode abandonar HTTPS."""
+    bundle = create_bundle(tmp_path)
+    refresh_descriptor(bundle, download_url="http://example.test/snapshot.zip")
+
+    with pytest.raises(bootstrap.BootstrapError, match="HTTPS"):
+        bootstrap.load_distribution_descriptor(bundle["descriptor"])
+
+
+def test_descriptor_url_does_not_change_scientific_identity(tmp_path: Path) -> None:
+    """Distribuição pode mudar sem alterar hashes ou contagens científicas."""
+    bundle = create_bundle(tmp_path)
+    original, manifest = bootstrap.load_bootstrap_metadata(
+        bundle["descriptor"], bundle["manifest"]
+    )
+    refresh_descriptor(
+        bundle,
+        download_url="https://cdn.example.test/serving-v1.0.0.zip",
+    )
+    changed, changed_manifest = bootstrap.load_bootstrap_metadata(
+        bundle["descriptor"], bundle["manifest"]
+    )
+
+    assert changed_manifest == manifest
+    assert changed.archive_sha256 == original.archive_sha256
+    assert changed.archive_size_bytes == original.archive_size_bytes
+    assert changed.scientific_file_count == original.scientific_file_count
+    assert changed.uncompressed_size_bytes == original.uncompressed_size_bytes
+
+
+def test_bootstrap_uses_descriptor_url_when_source_is_omitted(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Ausência de flag deve baixar a URL HTTPS confiável do descriptor."""
+    bundle = create_bundle(tmp_path)
+    destination = tmp_path / "workspace" / "data" / "serving"
+    requested_urls: list[str] = []
+
+    def fake_download(
+        url: str,
+        downloaded: Path,
+        _descriptor: bootstrap.DistributionDescriptor,
+    ) -> None:
+        requested_urls.append(url)
+        downloaded.write_bytes(bundle["archive"].read_bytes())
+
+    monkeypatch.setattr(bootstrap, "download_https_snapshot", fake_download)
+    result = bootstrap.bootstrap_snapshot(
+        descriptor_path=bundle["descriptor"],
+        manifest_path=bundle["manifest"],
+        destination=destination,
+        project_root=destination.parents[1],
+    )
+
+    assert result.status == "installed"
+    assert requested_urls == [bundle["descriptor_payload"]["download_url"]]
 
 
 def test_wrong_external_hash_stops_before_destination(tmp_path: Path) -> None:
