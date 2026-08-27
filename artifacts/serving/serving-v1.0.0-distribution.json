@@ -1,0 +1,9 @@
+{
+  "archive_sha256": "68eb1ffc3fc7d3104c8099467d01a0ef1a3cb282f5768af8dd95bc6697d08f4f",
+  "archive_size_bytes": 53427094,
+  "asset_name": "serving-v1.0.0.zip",
+  "schema_version": "1.0",
+  "scientific_file_count": 11369,
+  "snapshot_version": "serving-v1.0.0",
+  "uncompressed_size_bytes": 279517486
+}

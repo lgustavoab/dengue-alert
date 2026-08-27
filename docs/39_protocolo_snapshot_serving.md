@@ -100,23 +100,29 @@ O comando cria:
 O diretório `dist/` já é ignorado pelo Git. O ZIP e seu sidecar não devem ser
 adicionados ao repositório.
 
-## Distribuição e bootstrap futuros
+## Distribuição e bootstrap
 
-Uma fase posterior poderá publicar o ZIP como asset de uma GitHub Release. O
-descriptor de distribuição será separado do manifest interno e só será criado
-quando existirem URL, tag, tamanho e SHA-256 externos reais.
+O descriptor externo
+`artifacts/serving/serving-v1.0.0-distribution.json` registra versão, nome,
+tamanho e SHA-256 reais do asset local. Ele permanece separado do manifest
+interno e ainda não possui URL ou tag de Release.
 
-A Fase 15C.4 implementará o bootstrap responsável por baixar, verificar,
-extrair e promover o snapshot em um clone limpo. Este protocolo define o formato
-que esse bootstrap deverá consumir, mas não publica nem instala o artefato.
+O bootstrap seguro está descrito em `docs/40_protocolo_bootstrap_serving.md`.
+Ele aceita arquivo local ou URL HTTPS explícita, verifica o descriptor antes de
+abrir o ZIP e somente promove uma restauração integralmente validada.
+
+Uma fase posterior poderá publicar o ZIP como asset de uma GitHub Release e
+acrescentar ao processo uma URL real. Este protocolo não publica o artefato.
 
 ## Conteúdo versionado no Git
 
 São versionados apenas:
 
 - o script de empacotamento;
+- o script de bootstrap;
 - seus testes;
 - o manifest JSON completo;
+- o descriptor externo sem URL;
 - este protocolo técnico.
 
 Permanecem fora do Git o serving canônico, o ZIP, o sidecar de hash, cópias

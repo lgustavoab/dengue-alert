@@ -50,6 +50,7 @@ TEMPORARY_SUFFIXES = (".bak", ".swp", ".temp", ".tmp", "~")
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 ZIP_MODE = stat.S_IFREG | 0o644
 CHUNK_SIZE = 1024 * 1024
+MAX_CONTROL_FILE_SIZE = 16 * 1024 * 1024
 
 
 class SnapshotError(RuntimeError):
@@ -360,7 +361,7 @@ def create_snapshot_archive(
         temporary_path.unlink(missing_ok=True)
 
 
-def _manifest_file_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
+def manifest_file_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Valida e indexa as entradas de arquivo do manifest."""
     files = manifest.get("files")
 
@@ -396,9 +397,17 @@ def _manifest_file_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return indexed
 
 
-def _validate_zip_entry(info: zipfile.ZipInfo) -> None:
+def validate_zip_entry(info: zipfile.ZipInfo) -> None:
     """Rejeita entradas ZIP capazes de escapar ou representar links."""
+    if info.flag_bits & 0x1:
+        raise SnapshotError(f"Entrada ZIP criptografada não permitida: {info.filename}")
+
+    if info.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}:
+        raise SnapshotError(f"Compressão ZIP não permitida: {info.filename}")
+
     if info.filename in {MANIFEST_NAME, CHECKSUMS_NAME}:
+        if info.file_size > MAX_CONTROL_FILE_SIZE:
+            raise SnapshotError(f"Arquivo de controle excede o limite: {info.filename}")
         return
 
     validate_archive_path(info.filename)
@@ -425,20 +434,52 @@ def verify_snapshot_archive(
             raise SnapshotError("Snapshot contém entradas duplicadas")
 
         for info in infos:
-            _validate_zip_entry(info)
+            validate_zip_entry(info)
 
         if MANIFEST_NAME not in names or CHECKSUMS_NAME not in names:
             raise SnapshotError("Snapshot não contém manifest e SHA256SUMS")
+
+        if expected_manifest is not None:
+            expected_indexed = manifest_file_map(expected_manifest)
+            expected_names = [MANIFEST_NAME, CHECKSUMS_NAME, *expected_indexed]
+
+            if names != expected_names:
+                raise SnapshotError(
+                    "Snapshot não contém exatamente os caminhos esperados"
+                )
+
+            infos_by_name = {info.filename: info for info in infos}
+
+            if infos_by_name[MANIFEST_NAME].file_size != len(
+                manifest_bytes(expected_manifest)
+            ):
+                raise SnapshotError("Tamanho declarado do manifest interno diverge")
+
+            if infos_by_name[CHECKSUMS_NAME].file_size != len(
+                checksums_bytes(expected_manifest)
+            ):
+                raise SnapshotError("Tamanho declarado de SHA256SUMS diverge")
+
+            for path, entry in expected_indexed.items():
+                if infos_by_name[path].file_size != entry["size_bytes"]:
+                    raise SnapshotError(f"Tamanho declarado diverge no ZIP: {path}")
+
+            declared_size = sum(
+                infos_by_name[path].file_size for path in expected_indexed
+            )
+
+            if declared_size != expected_manifest["total_size_bytes"]:
+                raise SnapshotError("Tamanho descompactado declarado diverge")
 
         try:
             manifest = json.loads(archive.read(MANIFEST_NAME).decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise SnapshotError("Manifest interno inválido") from error
 
-        indexed = _manifest_file_map(manifest)
-        expected_names = [MANIFEST_NAME, CHECKSUMS_NAME, *indexed]
+        indexed = manifest_file_map(manifest)
+        internal_names = [MANIFEST_NAME, CHECKSUMS_NAME, *indexed]
 
-        if names != expected_names:
+        if names != internal_names:
             raise SnapshotError("Snapshot não contém exatamente os caminhos esperados")
 
         if archive.read(MANIFEST_NAME) != manifest_bytes(manifest):
@@ -479,7 +520,11 @@ def _safe_destination(root: Path, archive_path: str) -> Path:
     return destination
 
 
-def restore_snapshot(archive_path: Path, destination_root: Path) -> dict[str, Any]:
+def restore_snapshot(
+    archive_path: Path,
+    destination_root: Path,
+    expected_manifest: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Extrai o snapshot em diretório vazio com validação de caminhos."""
     if destination_root.exists() and any(destination_root.iterdir()):
         raise SnapshotError(
@@ -487,11 +532,11 @@ def restore_snapshot(archive_path: Path, destination_root: Path) -> dict[str, An
         )
 
     destination_root.mkdir(parents=True, exist_ok=True)
-    manifest = verify_snapshot_archive(archive_path)
+    manifest = verify_snapshot_archive(archive_path, expected_manifest)
 
     with zipfile.ZipFile(archive_path, mode="r") as archive:
         for info in archive.infolist():
-            _validate_zip_entry(info)
+            validate_zip_entry(info)
             destination = _safe_destination(destination_root, info.filename)
 
             if destination.exists():
@@ -587,7 +632,7 @@ def package_snapshot(
 
     if validate_restore:
         with tempfile.TemporaryDirectory(prefix="dengue-serving-restore-") as temporary:
-            restore_snapshot(archive_path, Path(temporary))
+            restore_snapshot(archive_path, Path(temporary), manifest)
 
     return SnapshotResult(
         archive_path=archive_path,
