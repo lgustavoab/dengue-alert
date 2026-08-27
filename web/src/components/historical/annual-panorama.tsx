@@ -468,6 +468,9 @@ export function AnnualPanorama({
         className={
           styles.tableWrapper
         }
+        role="region"
+        aria-label="Panorama anual da dengue"
+        tabIndex={0}
       >
         <table
           className={

@@ -16,7 +16,7 @@ export function RouteErrorState({
   onRetry,
 }: RouteErrorStateProps) {
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <section className={styles.card} role="alert">
         <span className={styles.eyebrow}>{config.area}</span>
         <h1>{config.errorTitle}</h1>
@@ -31,6 +31,6 @@ export function RouteErrorState({
           <Link href="/">Voltar ao início</Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -193,7 +193,12 @@ export function QualityOverview({
           <article><span>Ano epidemiológico especial</span><strong>{populationData.referencia_2023.ano_epidemiologico}</strong></article>
           <article><span>Referência populacional usada</span><strong>{populationData.referencia_2023.ano_referencia_populacao}</strong><small>{populationData.referencia_2023.usa_referencia_censo_2022 ? "Censo 2022" : "Outra referência"}</small></article>
         </div>
-        <div className={styles.tableWrapper}>
+        <div
+          className={styles.tableWrapper}
+          role="region"
+          aria-label="Referência populacional por ano epidemiológico"
+          tabIndex={0}
+        >
           <table>
             <caption>Referência populacional por ano epidemiológico</caption>
             <thead><tr><th>Ano epidemiológico</th><th>Ano de referência</th><th>Tipo</th><th>Unidades</th><th>Ausências</th></tr></thead>

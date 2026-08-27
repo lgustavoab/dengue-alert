@@ -36,6 +36,7 @@
 .preservationNote { min-width: 0; margin-top: 1rem; border-left: 4px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--accent-soft); padding: 1rem 1.2rem; }
 .preservationNote p { margin: .35rem 0 0; color: #6e4917; font-size: .82rem; line-height: 1.6; }
 .tableWrapper { width: 100%; min-width: 0; max-width: 100%; margin-top: 1rem; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.tableWrapper:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .tableWrapper table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .78rem; }
 .tableWrapper caption { padding: 1rem; color: var(--foreground-soft); font-weight: 750; text-align: left; }
 .tableWrapper th, .tableWrapper td { border-top: 1px solid var(--border); padding: .78rem 1rem; text-align: left; }

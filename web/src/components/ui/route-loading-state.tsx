@@ -10,7 +10,7 @@ export function RouteLoadingState({
   config,
 }: RouteLoadingStateProps) {
   return (
-    <main className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <section
         className={`${styles.card} ${styles.loadingCard}`}
         role="status"
@@ -22,6 +22,6 @@ export function RouteLoadingState({
         <p>{config.loadingDescription}</p>
         <span className={styles.progress} aria-hidden="true" />
       </section>
-    </main>
+    </div>
   );
 }

@@ -8,7 +8,7 @@
 
   --foreground: #142126;
   --foreground-soft: #465b63;
-  --foreground-muted: #6b7d84;
+  --foreground-muted: #5f7077;
 
   --border: #d8e2e5;
   --border-strong: #c4d2d6;
@@ -72,6 +72,26 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  color: var(--foreground);
+  font-weight: 750;
+  box-shadow: var(--shadow-md);
+  transform: translateY(calc(-100% - 1rem));
+}
+
+.skip-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  transform: translateY(0);
 }
 
 button,
