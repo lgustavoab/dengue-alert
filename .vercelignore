@@ -1,0 +1,16 @@
+/.git/
+/.pytest_cache/
+/.ruff_cache/
+/.venv/
+/IBGE/
+/SINAN/
+/data/
+/dist/
+/docs/
+/notebooks/
+/reports/
+/src/
+/tests/
+/web/.next/
+/web/node_modules/
+/web/public/data/serving/

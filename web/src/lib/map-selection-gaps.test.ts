@@ -19,23 +19,18 @@ import {
 import type {
   PredictionMapIndexContract,
 } from "@/lib/serving/prediction-map-types";
+import {
+  getActiveServingRoot,
+} from "@/lib/serving/runtime-paths";
 
 let officialIndex:
   PredictionMapIndexContract;
 
 beforeAll(
   async () => {
-    const projectRoot =
-      path.resolve(
-        process.cwd(),
-        "..",
-      );
-
     const indexPath =
       path.join(
-        projectRoot,
-        "data",
-        "serving",
+        await getActiveServingRoot(),
         "prediction",
         "map",
         "index.json",

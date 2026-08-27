@@ -8,21 +8,17 @@ import type {
   PredictionMapHorizon,
   PredictionMapIndexContract,
 } from "@/lib/serving/prediction-map-types";
+import {
+  getActiveServingRoot,
+} from "@/lib/serving/runtime-paths";
 
-const projectRoot =
-  path.resolve(
-    process.cwd(),
-    "..",
-  );
-
-const predictionMapRoot =
-  path.join(
-    projectRoot,
-    "data",
-    "serving",
+async function getPredictionMapRoot(): Promise<string> {
+  return path.join(
+    await getActiveServingRoot(),
     "prediction",
     "map",
   );
+}
 
 const expectedYear =
   2025;
@@ -652,6 +648,8 @@ function assertPredictionMapIndex(
 
 export async function getPredictionMapIndex():
 Promise<PredictionMapIndexContract> {
+  const predictionMapRoot =
+    await getPredictionMapRoot();
   const filePath =
     path.join(
       predictionMapRoot,
@@ -686,6 +684,9 @@ export async function getPredictionMapSlice(
     horizon,
     week,
   );
+
+  const predictionMapRoot =
+    await getPredictionMapRoot();
 
   const filePath =
     path.join(

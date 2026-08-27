@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:vercel": "node scripts/bootstrap-serving-for-build.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run"

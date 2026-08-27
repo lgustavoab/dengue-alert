@@ -20,19 +20,14 @@ import {
   MAP_VIEWBOX_WIDTH,
   buildMunicipalitySvgPaths,
 } from "@/lib/map-rendering";
+import {
+  getActiveServingRoot,
+} from "@/lib/serving/runtime-paths";
 
 async function loadOfficialGeography() {
-  const projectRoot =
-    path.resolve(
-      process.cwd(),
-      "..",
-    );
-
   const topologyPath =
     path.join(
-      projectRoot,
-      "data",
-      "serving",
+      await getActiveServingRoot(),
       "geography",
       "municipalities.topojson",
     );
