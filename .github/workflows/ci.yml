@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: 0.11.24
+          enable-cache: false
+
+      - name: Show tool versions
+        run: |
+          python --version
+          uv --version
+
+      - name: Install Python dependencies
+        run: uv sync --frozen --dev
+
+      - name: Lint Python
+        run: uv run --frozen ruff check .
+
+      - name: Check Python formatting
+        run: uv run --frozen ruff format --check .
+
+      - name: Test Python
+        run: uv run --frozen pytest
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Set up Python for serving bootstrap
+        uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Show tool versions
+        run: |
+          node --version
+          python --version
+          corepack pnpm --version
+
+      - name: Install frontend dependencies
+        working-directory: web
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Bootstrap compact serving runtime
+        working-directory: web
+        run: node scripts/bootstrap-serving-for-build.mjs
+
+      - name: Verify serving runtime
+        run: >
+          python -c "from pathlib import Path;
+          runtime = [path for path in Path('web/.runtime/serving').rglob('*') if path.is_file()];
+          public = [path for path in Path('web/public/data/serving').rglob('*') if path.is_file()];
+          runtime_bytes = sum(path.stat().st_size for path in runtime);
+          assert len(runtime) == 235, f'unexpected runtime file count: {len(runtime)}';
+          assert runtime_bytes == 281337226, f'unexpected runtime size: {runtime_bytes}';
+          assert len(public) == 27, f'unexpected public asset count: {len(public)}';
+          print(f'runtime: {len(runtime)} files, {runtime_bytes} bytes; public: {len(public)} files')"
+
+      - name: Lint frontend
+        working-directory: web
+        run: corepack pnpm lint
+
+      - name: Test frontend
+        working-directory: web
+        run: corepack pnpm test
+
+      - name: Build frontend
+        working-directory: web
+        run: corepack pnpm build

@@ -17,6 +17,15 @@ import {
   getMapHorizonLabel,
   normalizeMapSelection,
 } from "@/lib/map-selection-utils";
+import {
+  buildPredictionMapSliceUrl,
+  createMapSliceErrorState,
+  createMapSliceLoadingState,
+  resolveCurrentMapSliceState,
+} from "@/lib/map-slice-state";
+import type {
+  MapSliceState,
+} from "@/lib/map-slice-state";
 import type {
   PredictionMapContract,
   PredictionMapHorizon,
@@ -46,14 +55,6 @@ type FoundationState = {
   status: LoadingStatus;
   index: PredictionMapIndexContract | null;
   geography: GeographyMetadata | null;
-  error: string | null;
-};
-
-type SliceState = {
-  week: number | null;
-  horizon: PredictionMapHorizon | null;
-  status: LoadingStatus;
-  data: PredictionMapContract | null;
   error: string | null;
 };
 
@@ -142,13 +143,20 @@ export function MapFoundation() {
     error: null,
   });
 
-  const [sliceState, setSliceState] = useState<SliceState>({
+  const [sliceState, setSliceState] = useState<MapSliceState>({
     week: null,
     horizon: null,
     status: "loading",
     data: null,
     error: null,
   });
+
+  const [
+    sliceRequestVersion,
+    setSliceRequestVersion,
+  ] = useState(
+    0,
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -267,7 +275,10 @@ export function MapFoundation() {
     async function loadSlice() {
       try {
         const response = await fetch(
-          `/api/serving/prediction/map/${selection.horizon}/${selection.week}`,
+          buildPredictionMapSliceUrl(
+            selection.week,
+            selection.horizon,
+          ),
           {
             signal: controller.signal,
           },
@@ -302,13 +313,13 @@ export function MapFoundation() {
 
         console.error(error);
 
-        setSliceState({
-          week: selection.week,
-          horizon: selection.horizon,
-          status: "error",
-          data: null,
-          error: "Não foi possível carregar o recorte preditivo selecionado.",
-        });
+        setSliceState(
+          createMapSliceErrorState(
+            selection.week,
+            selection.horizon,
+            "Não foi possível carregar o recorte preditivo selecionado.",
+          ),
+        );
       }
     }
 
@@ -319,6 +330,7 @@ export function MapFoundation() {
     foundationState.index,
     selection.horizon,
     selection.week,
+    sliceRequestVersion,
   ]);
 
   const availableHorizons = useMemo(
@@ -410,6 +422,20 @@ export function MapFoundation() {
     );
   }
 
+  function handleSliceRetry() {
+    setSliceState(
+      createMapSliceLoadingState(
+        selection.week,
+        selection.horizon,
+      ),
+    );
+
+    setSliceRequestVersion(
+      (version) =>
+        version + 1,
+    );
+  }
+
   if (foundationState.status === "loading") {
     return (
       <section
@@ -459,17 +485,12 @@ export function MapFoundation() {
 
   const geography = foundationState.geography;
 
-  const currentSliceState: SliceState =
-    sliceState.week === selection.week
-      && sliceState.horizon === selection.horizon
-      ? sliceState
-      : {
-        week: selection.week,
-        horizon: selection.horizon,
-        status: "loading",
-        data: null,
-        error: null,
-      };
+  const currentSliceState =
+    resolveCurrentMapSliceState(
+      sliceState,
+      selection.week,
+      selection.horizon,
+    );
 
   const alertCount =
     currentSliceState.data
@@ -487,8 +508,11 @@ export function MapFoundation() {
         : null;
 
   const withoutPrediction =
-    geography.preparation.territories
-    - foundationState.index.municipios;
+    currentSliceState.status
+    === "ready"
+      ? geography.preparation.territories
+        - foundationState.index.municipios
+      : null;
 
   return (
     <div className={styles.foundation}>
@@ -577,7 +601,9 @@ export function MapFoundation() {
           </span>
 
           <strong>
-            {formatInteger(withoutPrediction)}
+            {withoutPrediction === null
+              ? "—"
+              : formatInteger(withoutPrediction)}
           </strong>
 
           <p>
@@ -586,6 +612,44 @@ export function MapFoundation() {
           </p>
         </article>
       </section>
+
+      {currentSliceState.status
+      === "error" ? (
+        <section
+          className={
+            styles.sliceError
+          }
+          role="alert"
+        >
+          <div>
+            <span>
+              Recorte temporariamente indisponível
+            </span>
+
+            <strong>
+              Falha ao carregar {formatMapWeekLabel(
+                selection.week,
+              )} · H{selection.horizon}
+            </strong>
+
+            <p>
+              {currentSliceState.error} Nenhuma classificação epidemiológica foi inferida para esta falha.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className={
+              styles.retryButton
+            }
+            onClick={
+              handleSliceRetry
+            }
+          >
+            Tentar novamente
+          </button>
+        </section>
+      ) : null}
 
       <section className={styles.workspace}>
         <div className={styles.workspaceHeader}>
@@ -625,6 +689,9 @@ export function MapFoundation() {
         <MunicipalityMap
           prediction={
             currentSliceState.data
+          }
+          predictionStatus={
+            currentSliceState.status
           }
         />
 

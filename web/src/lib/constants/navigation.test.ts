@@ -5,6 +5,7 @@ import {
 } from "vitest";
 
 import {
+  isNavigationItemActive,
   navigationItems,
 } from "@/lib/constants/navigation";
 
@@ -92,5 +93,39 @@ describe(
         );
       },
     );
+
+    it.each([
+      ["/", "/"],
+      ["/historico", "/historico"],
+      ["/dados-qualidade", "/dados-qualidade"],
+      ["/predicao", "/predicao"],
+      ["/mapa", "/mapa"],
+    ])(
+      "ativa somente o destino correto em %s",
+      (pathname, expectedHref) => {
+        const activeItems = navigationItems.filter(
+          (item) => isNavigationItemActive(pathname, item.href),
+        );
+
+        expect(activeItems).toHaveLength(1);
+        expect(activeItems[0].href).toBe(expectedHref);
+      },
+    );
+
+    it("não ativa Início fora da raiz", () => {
+      for (const pathname of [
+        "/historico",
+        "/dados-qualidade",
+        "/predicao",
+        "/mapa",
+      ]) {
+        expect(isNavigationItemActive(pathname, "/")).toBe(false);
+      }
+    });
+
+    it("preserva a seção ativa em uma rota filha intencional", () => {
+      expect(isNavigationItemActive("/mapa/detalhe", "/mapa")).toBe(true);
+      expect(isNavigationItemActive("/mapa-invalido", "/mapa")).toBe(false);
+    });
   },
 );

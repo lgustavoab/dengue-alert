@@ -4,13 +4,22 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
 from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-SOURCE_DIR = PROJECT_ROOT / "data" / "serving" / "geography"
+SOURCE_DIR = (
+    Path(
+        os.environ.get(
+            "DENGUE_SERVING_SOURCE_ROOT",
+            PROJECT_ROOT / "data" / "serving",
+        )
+    )
+    / "geography"
+)
 
 PUBLIC_SERVING_DIR = PROJECT_ROOT / "web" / "public" / "data" / "serving"
 

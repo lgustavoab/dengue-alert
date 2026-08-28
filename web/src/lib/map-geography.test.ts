@@ -13,6 +13,9 @@ import {
 import {
   parseMunicipalityTopology,
 } from "@/lib/map-geography";
+import {
+  getActiveServingRoot,
+} from "@/lib/serving/runtime-paths";
 
 type SyntheticGeometry = {
   type: string;
@@ -280,17 +283,9 @@ describe(
     it(
       "converte o asset geográfico oficial com 5.571 municípios únicos",
       async () => {
-        const projectRoot =
-          path.resolve(
-            process.cwd(),
-            "..",
-          );
-
         const topologyPath =
           path.join(
-            projectRoot,
-            "data",
-            "serving",
+            await getActiveServingRoot(),
             "geography",
             "municipalities.topojson",
           );

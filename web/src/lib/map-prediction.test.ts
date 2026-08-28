@@ -25,19 +25,14 @@ import {
 import type {
   PredictionMapContract,
 } from "@/lib/serving/prediction-map-types";
+import {
+  getActiveServingRoot,
+} from "@/lib/serving/runtime-paths";
 
 async function loadOfficialPaths() {
-  const projectRoot =
-    path.resolve(
-      process.cwd(),
-      "..",
-    );
-
   const topologyPath =
     path.join(
-      projectRoot,
-      "data",
-      "serving",
+      await getActiveServingRoot(),
       "geography",
       "municipalities.topojson",
     );
@@ -61,17 +56,9 @@ async function loadOfficialPaths() {
 }
 
 async function loadOfficialPrediction(): Promise<PredictionMapContract> {
-  const projectRoot =
-    path.resolve(
-      process.cwd(),
-      "..",
-    );
-
   const predictionPath =
     path.join(
-      projectRoot,
-      "data",
-      "serving",
+      await getActiveServingRoot(),
       "prediction",
       "map",
       "h1",

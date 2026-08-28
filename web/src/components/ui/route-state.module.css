@@ -1,0 +1,129 @@
+.wrapper {
+  display: grid;
+  width: min(calc(100% - 2rem), var(--content-width));
+  min-height: 62vh;
+  margin: 0 auto;
+  padding: 5rem 0;
+  place-items: center;
+}
+
+.card {
+  width: min(100%, 680px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  box-shadow: var(--shadow-md);
+}
+
+.eyebrow {
+  color: var(--brand);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card h1 {
+  margin: 0.8rem 0 1rem;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.card p {
+  margin: 0;
+  color: var(--foreground-soft);
+  line-height: 1.7;
+}
+
+.guidance {
+  margin-top: 0.65rem !important;
+  color: var(--foreground-muted) !important;
+  font-size: 0.86rem;
+}
+
+.actions {
+  display: flex;
+  margin-top: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.actions button,
+.actions a {
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.actions button {
+  background: var(--brand);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.actions a {
+  background: var(--surface);
+  color: var(--brand-strong);
+}
+
+.actions button:focus-visible,
+.actions a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.loadingCard {
+  box-shadow: var(--shadow-sm);
+}
+
+.progress {
+  display: block;
+  width: 100%;
+  height: 0.35rem;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-muted);
+}
+
+.progress::after {
+  display: block;
+  width: 36%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand);
+  animation: loading-progress 1.2s ease-in-out infinite alternate;
+  content: "";
+}
+
+@keyframes loading-progress {
+  from { transform: translateX(0); }
+  to { transform: translateX(178%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress::after { animation: none; }
+}
+
+@media (max-width: 680px) {
+  .wrapper {
+    width: min(calc(100% - 1.25rem), var(--content-width));
+    min-height: 56vh;
+    padding: 3rem 0;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions button,
+  .actions a {
+    text-align: center;
+  }
+}

@@ -640,7 +640,7 @@ export function TerritorialAnalysis({
             styles.note
           }
         >
-          O contrato serving atual possui resumo histórico consolidado por UF, mas não possui série semanal ou sazonalidade específica por estado. Por isso, esses gráficos não são reconstruídos artificialmente no navegador.
+          Os dados disponíveis nesta visualização incluem o resumo histórico consolidado por UF, mas não uma série semanal ou sazonalidade específica por estado. Por isso, esses gráficos não são apresentados.
         </p>
       </section>
     );

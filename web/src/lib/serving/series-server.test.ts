@@ -167,6 +167,35 @@ describe(
       },
     );
 
+    it.each([
+      "3550308",
+      "3304557",
+      "3166600",
+      "3120839",
+    ])(
+      "valida a amostra científica obrigatória %s",
+      async (
+        code,
+      ) => {
+        const series =
+          await getHistoricalMunicipalitySeries(
+            code,
+          );
+
+        expect(
+          series.codigo_ibge_7,
+        ).toBe(
+          code,
+        );
+        expect(
+          series.data
+            .semana_epidemiologica,
+        ).toHaveLength(
+          series.count,
+        );
+      },
+    );
+
     it(
       "rejeita código IBGE estruturalmente inválido",
       async () => {
@@ -283,6 +312,60 @@ describe(
         ).toBe(
           0.157138,
         );
+      },
+    );
+
+    it.each([
+      "3550308",
+      "3304557",
+      "3166600",
+      "3120839",
+    ])(
+      "preserva classificação e precisão na amostra %s",
+      async (
+        code,
+      ) => {
+        const series =
+          await getPredictionMunicipalitySeries(
+            code,
+          );
+
+        expect(
+          series.codigo_ibge_7,
+        ).toBe(
+          code,
+        );
+
+        for (
+          const horizon
+          of [
+            series.horizontes.h1,
+            series.horizontes.h2,
+            series.horizontes.h3,
+            series.horizontes.h4,
+          ]
+        ) {
+          expect(
+            horizon.data.score,
+          ).toHaveLength(
+            horizon.count,
+          );
+          expect(
+            horizon.data.predicao,
+          ).toHaveLength(
+            horizon.count,
+          );
+          expect(
+            horizon.data.target,
+          ).toHaveLength(
+            horizon.count,
+          );
+          expect(
+            horizon.data.risco_elevado,
+          ).toHaveLength(
+            horizon.count,
+          );
+        }
       },
     );
 

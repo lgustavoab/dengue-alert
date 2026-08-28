@@ -8,7 +8,6 @@ import {
   getPredictionModel,
   getPredictionOverview,
   getQualityOverview,
-  getServingManifest,
   getTemporalCoverage,
 } from "@/lib/serving/server";
 
@@ -18,13 +17,11 @@ export default async function Home() {
     temporalCoverage,
     prediction,
     predictionModel,
-    manifest,
   ] = await Promise.all([
     getQualityOverview(),
     getTemporalCoverage(),
     getPredictionOverview(),
     getPredictionModel(),
-    getServingManifest(),
   ]);
 
   const historicalPeriod = formatPeriod(
@@ -53,8 +50,9 @@ export default async function Home() {
 
             <p>
               Uma aplicação para explorar a evolução epidemiológica municipal,
-              entender a qualidade das fontes utilizadas e analisar resultados
-              retrospectivos de previsão de risco elevado.
+              entender a qualidade das fontes utilizadas e analisar, em
+              painéis e no mapa, resultados retrospectivos de previsão de risco
+              elevado.
             </p>
 
             <div
@@ -137,12 +135,12 @@ export default async function Home() {
           </span>
 
           <h2>
-            Três perspectivas complementares
+            Quatro perspectivas complementares
           </h2>
 
           <p>
-            O sistema separa explicitamente dados observados, transparência das
-            fontes e resultados de modelagem.
+            Explore dados observados, transparência das fontes, avaliação
+            preditiva e distribuição geográfica em áreas dedicadas.
           </p>
         </div>
 
@@ -162,20 +160,32 @@ export default async function Home() {
             description="Acompanhe o tratamento das fontes, cobertura territorial, população e dados climáticos."
             href="/dados-qualidade"
             metric={formatInteger(
-              manifest.contract_count,
+              quality.data
+                .unidades_territoriais,
             )}
-            metricLabel="contratos web sincronizados"
+            metricLabel="unidades territoriais na base"
           />
 
           <AreaCard
             eyebrow="03"
             title="Predição"
-            description="Analise a avaliação retrospectiva de risco elevado para horizontes de uma a quatro semanas."
+            description="Analise a avaliação retrospectiva de 2025 para horizontes de uma a quatro semanas."
             href="/predicao"
             metric={horizonRange}
             metricLabel={`${formatInteger(
               prediction.municipios,
             )} municípios avaliados`}
+          />
+
+          <AreaCard
+            eyebrow="04"
+            title="Mapa preditivo"
+            description="Visualize geograficamente as classificações oficiais por semana epidemiológica e horizonte no teste retrospectivo de 2025."
+            href="/mapa"
+            metric={formatInteger(
+              prediction.municipios,
+            )}
+            metricLabel="municípios com avaliação preditiva"
           />
         </div>
       </section>

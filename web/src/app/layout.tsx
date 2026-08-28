@@ -23,9 +23,15 @@ export default function RootLayout({
     <html lang="pt-BR" data-scroll-behavior="smooth">
       <body>
         <div className="app-shell">
+          <a className="skip-link" href="#main-content">
+            Pular para o conteúdo
+          </a>
+
           <SiteHeader />
 
-          <main className="app-main">{children}</main>
+          <main id="main-content" className="app-main" tabIndex={-1}>
+            {children}
+          </main>
 
           <SiteFooter />
         </div>

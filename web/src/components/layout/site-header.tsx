@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { navigationItems } from "@/lib/constants/navigation";
+import { MainNavigation } from "@/components/layout/main-navigation";
 
 export function SiteHeader() {
   return (
@@ -17,13 +17,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="site-nav" aria-label="Navegação principal">
-          {navigationItems.map((item) => (
-            <Link key={item.href} href={item.href} className="site-nav__link">
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <MainNavigation />
       </div>
     </header>
   );

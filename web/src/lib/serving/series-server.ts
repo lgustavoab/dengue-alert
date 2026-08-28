@@ -7,18 +7,12 @@ import type {
   PredictionMunicipalitySeriesContract,
   PredictionMunicipalitySeriesData,
 } from "@/lib/serving/types";
-
-const projectRoot = path.resolve(
-  process.cwd(),
-  "..",
-);
-
-const canonicalServingRoot =
-  path.join(
-    projectRoot,
-    "data",
-    "serving",
-  );
+import {
+  getRuntimeMunicipalityPayload,
+} from "@/lib/serving/runtime-pack-server";
+import {
+  canonicalServingRoot,
+} from "@/lib/serving/runtime-paths";
 
 const ibgeCodePattern =
   /^\d{7}$/;
@@ -102,6 +96,39 @@ async function readCanonicalJson(
       },
     );
   }
+}
+
+async function readMunicipalityJson(
+  collection:
+    | "historical"
+    | "prediction",
+  filePath: string,
+  code: string,
+): Promise<unknown> {
+  const runtimeResult =
+    await getRuntimeMunicipalityPayload(
+      collection,
+      code,
+    );
+
+  if (
+    runtimeResult.available
+  ) {
+    if (
+      runtimeResult.value === null
+    ) {
+      throw new MunicipalitySeriesNotFoundError(
+        code,
+      );
+    }
+
+    return runtimeResult.value;
+  }
+
+  return readCanonicalJson(
+    filePath,
+    code,
+  );
 }
 
 function assertBaseContract(
@@ -256,7 +283,8 @@ export async function getHistoricalMunicipalitySeries(
     );
 
   const value =
-    await readCanonicalJson(
+    await readMunicipalityJson(
+      "historical",
       filePath,
       code,
     );
@@ -349,7 +377,8 @@ export async function getPredictionMunicipalitySeries(
     );
 
   const value =
-    await readCanonicalJson(
+    await readMunicipalityJson(
+      "prediction",
       filePath,
       code,
     );

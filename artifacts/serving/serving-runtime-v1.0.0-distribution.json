@@ -1,0 +1,15 @@
+{
+  "archive_sha256": "9cfe0c61bf406f10b66e4519a996ca0cad93e01402b262117bd74f276bec11bb",
+  "archive_size_bytes": 38553264,
+  "asset_name": "serving-runtime-v1.0.0.zip",
+  "checksum_asset_name": "serving-runtime-v1.0.0.zip.sha256",
+  "checksum_sha256": "b62659974316e55e8b4e99d5b9fe80ace7bb81ca3aa7420271f4ba5002a49e9a",
+  "checksum_size_bytes": 93,
+  "checksum_url": "https://github.com/lgustavoab/dengue-alert/releases/download/serving-runtime-v1.0.0/serving-runtime-v1.0.0.zip.sha256",
+  "download_url": "https://github.com/lgustavoab/dengue-alert/releases/download/serving-runtime-v1.0.0/serving-runtime-v1.0.0.zip",
+  "file_count": 235,
+  "runtime_version": "serving-runtime-v1.0.0",
+  "schema_version": "1.0",
+  "source_snapshot_version": "serving-v1.0.0",
+  "uncompressed_size_bytes": 281337226
+}

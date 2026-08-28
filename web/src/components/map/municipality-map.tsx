@@ -41,6 +41,10 @@ import {
   getMapHorizonLabel,
 } from "@/lib/map-selection-utils";
 
+import type {
+  MapSliceStatus,
+} from "@/lib/map-slice-state";
+
 import {
   parseMapTerritoryIndex,
 } from "@/lib/map-territories";
@@ -104,6 +108,7 @@ type TerritoryState =
 
 type MunicipalityMapProps = {
   prediction: PredictionMapContract | null;
+  predictionStatus: MapSliceStatus;
 };
 
 const GEOGRAPHY_URL =
@@ -253,6 +258,7 @@ function renderNeutralMunicipality(
 
 export function MunicipalityMap({
   prediction,
+  predictionStatus,
 }: MunicipalityMapProps) {
   const searchListboxId =
     useId();
@@ -1407,7 +1413,8 @@ export function MunicipalityMap({
           ) : null}
         </svg>
 
-        {prediction === null ? (
+        {predictionStatus
+        === "loading" ? (
           <div
             className={
               styles.updating
@@ -1444,9 +1451,15 @@ export function MunicipalityMap({
               }
             </span>
 
-            {prediction === null ? (
+            {predictionStatus
+            === "loading" ? (
               <small>
                 Atualizando classificação…
+              </small>
+            ) : predictionStatus
+              === "error" ? (
+              <small>
+                Classificação temporariamente indisponível
               </small>
             ) : hoveredPrediction ? (
               <small>
@@ -1669,7 +1682,8 @@ export function MunicipalityMap({
             </button>
           </div>
 
-          {prediction === null ? (
+          {predictionStatus
+          === "loading" ? (
             <div
               className={
                 styles.selectionLoading
@@ -1678,7 +1692,18 @@ export function MunicipalityMap({
             >
               Atualizando o resultado preditivo para o novo recorte…
             </div>
-          ) : selectedPrediction ? (
+          ) : predictionStatus
+            === "error" ? (
+            <div
+              className={
+                styles.selectionUnavailable
+              }
+              role="status"
+            >
+              O resultado preditivo deste município está temporariamente indisponível para o recorte selecionado.
+            </div>
+          ) : prediction !== null
+            && selectedPrediction ? (
             <div
               className={
                 styles.detailGrid
