@@ -41,8 +41,9 @@ export function PredictionResults({ series, week }: PredictionResultsProps) {
         <span className={styles.eyebrow}>Consulta municipal · teste de 2025</span>
         <h2 id="prediction-results-title">O alerta se confirmou?</h2>
         <p>
-          Compare o que o modelo indicou com o que foi observado em cada semana
-          futura. Os prazos partem da semana de referência selecionada; não são
+          Como estamos analisando um período passado, podemos comparar a previsão
+          do modelo com os dados reais registrados em 2025. Cada prazo mostra uma
+          semana futura em relação à semana de referência selecionada; não são
           níveis de gravidade nem resultados de todo o intervalo.
         </p>
       </div>
@@ -94,13 +95,13 @@ export function PredictionResults({ series, week }: PredictionResultsProps) {
               ) : (
                 <>
                   <div className={styles.indication}>
-                    <span>O que o modelo indicou</span>
+                    <span>Previsão do modelo</span>
                     <strong className={point.prediction ? styles.alertStatus : styles.noAlertStatus}>
                       {point.prediction ? "ALERTA" : "SEM ALERTA"}
                     </strong>
                     <p>
                       {point.prediction
-                        ? "O modelo indicou risco elevado para essa semana futura."
+                        ? "O modelo emitiu um alerta para essa semana futura."
                         : "O modelo não emitiu alerta para essa semana futura."}
                     </p>
                   </div>
@@ -147,6 +148,11 @@ export function PredictionResults({ series, week }: PredictionResultsProps) {
           quatro semanas (casos por 100 mil habitantes) supera uma referência
           histórica do próprio município para aquela época do ano. Essa definição
           não equivale a uma declaração oficial de epidemia.
+        </p>
+        <p>
+          Os dados reais são registros de dengue tratados para a pesquisa e estão
+          sujeitos às limitações das notificações. Sem risco elevado nos registros
+          não significa ausência de casos de dengue.
         </p>
         <p>
           Estes resultados são retrospectivos, de 2025. Não são alertas atuais nem
