@@ -24,6 +24,7 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./historical-dashboard.module.css";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type WeeklyEvolutionProps = {
   data:
@@ -236,13 +237,13 @@ export function WeeklyEvolution({
           <h2>
             {selectedYear
               === null
-                ? "522 semanas de histórico epidemiológico"
-                : `Comportamento semanal em ${selectedYear}`}
+                ? "Como os casos variaram ao longo das semanas?"
+                : `Como os casos variaram em ${selectedYear}?`}
           </h2>
         </div>
 
         <p>
-          Série nacional observada. SE significa Semana Epidemiológica. Use o controle abaixo para alternar entre volume absoluto de casos e incidência por 100 mil habitantes.
+          Série observada do Brasil. Casos mostram a quantidade registrada; incidência expressa essa quantidade por 100 mil habitantes, levando em conta a população. SE significa Semana Epidemiológica.
         </p>
       </div>
 
@@ -298,6 +299,12 @@ export function WeeklyEvolution({
           </button>
         </div>
       </div>
+
+      <p className={styles.unit}>
+        {metric === "cases"
+          ? "Gráfico de casos prováveis por semana · Brasil"
+          : "Gráfico de incidência semanal · casos por 100 mil habitantes · Brasil"}
+      </p>
 
       <div
         className={
@@ -362,24 +369,24 @@ export function WeeklyEvolution({
           styles.chartCard
         }
       >
-        <div
-          className={
-            styles.svgWrapper
-          }
-        >
+        <HistoricalChartFrame label="Evolução semanal: tempo e casos ou incidência">
           <svg
             className={
               styles.svg
             }
-            viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+            viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
             role="img"
             aria-label={
               selectedYear
                 === null
-                ? "Evolução semanal nacional da dengue entre 2016 e 2025"
-                : `Evolução semanal nacional da dengue em ${selectedYear}`
+                ? `Evolução semanal nacional da dengue entre 2016 e 2025: ${metric === "cases" ? "casos prováveis" : "casos por 100 mil habitantes"}`
+                : `Evolução semanal nacional da dengue em ${selectedYear}: ${metric === "cases" ? "casos prováveis" : "casos por 100 mil habitantes"}`
             }
           >
+            <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING}
+              maximum={Math.max(...values, 1)} format={metric === "cases" ? "integer" : "decimal"}
+              xLabel={selectedYear === null ? "Tempo — ano epidemiológico" : `Tempo — Semana Epidemiológica (SE) de ${selectedYear}`}
+              yLabel={metric === "cases" ? "Casos prováveis por semana" : "Incidência semanal (casos por 100 mil habitantes)"} />
             {[
               0,
               0.25,
@@ -525,7 +532,7 @@ export function WeeklyEvolution({
               },
             )}
           </svg>
-        </div>
+        </HistoricalChartFrame>
       </div>
 
       <p

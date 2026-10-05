@@ -14,6 +14,8 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./historical-dashboard.module.css";
+import { HistoricalDetails } from "./historical-details";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type AnnualPanoramaProps = {
   data: HistoricalAnnualItem[];
@@ -138,15 +140,15 @@ export function AnnualPanorama({
 
           <h2>
             {isSingleYear
-              ? `Panorama epidemiológico de ${firstYear}`
-              : "Casos e incidência por ano epidemiológico"}
+              ? `Como foi o ano de ${firstYear} no Brasil?`
+              : "Como os casos variaram entre os anos?"}
           </h2>
         </div>
 
         <p>
           {isSingleYear
             ? `Indicadores nacionais do ano epidemiológico de ${firstYear}.`
-            : `Comparação nacional entre ${firstYear} e ${lastYear}. Casos e incidência são apresentados separadamente para evitar confundir volume absoluto com risco populacional.`}
+            : `Comparação do Brasil entre ${firstYear} e ${lastYear}. Casos mostram o volume registrado; incidência mostra casos por 100 mil habitantes. Não são a mesma medida.`}
         </p>
       </div>
 
@@ -174,16 +176,12 @@ export function AnnualPanorama({
             </p>
           </div>
 
-          <div
-            className={
-              styles.svgWrapper
-            }
-          >
+          <HistoricalChartFrame label="Casos anuais: ano epidemiológico e quantidade de casos">
             <svg
               className={
                 styles.svg
               }
-              viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+              viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
               role="img"
               aria-label={
                 isSingleYear
@@ -191,6 +189,7 @@ export function AnnualPanorama({
                   : `Casos prováveis de dengue entre ${firstYear} e ${lastYear}`
               }
             >
+              <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING} maximum={maxCases} format="integer" xLabel="Ano epidemiológico" yLabel="Casos prováveis no ano" />
               {[
                 0,
                 0.25,
@@ -318,7 +317,7 @@ export function AnnualPanorama({
                 },
               )}
             </svg>
-          </div>
+          </HistoricalChartFrame>
         </article>
 
         <article
@@ -340,19 +339,16 @@ export function AnnualPanorama({
             </p>
           </div>
 
-          <div
-            className={
-              styles.svgWrapper
-            }
-          >
+          <HistoricalChartFrame label="Incidência anual: ano epidemiológico e casos por 100 mil habitantes">
             <svg
               className={
                 styles.svg
               }
-              viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+              viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
               role="img"
               aria-label="Incidência anual de dengue por 100 mil habitantes"
             >
+              <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING} maximum={maxIncidence} xLabel="Ano epidemiológico" yLabel="Incidência anual (casos por 100 mil habitantes)" />
               {[
                 0,
                 0.25,
@@ -460,10 +456,11 @@ export function AnnualPanorama({
                 },
               )}
             </svg>
-          </div>
+          </HistoricalChartFrame>
         </article>
       </div>
 
+      <HistoricalDetails title="Consultar a tabela anual completa">
       <div
         className={
           styles.tableWrapper
@@ -488,7 +485,7 @@ export function AnnualPanorama({
               </th>
 
               <th>
-                Incidência
+                Incidência (por 100 mil habitantes)
               </th>
 
               <th>
@@ -500,7 +497,7 @@ export function AnnualPanorama({
               </th>
 
               <th>
-                Territórios com casos
+                Territórios com casos (%)
               </th>
             </tr>
           </thead>
@@ -564,6 +561,7 @@ export function AnnualPanorama({
           </tbody>
         </table>
       </div>
+      </HistoricalDetails>
     </section>
   );
 }

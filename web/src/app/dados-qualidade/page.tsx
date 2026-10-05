@@ -11,7 +11,7 @@ import {
 } from "@/lib/serving/server";
 
 export const metadata: Metadata = {
-  title: "Dados & Qualidade",
+  title: "Dados e método",
 };
 
 export default async function DataQualityPage() {
@@ -26,10 +26,10 @@ export default async function DataQualityPage() {
   return (
     <div className="route-page">
       <PageIntro
-        eyebrow="Transparência dos dados"
-        title="Dados & Qualidade"
-        description="Veja como os dados epidemiológicos foram filtrados, normalizados territorialmente e integrados às referências populacionais e climáticas antes das análises."
-        note="Os indicadores desta área vêm de contratos auditados e descrevem preparação e cobertura dos dados. Não são alertas nem resultados preditivos."
+        eyebrow="Entenda o estudo"
+        title="Dados e método"
+        description="De onde vieram os dados? Como os preparamos e como avaliamos o modelo? Conheça o caminho da pesquisa, suas escolhas e seus limites."
+        note="Este site apresenta um trabalho acadêmico com dados históricos e avaliação retrospectiva de 2025. Não fornece alertas atuais nem estima a chance individual de uma pessoa contrair dengue."
       />
 
       <QualityOverview overview={overview} sinan={sinan} territory={territory} population={population} climate={climate} />

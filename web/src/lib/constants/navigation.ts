@@ -8,11 +8,11 @@ export const navigationItems = [
     href: "/historico",
   },
   {
-    label: "Dados & Qualidade",
+    label: "Dados e método",
     href: "/dados-qualidade",
   },
   {
-    label: "Predição",
+    label: "Resultados",
     href: "/predicao",
   },
   {

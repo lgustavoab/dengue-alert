@@ -1,0 +1,84 @@
+.navigation {
+  display: flex;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.navigation a {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  color: var(--brand-strong);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  background: var(--surface-muted);
+}
+
+.scope {
+  margin: 0 0 1.5rem;
+  color: var(--foreground-soft);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.anchor {
+  min-width: 0;
+  scroll-margin-top: 6rem;
+}
+
+.keyMetrics {
+  display: grid;
+  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.details {
+  min-width: 0;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--foreground-soft);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.details summary {
+  padding: 0.9rem 1rem;
+  color: var(--brand-strong);
+  font-weight: 750;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.details summary:focus-visible,
+.navigation a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.detailsContent {
+  min-width: 0;
+  padding: 0 1rem 1rem;
+  overflow-wrap: anywhere;
+}
+
+.detailsContent p {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 680px) {
+  .anchor {
+    scroll-margin-top: 10rem;
+  }
+
+  .keyMetrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,49 @@
+.scroll {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.scroll:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.scroll svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scroll text {
+  fill: var(--foreground-soft);
+  font-size: 24px;
+}
+
+.title {
+  font-weight: 700;
+}
+
+.line {
+  stroke: var(--foreground-muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hint {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .scroll svg {
+    min-width: 640px;
+  }
+
+  .hint {
+    display: block;
+    margin: 0.65rem 0 0;
+    color: var(--foreground-muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+}

@@ -451,6 +451,9 @@ export function PredictionScoreEvolution({
           className={
             styles.chartScroll
           }
+          role="region"
+          aria-label="Evolução das probabilidades: semanas de 2025 e probabilidade de risco elevado"
+          tabIndex={0}
         >
           <svg
             className={

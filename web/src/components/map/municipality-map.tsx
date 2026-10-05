@@ -37,9 +37,7 @@ import type {
   MunicipalitySvgPath,
 } from "@/lib/map-rendering";
 
-import {
-  getMapHorizonLabel,
-} from "@/lib/map-selection-utils";
+import { MunicipalityMapResult } from "./municipality-map-result";
 
 import type {
   MapSliceStatus,
@@ -57,10 +55,6 @@ import {
   formatMapTerritorySearchLabel,
   searchMapTerritories,
 } from "@/lib/map-territory-search";
-
-import {
-  formatMapWeekDateRange,
-} from "@/lib/map-week-dates";
 
 import type {
   PredictionMapContract,
@@ -151,39 +145,6 @@ function getStatusLabel(
   }
 
   return "SEM AVALIAÇÃO PREDITIVA";
-}
-
-function getStatusBadgeClassName(
-  status: MunicipalityPredictionStatus,
-): string {
-  if (
-    status === "alerta"
-  ) {
-    return `${styles.statusBadge} ${styles.alertBadge}`;
-  }
-
-  if (
-    status === "sem_alerta"
-  ) {
-    return `${styles.statusBadge} ${styles.noAlertBadge}`;
-  }
-
-  return `${styles.statusBadge} ${styles.withoutEvaluationBadge}`;
-}
-
-function formatPercentage(
-  value: number,
-): string {
-  return new Intl.NumberFormat(
-    "pt-BR",
-    {
-      style: "percent",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
-  ).format(
-    value,
-  );
 }
 
 function readMunicipalityCode(
@@ -1022,7 +983,7 @@ export function MunicipalityMap({
           </strong>
 
           <p>
-            Preparando as 5.571 geometrias do Brasil para visualização.
+            Preparando o mapa dos municípios brasileiros.
           </p>
         </div>
       </div>
@@ -1363,6 +1324,107 @@ export function MunicipalityMap({
 
       <div
         className={
+          styles.legend
+        }
+        role="region"
+        aria-label="Legenda do mapa — avaliação retrospectiva de 2025"
+      >
+        <div
+          className={
+            styles.legendItem
+          }
+        >
+          <span
+            className={
+              `${styles.legendSwatch} ${styles.alertSwatch}`
+            }
+            aria-hidden="true"
+          />
+
+          <span>
+            ALERTA
+            <small>O modelo indicou risco elevado.</small>
+          </span>
+
+          {joinedPrediction ? (
+            <strong>
+              {
+                joinedPrediction
+                  .summary
+                  .alertCount
+                  .toLocaleString(
+                    "pt-BR",
+                  )
+              }
+            </strong>
+          ) : null}
+        </div>
+
+        <div
+          className={
+            styles.legendItem
+          }
+        >
+          <span
+            className={
+              `${styles.legendSwatch} ${styles.noAlertSwatch}`
+            }
+            aria-hidden="true"
+          />
+
+          <span>
+            SEM ALERTA
+            <small>O modelo não indicou alerta; não significa ausência de dengue.</small>
+          </span>
+
+          {joinedPrediction ? (
+            <strong>
+              {
+                joinedPrediction
+                  .summary
+                  .noAlertCount
+                  .toLocaleString(
+                    "pt-BR",
+                  )
+              }
+            </strong>
+          ) : null}
+        </div>
+
+        <div
+          className={
+            styles.legendItem
+          }
+        >
+          <span
+            className={
+              `${styles.legendSwatch} ${styles.withoutEvaluationSwatch}`
+            }
+            aria-hidden="true"
+          />
+
+          <span>
+            SEM AVALIAÇÃO
+            <small>Território sem resultado na avaliação de 2025.</small>
+          </span>
+
+          {joinedPrediction ? (
+            <strong>
+              {
+                joinedPrediction
+                  .summary
+                  .withoutEvaluationCount
+                  .toLocaleString(
+                    "pt-BR",
+                  )
+              }
+            </strong>
+          ) : null}
+        </div>
+      </div>
+
+      <div
+        className={
           styles.wrapper
         }
       >
@@ -1475,103 +1537,6 @@ export function MunicipalityMap({
 
         <div
           className={
-            styles.legend
-          }
-          aria-label="Legenda do mapa"
-        >
-          <div
-            className={
-              styles.legendItem
-            }
-          >
-            <span
-              className={
-                `${styles.legendSwatch} ${styles.alertSwatch}`
-              }
-              aria-hidden="true"
-            />
-
-            <span>
-              ALERTA
-            </span>
-
-            {joinedPrediction ? (
-              <strong>
-                {
-                  joinedPrediction
-                    .summary
-                    .alertCount
-                    .toLocaleString(
-                      "pt-BR",
-                    )
-                }
-              </strong>
-            ) : null}
-          </div>
-
-          <div
-            className={
-              styles.legendItem
-            }
-          >
-            <span
-              className={
-                `${styles.legendSwatch} ${styles.noAlertSwatch}`
-              }
-              aria-hidden="true"
-            />
-
-            <span>
-              SEM ALERTA
-            </span>
-
-            {joinedPrediction ? (
-              <strong>
-                {
-                  joinedPrediction
-                    .summary
-                    .noAlertCount
-                    .toLocaleString(
-                      "pt-BR",
-                    )
-                }
-              </strong>
-            ) : null}
-          </div>
-
-          <div
-            className={
-              styles.legendItem
-            }
-          >
-            <span
-              className={
-                `${styles.legendSwatch} ${styles.withoutEvaluationSwatch}`
-              }
-              aria-hidden="true"
-            />
-
-            <span>
-              SEM AVALIAÇÃO
-            </span>
-
-            {joinedPrediction ? (
-              <strong>
-                {
-                  joinedPrediction
-                    .summary
-                    .withoutEvaluationCount
-                    .toLocaleString(
-                      "pt-BR",
-                    )
-                }
-              </strong>
-            ) : null}
-          </div>
-        </div>
-
-        <div
-          className={
             styles.caption
           }
         >
@@ -1580,7 +1545,7 @@ export function MunicipalityMap({
           </span>
 
           <strong>
-            5.571 territórios renderizados
+            Resultados do modelo · 2025
           </strong>
         </div>
       </div>
@@ -1682,185 +1647,11 @@ export function MunicipalityMap({
             </button>
           </div>
 
-          {predictionStatus
-          === "loading" ? (
-            <div
-              className={
-                styles.selectionLoading
-              }
-              role="status"
-            >
-              Atualizando o resultado preditivo para o novo recorte…
-            </div>
-          ) : predictionStatus
-            === "error" ? (
-            <div
-              className={
-                styles.selectionUnavailable
-              }
-              role="status"
-            >
-              O resultado preditivo deste município está temporariamente indisponível para o recorte selecionado.
-            </div>
-          ) : prediction !== null
-            && selectedPrediction ? (
-            <div
-              className={
-                styles.detailGrid
-              }
-            >
-              <div
-                className={
-                  styles.detailPrimary
-                }
-              >
-                <span>
-                  Resultado preditivo
-                </span>
-
-                <strong
-                  className={
-                    getStatusBadgeClassName(
-                      selectedPrediction.status,
-                    )
-                  }
-                >
-                  {
-                    getStatusLabel(
-                      selectedPrediction.status,
-                    )
-                  }
-                </strong>
-              </div>
-
-              <div
-                className={
-                  styles.detailItem
-                }
-              >
-                <span>
-                  Recorte
-                </span>
-
-                <strong>
-                  SE
-                  {
-                    String(
-                      prediction
-                        .semana_epidemiologica,
-                    ).padStart(
-                      2,
-                      "0",
-                    )
-                  }
-                  {" · "}
-                  H
-                  {
-                    prediction
-                      .horizonte
-                  }
-                </strong>
-
-                <small>
-                  {
-                    formatMapWeekDateRange(
-                      prediction
-                        .semana_epidemiologica,
-                    )
-                  }
-                </small>
-
-                <small>
-                  {
-                    getMapHorizonLabel(
-                      prediction
-                        .horizonte,
-                    )
-                  }
-                </small>
-              </div>
-
-              {selectedPrediction
-                .status
-                !== "sem_avaliacao"
-              && selectedPrediction
-                .score
-                !== null ? (
-                <>
-                  <div
-                    className={
-                      styles.detailItem
-                    }
-                  >
-                    <span>
-                      Probabilidade de risco elevado
-                    </span>
-
-                    <strong>
-                      {
-                        formatPercentage(
-                          selectedPrediction
-                            .score,
-                        )
-                      }
-                    </strong>
-                  </div>
-
-                  <div
-                    className={
-                      styles.detailItem
-                    }
-                  >
-                    <span>
-                      Limiar de alerta
-                    </span>
-
-                    <strong>
-                      {
-                        formatPercentage(
-                          prediction
-                            .threshold,
-                        )
-                      }
-                    </strong>
-                  </div>
-                </>
-              ) : (
-                <div
-                  className={
-                    styles.detailUnavailable
-                  }
-                >
-                  <strong>
-                    Sem avaliação preditiva
-                  </strong>
-
-                  <p>
-                    Este território está presente na malha geográfica,
-                    mas não possui resultado no conjunto retrospectivo
-                    de avaliação.
-                  </p>
-                </div>
-              )}
-            </div>
-          ) : null}
-
-          <div
-            className={
-              styles.interpretation
-            }
-          >
-            <strong>
-              Interpretação
-            </strong>
-
-            <p>
-              O valor apresentado é a probabilidade estimada do estado
-              futuro metodologicamente definido de risco elevado. Ele
-              não representa uma previsão da quantidade futura de casos
-              de dengue.
-            </p>
-          </div>
+          <MunicipalityMapResult
+            prediction={prediction}
+            municipality={selectedPrediction}
+            status={predictionStatus}
+          />
         </section>
       ) : null}
     </div>

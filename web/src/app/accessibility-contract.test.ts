@@ -36,6 +36,30 @@ function contrastRatio(foreground: string, background: string): number {
 }
 
 describe("contratos proporcionais de acessibilidade", () => {
+  it("não impõe largura mínima nem oculta overflow horizontal na raiz", async () => {
+    const styles = await readSource("app/globals.css");
+    for (const selector of ["html", "body", ".app-shell", ".app-main"]) {
+      const block = styles.split(`${selector} {`)[1]?.split("}")[0];
+      expect(block).toBeDefined();
+      expect(block).not.toMatch(/min-width\s*:\s*\d+(?:px|rem)/);
+      expect(block).not.toMatch(/overflow(?:-x)?\s*:\s*(?:hidden|clip)/);
+    }
+  });
+
+  it("mantém áreas de expansão municipal de pelo menos 44 px no mobile", async () => {
+    for (const [file, selectors] of [
+      ["components/prediction/prediction-results.module.css", [".technicalDetails summary"]],
+      ["components/map/municipality-map.module.css", [".resultDetails summary", ".clearButton"]],
+    ] as const) {
+      const styles = await readSource(file);
+      const mobile = styles.split("@media (max-width: 680px)")[1];
+      for (const selector of selectors) {
+        const block = mobile?.split(`${selector} {`)[1]?.split("}")[0];
+        expect(block).toContain("min-height: 44px;");
+      }
+    }
+  });
+
   it("mantém o skip link ligado ao main raiz", async () => {
     const layout = await readSource("app/layout.tsx");
 

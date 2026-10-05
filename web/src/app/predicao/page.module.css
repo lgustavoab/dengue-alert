@@ -1,0 +1,31 @@
+.sectionNavigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionNavigation a {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0.7rem 1rem;
+  color: var(--brand-strong);
+  font-size: 0.85rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.sectionNavigation a:hover {
+  background: var(--brand-soft);
+}
+
+.sectionNavigation a:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+
+.consultation {
+  min-width: 0;
+  scroll-margin-top: 10rem;
+}

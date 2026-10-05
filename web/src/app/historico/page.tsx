@@ -41,6 +41,8 @@ import {
   getQualityOverview,
 } from "@/lib/serving/server";
 
+import reading from "@/components/historical/historical-reading.module.css";
+
 export const metadata: Metadata = {
   title:
     "Histórico",
@@ -186,9 +188,19 @@ export default async function HistoricalPage() {
         title="Entenda como a dengue se comportou ao longo do tempo."
         description={`Panorama de ${formatPeriod(
           annual.period,
-        )}, com evolução epidemiológica, sazonalidade, comparações territoriais, dinâmica histórica de risco e associações climáticas produzidas a partir dos contratos históricos validados.`}
-        note="Os dados desta área representam observações históricas tratadas e validadas. Não são previsões."
+        )}. Explore como os casos variaram, compare lugares e conheça as análises de períodos de risco e de clima realizadas no estudo.`}
+        note="São dados históricos organizados para a pesquisa, não previsões nem alertas atuais."
       />
+
+      <nav className={reading.navigation} aria-label="Temas do histórico">
+        <a href="#historical-cases">Casos e lugares</a>
+        <a href="#historical-risk">Períodos de risco</a>
+        <a href="#historical-climate">Clima e dengue</a>
+      </nav>
+
+      <p className={reading.scope}>
+        Escolha um território para explorar os dados disponíveis. O filtro de ano muda a evolução de casos do Brasil ou do município; sazonalidade, comparações territoriais, risco e clima resumem seus períodos completos. Cada seção explica seu alcance.
+      </p>
 
       <Suspense
         fallback={
@@ -210,6 +222,7 @@ export default async function HistoricalPage() {
           </section>
         }
       >
+        <div id="historical-cases" className={reading.anchor}>
         <HistoricalOverview
           annualData={
             annual.data
@@ -234,7 +247,9 @@ export default async function HistoricalPage() {
               .municipio_semanas
           }
         />
+        </div>
 
+        <div id="historical-risk" className={reading.anchor}>
         <HistoricalRiskSection
           weeklyData={
             riskWeekly.data
@@ -249,7 +264,9 @@ export default async function HistoricalPage() {
             riskEpisodeDuration.distribution
           }
         />
+        </div>
 
+        <div id="historical-climate" className={reading.anchor}>
         <HistoricalClimateSection
           nationalData={
             climateNational.data
@@ -258,6 +275,7 @@ export default async function HistoricalPage() {
             climateRegional.data
           }
         />
+        </div>
       </Suspense>
     </div>
   );
