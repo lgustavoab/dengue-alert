@@ -43,6 +43,12 @@ data/serving/
 # Trained models
 models/
 
+# Local academic manuscripts (not for GitHub publication)
+/reports/methodology/*.doc
+/reports/methodology/*.docx
+/reports/methodology/*.docm
+/reports/methodology/~$*
+
 # Next.js / Node
 node_modules/
 .next/
