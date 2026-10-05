@@ -16,7 +16,7 @@ import {
 
 export const metadata: Metadata = {
   title:
-    "Mapa preditivo",
+    "Mapa dos resultados",
 };
 
 export default function MapPage() {
@@ -27,7 +27,7 @@ export default function MapPage() {
       <PageIntro
         eyebrow="Distribuição espacial retrospectiva"
         title="Explore onde o modelo indicou alerta de risco elevado em 2025."
-        description="Selecione a semana epidemiológica e o horizonte preditivo para consultar simultaneamente os resultados dos municípios brasileiros avaliados."
+        description="Escolha uma semana de 2025 e consulte o que o modelo indicou para uma a quatro semanas depois. Busque um município ou selecione-o no mapa."
         note="O mapa representa a avaliação retrospectiva de 2025. Os resultados não são alertas atuais de 2026 e não representam previsão da quantidade futura de casos."
       />
 
@@ -46,7 +46,7 @@ export default function MapPage() {
             </h2>
 
             <p>
-              Carregando a cobertura temporal e os contratos da avaliação retrospectiva.
+              Carregando os resultados e os municípios da avaliação de 2025.
             </p>
           </section>
         }

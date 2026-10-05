@@ -58,6 +58,8 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./historical-dashboard.module.css";
+import reading from "./historical-reading.module.css";
+import { HistoricalDetails } from "./historical-details";
 
 type HistoricalOverviewProps = {
   annualData:
@@ -949,7 +951,7 @@ export function HistoricalOverview({
       ) : (
         <>
           <section
-            className="metric-grid"
+            className={reading.keyMetrics}
             aria-label="Indicadores do panorama histórico nacional"
           >
             <MetricCard
@@ -1018,15 +1020,6 @@ export function HistoricalOverview({
               />
             )}
 
-            <MetricCard
-              label="Município-semanas no painel"
-              value={
-                formatInteger(
-                  municipalityWeeks,
-                )
-              }
-              description="Cobertura total do painel epidemiológico nacional."
-            />
           </section>
 
           <div
@@ -1043,12 +1036,6 @@ export function HistoricalOverview({
             </span>
           </div>
 
-          <AnnualPanorama
-            data={
-              filteredAnnualData
-            }
-          />
-
           <WeeklyEvolution
             data={
               weeklyData
@@ -1057,6 +1044,14 @@ export function HistoricalOverview({
               selectedYear
             }
           />
+
+          <AnnualPanorama data={filteredAnnualData} />
+
+          <HistoricalDetails title="Cobertura do conjunto histórico">
+            <p>
+              O conjunto completo reúne {formatInteger(municipalityWeeks)} município-semanas: cada registro corresponde a um município em uma semana. Esse total não representa pessoas nem municípios distintos e não muda com o filtro de ano.
+            </p>
+          </HistoricalDetails>
 
           <SeasonalityChart
             data={

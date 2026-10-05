@@ -13,7 +13,7 @@ export function SiteHeader() {
 
           <span className="brand__text">
             <strong>Dengue Alert</strong>
-            <span>Inteligência epidemiológica municipal</span>
+            <span>Pesquisa acadêmica sobre dengue</span>
           </span>
         </Link>
 

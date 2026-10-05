@@ -1,464 +1,80 @@
-import type {
-  PredictionByHorizonContract,
-  PredictionEvaluationHorizon,
-} from "@/lib/serving/types";
+import type { PredictionByHorizonContract } from "@/lib/serving/types";
 
+import { PredictionEarlyWarning } from "./prediction-early-warning";
+import { PredictionEvaluationDetails } from "./prediction-evaluation-details";
 import {
-  PredictionEarlyWarning,
-} from "@/components/prediction/prediction-early-warning";
-
+  formatEvaluationPercent,
+} from "./prediction-evaluation-presentation";
 import styles from "./prediction-performance.module.css";
 
-type PredictionPerformanceProps = {
-  evaluation:
-  PredictionByHorizonContract;
-};
-
-const HORIZON_KEYS = [
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-] as const;
-
-type HorizonKey =
-  (typeof HORIZON_KEYS)[number];
-
-type HorizonPresentation = {
-  label:
-  string;
-
-  distance:
-  string;
-};
-
-const HORIZON_PRESENTATION: Record<
-  HorizonKey,
-  HorizonPresentation
-> = {
-  h1: {
-    label:
-      "H1",
-
-    distance:
-      "1 semana à frente",
-  },
-
-  h2: {
-    label:
-      "H2",
-
-    distance:
-      "2 semanas à frente",
-  },
-
-  h3: {
-    label:
-      "H3",
-
-    distance:
-      "3 semanas à frente",
-  },
-
-  h4: {
-    label:
-      "H4",
-
-    distance:
-      "4 semanas à frente",
-  },
-};
-
-const integerFormatter =
-  new Intl.NumberFormat(
-    "pt-BR",
-    {
-      maximumFractionDigits:
-        0,
-    },
-  );
-
-const percentFormatter =
-  new Intl.NumberFormat(
-    "pt-BR",
-    {
-      style:
-        "percent",
-
-      minimumFractionDigits:
-        1,
-
-      maximumFractionDigits:
-        1,
-    },
-  );
-
-const thresholdFormatter =
-  new Intl.NumberFormat(
-    "pt-BR",
-    {
-      style:
-        "percent",
-
-      minimumFractionDigits:
-        2,
-
-      maximumFractionDigits:
-        2,
-    },
-  );
-
-const scoreFormatter =
-  new Intl.NumberFormat(
-    "pt-BR",
-    {
-      minimumFractionDigits:
-        3,
-
-      maximumFractionDigits:
-        3,
-    },
-  );
-
-function PerformanceCard({
-  horizonKey,
-  horizon,
-}: {
-  horizonKey:
-  HorizonKey;
-
-  horizon:
-  PredictionEvaluationHorizon;
-}) {
-  const presentation =
-    HORIZON_PRESENTATION[
-    horizonKey
-    ];
-
-  const metrics =
-    horizon
-      .modelo_final
-      .geral;
-
-  const metricItems = [
-    {
-      label:
-        "PR-AUC",
-
-      value:
-        scoreFormatter.format(
-          metrics
-            .pr_auc_average_precision,
-        ),
-    },
-
-    {
-      label:
-        "ROC-AUC",
-
-      value:
-        scoreFormatter.format(
-          metrics.roc_auc,
-        ),
-    },
-
-    {
-      label:
-        "Recall",
-
-      value:
-        percentFormatter.format(
-          metrics.recall,
-        ),
-    },
-
-    {
-      label:
-        "Precisão",
-
-      value:
-        percentFormatter.format(
-          metrics.precision,
-        ),
-    },
-
-    {
-      label:
-        "F1",
-
-      value:
-        percentFormatter.format(
-          metrics.f1,
-        ),
-    },
-
-    {
-      label:
-        "Acurácia balanceada",
-
-      value:
-        percentFormatter.format(
-          metrics
-            .balanced_accuracy,
-        ),
-    },
-  ];
+export function PredictionPerformance({ evaluation }: { evaluation: PredictionByHorizonContract }) {
+  const h1 = evaluation.horizontes.h1.modelo_final;
 
   return (
-    <article
-      className={
-        styles.card
-      }
-    >
-      <div
-        className={
-          styles.cardHeader
-        }
-      >
-        <div>
-          <strong
-            className={
-              styles.horizon
-            }
-          >
-            {
-              presentation.label
-            }
-          </strong>
-
-          <span
-            className={
-              styles.distance
-            }
-          >
-            {
-              presentation.distance
-            }
-          </span>
-        </div>
-
-        <div
-          className={
-            styles.threshold
-          }
-        >
-          <span>
-            Limiar aplicado
-          </span>
-
-          <strong>
-            {
-              thresholdFormatter.format(
-                horizon
-                  .threshold_modelo,
-              )
-            }
-          </strong>
-        </div>
-      </div>
-
-      <div
-        className={
-          styles.contextGrid
-        }
-      >
-        <div
-          className={
-            styles.contextItem
-          }
-        >
-          <span>
-            Observações
-          </span>
-
-          <strong>
-            {
-              integerFormatter.format(
-                metrics.observacoes,
-              )
-            }
-          </strong>
-        </div>
-
-        <div
-          className={
-            styles.contextItem
-          }
-        >
-          <span>
-            Prevalência do estado positivo
-          </span>
-
-          <strong>
-            {
-              percentFormatter.format(
-                metrics.prevalencia,
-              )
-            }
-          </strong>
-        </div>
-      </div>
-
-      <div
-        className={
-          styles.metricsGrid
-        }
-      >
-        {metricItems.map(
-          (item) => (
-            <div
-              key={
-                item.label
-              }
-              className={
-                styles.metricItem
-              }
-            >
-              <span>
-                {
-                  item.label
-                }
-              </span>
-
-              <strong>
-                {
-                  item.value
-                }
-              </strong>
-            </div>
-          ),
-        )}
-      </div>
-    </article>
-  );
-}
-
-export function PredictionPerformance({
-  evaluation,
-}: PredictionPerformanceProps) {
-  return (
-    <section
-      className={
-        styles.section
-      }
-      aria-labelledby="prediction-performance-title"
-    >
-      <div
-        className={
-          styles.heading
-        }
-      >
-        <div>
-          <span
-            className={
-              styles.eyebrow
-            }
-          >
-            Desempenho global
-          </span>
-
-          <h2
-            id="prediction-performance-title"
-          >
-            Avaliação do modelo no teste retrospectivo de 2025
-          </h2>
-        </div>
-
+    <section className={styles.section} aria-labelledby="prediction-performance-title">
+      <div className={styles.heading}>
+        <span className={styles.eyebrow}>Avaliação nacional · teste de 2025</span>
+        <h2 id="prediction-performance-title">Avaliar o modelo</h2>
         <p>
-          Estas métricas resumem o desempenho global do modelo em todos os municípios incluídos no teste final. Elas não representam o desempenho do município selecionado na consulta acima.
+          Estes resultados resumem todos os municípios incluídos no teste. Não
+          mudam com os filtros da consulta e não medem o desempenho da cidade
+          selecionada.
         </p>
       </div>
 
-      <div
-        className={
-          styles.scopeNote
-        }
-      >
-        <strong>
-          Como ler esta seção
-        </strong>
+      <div className={styles.scopes}>
+        <div>
+          <h3>Todas as situações avaliadas</h3>
+          <p>
+            A avaliação geral inclui semanas com e sem risco elevado no ponto de
+            partida. Parte dos resultados envolve risco que já estava presente.
+          </p>
+        </div>
+        <div>
+          <h3>Sem risco elevado no ponto de partida</h3>
+          <p>
+            O recorte de antecipação pergunta se o modelo identificou risco futuro
+            quando o município ainda não apresentava risco elevado. É uma tarefa
+            diferente da avaliação geral.
+          </p>
+        </div>
+      </div>
+      <p className={styles.units}>
+        Uma situação é um município em uma semana de referência. As contagens não
+        representam pessoas nem municípios distintos. Cada prazo é avaliado separadamente.
+      </p>
 
+      <PredictionEarlyWarning evaluation={evaluation} />
+
+      <div className={styles.interpretation}>
+        <h3>Por que separar esses cenários?</h3>
         <p>
-          Cada horizonte foi avaliado separadamente. H1 corresponde a uma semana à frente e H4 a quatro semanas à frente. Os resultados utilizam os limiares definidos antes do teste final de 2025.
+          Para uma semana depois, o modelo identificou {formatEvaluationPercent(h1.geral.recall)} das
+          situações com risco elevado na avaliação geral. Considerando apenas
+          situações sem risco elevado no ponto de partida, essa parcela foi {formatEvaluationPercent(h1.early_warning.recall)}.
+          O resultado geral não deve ser interpretado como capacidade de antecipar risco novo.
+        </p>
+        <h3>O que usamos como comparação?</h3>
+        <p>
+          Comparamos o modelo com uma regra simples: o estado da semana de referência
+          continua igual no futuro. Essa regra é chamada de persistência. Se não
+          havia risco elevado na origem, ela não emite alerta; por isso, não
+          antecipa risco nesse recorte. Os resultados completos das duas estratégias
+          estão nas tabelas abaixo.
         </p>
       </div>
 
-      <div
-        className={
-          styles.grid
-        }
-      >
-        {HORIZON_KEYS.map(
-          (horizonKey) => (
-            <PerformanceCard
-              key={
-                horizonKey
-              }
-              horizonKey={
-                horizonKey
-              }
-              horizon={
-                evaluation
-                  .horizontes[
-                horizonKey
-                ]
-              }
-            />
-          ),
-        )}
-      </div>
+      <p className={styles.note}>
+        O modelo identificou parte das situações futuras de risco, mas também emitiu
+        alertas não confirmados e deixou de identificar outras situações. Este teste
+        usa dados históricos consolidados de um único ano, 2025. O resultado nacional
+        não garante o mesmo desempenho em cada município nem em uso atual.
+      </p>
 
-      <div
-        className={
-          styles.metricGuide
-        }
-      >
-        <div>
-          <strong>
-            PR-AUC
-          </strong>
-
-          <p>
-            Resume a capacidade do modelo de identificar o estado positivo considerando o equilíbrio entre precisão e recall. É especialmente informativa quando a classe positiva é menos frequente.
-          </p>
-        </div>
-
-        <div>
-          <strong>
-            ROC-AUC
-          </strong>
-
-          <p>
-            Mede a capacidade geral de separar observações positivas e negativas ao longo de diferentes limiares. Valores maiores indicam melhor discriminação.
-          </p>
-        </div>
-
-        <div>
-          <strong>
-            Acurácia balanceada
-          </strong>
-
-          <p>
-            Considera o desempenho nas duas classes de forma equilibrada, reduzindo a influência de uma classe mais frequente sobre a leitura da acurácia.
-          </p>
-        </div>
-
-        <div>
-          <strong>
-            Comparação entre horizontes
-          </strong>
-
-          <p>
-            H1 a H4 representam distâncias temporais diferentes. A redução das métricas nos horizontes mais longos indica maior dificuldade preditiva conforme aumenta a antecedência.
-          </p>
-        </div>
-      </div>
-
-      <PredictionEarlyWarning
-        evaluation={
-          evaluation
-        }
-      />
+      <details className={styles.technicalDetails}>
+        <summary>Ver métricas completas e comparação com a persistência</summary>
+        <PredictionEvaluationDetails evaluation={evaluation} />
+      </details>
     </section>
   );
 }

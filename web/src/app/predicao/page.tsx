@@ -22,9 +22,11 @@ import {
   getPredictionByHorizon,
 } from "@/lib/serving/server";
 
+import styles from "./page.module.css";
+
 export const metadata: Metadata = {
   title:
-    "Predição",
+    "Resultados do modelo",
 };
 
 export default async function PredictionPage() {
@@ -36,34 +38,41 @@ export default async function PredictionPage() {
       className="route-page"
     >
       <PageIntro
-        eyebrow="Avaliação preditiva retrospectiva"
-        title="Consulte como o modelo antecipou o risco epidemiológico em 2025."
-        description="Selecione um município e uma semana epidemiológica para analisar previsões de risco elevado entre uma e quatro semanas à frente."
-        note="Os resultados pertencem ao teste retrospectivo de 2025. Eles não representam alertas atuais de 2026 nem previsão da quantidade futura de casos."
+        eyebrow="Avaliação retrospectiva de 2025"
+        title="Resultados do modelo"
+        description="Compare os alertas com o que foi observado em um município ou conheça os resultados da avaliação nacional do modelo."
+        note="Esta página apresenta resultados de pesquisa com dados de 2025. Não fornece alertas atuais nem prevê a quantidade futura de casos."
       />
 
-      <Suspense
-        fallback={
-          <section
-            className="placeholder-section"
-            aria-busy="true"
-          >
-            <span>
-              Predição
-            </span>
+      <nav className={styles.sectionNavigation} aria-label="Seções dos resultados do modelo">
+        <a href="#municipal-consultation">Consultar um município</a>
+        <a href="#prediction-performance-title">Avaliar o modelo</a>
+      </nav>
 
-            <h2>
-              Preparando consulta
-            </h2>
+      <div id="municipal-consultation" className={styles.consultation}>
+        <Suspense
+          fallback={
+            <section
+              className="placeholder-section"
+              aria-busy="true"
+            >
+              <span>
+                Consulta municipal
+              </span>
 
-            <p>
-              Carregando os controles da avaliação retrospectiva.
-            </p>
-          </section>
-        }
-      >
-        <PredictionSelection />
-      </Suspense>
+              <h2>
+                Preparando consulta
+              </h2>
+
+              <p>
+                Carregando os controles da avaliação retrospectiva.
+              </p>
+            </section>
+          }
+        >
+          <PredictionSelection />
+        </Suspense>
+      </div>
 
       <PredictionPerformance
         evaluation={

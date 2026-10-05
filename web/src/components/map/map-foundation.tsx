@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -8,13 +10,13 @@ import {
 
 import { FilterBar } from "@/components/filters/filter-bar";
 import { MunicipalityMap } from "@/components/map/municipality-map";
+import { formatMapAdvanceLabel } from "./municipality-map-result";
 import { SelectFilter } from "@/components/filters/select-filter";
 import {
   DEFAULT_MAP_HORIZON,
   DEFAULT_MAP_WEEK,
   formatMapWeekLabel,
   getAvailableMapHorizons,
-  getMapHorizonLabel,
   normalizeMapSelection,
 } from "@/lib/map-selection-utils";
 import {
@@ -127,10 +129,6 @@ function formatInteger(value: number): string {
   return new Intl.NumberFormat("pt-BR").format(value);
 }
 
-function formatMebibytes(value: number): string {
-  return `${(value / 1024 ** 2).toFixed(2)} MiB`;
-}
-
 export function MapFoundation() {
   const router = useRouter();
   const pathname = usePathname();
@@ -208,7 +206,7 @@ export function MapFoundation() {
           status: "error",
           index: null,
           geography: null,
-          error: "Não foi possível preparar a infraestrutura do mapa preditivo.",
+          error: "Não foi possível carregar os dados necessários para abrir o mapa.",
         });
       }
     }
@@ -317,7 +315,7 @@ export function MapFoundation() {
           createMapSliceErrorState(
             selection.week,
             selection.horizon,
-            "Não foi possível carregar o recorte preditivo selecionado.",
+            "Não foi possível carregar os resultados da semana e do prazo selecionados.",
           ),
         );
       }
@@ -364,7 +362,7 @@ export function MapFoundation() {
     () =>
       availableHorizons.map((horizon) => ({
         value: String(horizon),
-        label: getMapHorizonLabel(horizon),
+        label: formatMapAdvanceLabel(horizon),
       })),
     [availableHorizons],
   );
@@ -443,16 +441,15 @@ export function MapFoundation() {
         aria-busy="true"
       >
         <span className={styles.eyebrow}>
-          Infraestrutura do mapa
+          Mapa dos resultados
         </span>
 
         <h2>
-          Preparando contratos
+          Carregando o mapa
         </h2>
 
         <p>
-          Validando a cobertura temporal, os metadados geográficos e a
-          disponibilidade da avaliação retrospectiva.
+          Preparando os municípios e os resultados da avaliação de 2025.
         </p>
       </section>
     );
@@ -517,8 +514,8 @@ export function MapFoundation() {
   return (
     <div className={styles.foundation}>
       <FilterBar
-        title="Recorte espacial"
-        description="Escolha a semana epidemiológica de referência e quantas semanas à frente deseja consultar."
+        title="Qual semana de 2025 você quer consultar?"
+        description="A semana é o ponto de partida; o prazo indica quantas semanas depois o modelo tentou prever. SE significa Semana Epidemiológica. H1–H4 são prazos, não níveis de gravidade."
         hasActiveFilters={
           selection.week !== DEFAULT_MAP_WEEK
           || selection.horizon !== DEFAULT_MAP_HORIZON
@@ -527,7 +524,7 @@ export function MapFoundation() {
       >
         <SelectFilter
           id="map-week"
-          label="Semana epidemiológica"
+          label="Semana de referência (SE)"
           value={String(selection.week)}
           options={weekOptions}
           onChange={handleWeekChange}
@@ -535,7 +532,7 @@ export function MapFoundation() {
 
         <SelectFilter
           id="map-horizon"
-          label="Horizonte"
+          label="Quantas semanas depois?"
           value={String(selection.horizon)}
           options={horizonOptions}
           onChange={handleHorizonChange}
@@ -558,7 +555,7 @@ export function MapFoundation() {
           </strong>
 
           <p>
-            {getMapHorizonLabel(selection.horizon)}
+            {formatMapAdvanceLabel(selection.horizon)} · avaliação de 2025
           </p>
         </article>
 
@@ -574,8 +571,7 @@ export function MapFoundation() {
           </strong>
 
           <p>
-            Municípios classificados com o resultado preditivo oficial de
-            alerta.
+            Municípios em que o modelo indicou risco elevado na semana futura.
           </p>
         </article>
 
@@ -591,7 +587,7 @@ export function MapFoundation() {
           </strong>
 
           <p>
-            Municípios avaliados sem classificação de alerta no recorte.
+            Municípios sem alerta do modelo. Não significa ausência de dengue.
           </p>
         </article>
 
@@ -607,8 +603,7 @@ export function MapFoundation() {
           </strong>
 
           <p>
-            Territórios presentes na malha geográfica e ausentes da avaliação
-            final.
+            Territórios que aparecem no mapa, mas não têm resultado na avaliação.
           </p>
         </article>
       </section>
@@ -633,7 +628,7 @@ export function MapFoundation() {
             </strong>
 
             <p>
-              {currentSliceState.error} Nenhuma classificação epidemiológica foi inferida para esta falha.
+              {currentSliceState.error} A falha não significa “Sem alerta” nem “Sem avaliação”. Os resultados anteriores não são exibidos para esta seleção.
             </p>
           </div>
 
@@ -661,29 +656,15 @@ export function MapFoundation() {
             <h2>
               {formatMapWeekLabel(selection.week)}
               {" · "}
-              H{selection.horizon}
+              {formatMapAdvanceLabel(selection.horizon)}
             </h2>
 
-<p>
-  A malha municipal do Brasil apresenta a classificação preditiva
-  retrospectiva do recorte selecionado, distinguindo municípios em
-  ALERTA, SEM ALERTA e territórios sem avaliação preditiva.
-</p>
+            <p>
+              Resultados do modelo na avaliação retrospectiva de 2025, não alertas atuais.
+              As cores mostram a indicação do modelo para a semana futura,
+              não o risco observado. Use a busca para selecionar municípios pequenos.
+            </p>
           </div>
-
-          {currentSliceState.data ? (
-            <div className={styles.threshold}>
-              <span>
-                Limiar de alerta
-              </span>
-
-              <strong>
-                {formatPercentage(
-                  currentSliceState.data.threshold,
-                )}
-              </strong>
-            </div>
-          ) : null}
         </div>
 
         <MunicipalityMap
@@ -695,71 +676,39 @@ export function MapFoundation() {
           }
         />
 
-        <div className={styles.infrastructure}>
-          <div>
-            <span>
-              Territórios da malha
-            </span>
-
-            <strong>
-              {formatInteger(
-                geography.preparation.territories,
-              )}
-            </strong>
-          </div>
-
-          <div>
-            <span>
-              Municípios avaliados
-            </span>
-
-            <strong>
-              {formatInteger(
-                foundationState.index.municipios,
-              )}
-            </strong>
-          </div>
-
-          <div>
-            <span>
-              Asset geográfico
-            </span>
-
-            <strong>
-              {formatMebibytes(
-                geography.web_geometry.size_bytes,
-              )}
-            </strong>
-          </div>
-
-          <div>
-            <span>
-              Transferência gzip
-            </span>
-
-            <strong>
-              {formatMebibytes(
-                geography.web_geometry.gzip_size_bytes,
-              )}
-            </strong>
-          </div>
-        </div>
+        <details className={styles.coverageDetails}>
+          <summary>Cobertura da avaliação e limite de alerta</summary>
+          <p>
+            O mapa reúne {formatInteger(geography.preparation.territories)} territórios;
+            {" "}{formatInteger(foundationState.index.municipios)} municípios têm resultados na avaliação.
+            A diferença é preservada como “Sem avaliação”, não como “Sem alerta”.
+            No fim do ano, só aparecem os prazos disponíveis nos dados do estudo.
+          </p>
+          {currentSliceState.data ? (
+            <p>
+              Limite de alerta (limiar) para este prazo: {formatPercentage(currentSliceState.data.threshold)}.
+              Ele foi definido durante a validação; a classificação exibida é a decisão oficial do modelo.
+            </p>
+          ) : null}
+        </details>
       </section>
 
       <section className={styles.methodNote}>
-        <strong>
-          Como interpretar
-        </strong>
-
+        <strong>O que significa risco elevado neste estudo?</strong>
         <p>
-          H1 a H4 representam distância temporal, não gravidade. ALERTA
-          corresponde à classificação binária oficial produzida pelo modelo
-          quando o score atinge ou supera o limiar definido durante a validação.
+          É quando a incidência acumulada em quatro semanas supera uma referência
+          histórica do próprio município para aquela época do ano. Essa definição
+          não equivale a uma declaração oficial de epidemia.
         </p>
-
+        <strong>O que este mapa não mostra</strong>
         <p>
-          A probabilidade se refere ao estado futuro metodologicamente definido
-          de risco elevado e não à quantidade futura de casos de dengue.
+          Um alerta pode não se confirmar, e o modelo pode deixar de indicar
+          situações de risco elevado. A indicação não é uma previsão do número
+          de casos nem da chance individual de contrair dengue.
+        </p>
+        <p>
+          Para comparar a indicação com o que foi observado na semana futura,
+          consulte a página <Link href="/predicao">Resultados do modelo</Link>.
         </p>
       </section>
     </div>

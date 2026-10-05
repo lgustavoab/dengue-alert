@@ -17,7 +17,7 @@ async function readHomeSource(): Promise<string> {
 }
 
 describe("página inicial", () => {
-  it("representa as quatro superfícies atuais da aplicação", async () => {
+  it("oferece caminhos para as quatro áreas do estudo", async () => {
     const source = await readHomeSource();
     const destinations = Array.from(
       source.matchAll(/href="([^"]+)"/g),
@@ -26,39 +26,45 @@ describe("página inicial", () => {
 
     expect(source.match(/<AreaCard/g)).toHaveLength(4);
     expect(destinations).toEqual([
-      "/historico",
+      "/predicao",
       "/dados-qualidade",
+      "/historico",
       "/predicao",
       "/mapa",
+      "/dados-qualidade",
+      "/dados-qualidade",
     ]);
 
     for (const title of [
       "Histórico",
-      "Dados & Qualidade",
-      "Predição",
-      "Mapa preditivo",
+      "Resultados do modelo",
+      "Mapa",
+      "Dados e método",
     ]) {
       expect(source).toContain(`title="${title}"`);
     }
   });
 
-  it("remove a narrativa desatualizada e o jargão de sincronização", async () => {
+  it("apresenta pergunta, método, achados e autoria acadêmica", async () => {
     const source = await readHomeSource();
 
-    expect(source).toContain("Quatro perspectivas complementares");
-    expect(source).not.toContain("Três perspectivas complementares");
-    expect(source).not.toContain("contratos web sincronizados");
-    expect(source).not.toContain("contract_count");
-    expect(source).not.toContain("getServingManifest");
+    expect(source).toContain("É possível antecipar períodos de risco elevado de dengue?");
+    expect(source).toContain("Como fizemos o estudo");
+    expect(source).toContain("O que encontramos");
+    expect(source).toContain("alertas que não se");
+    expect(source).toContain("não trouxe melhora consistente");
+    expect(source).toContain("Universidade");
+    expect(source).toContain("Orientação: Aline Martins");
+    expect(source).toContain("<li>José Olavo Bernardo Freire</li>");
   });
 
-  it("mantém o mapa explicitamente retrospectivo e sem alerta atual", async () => {
+  it("distingue pesquisa retrospectiva de alertas atuais", async () => {
     const source = await readHomeSource();
 
-    expect(source).toContain("classificações oficiais");
-    expect(source).toContain("teste retrospectivo de 2025");
+    expect(source).toContain("avaliadas retrospectivamente em {prediction.ano}");
     expect(source).toMatch(/não\s+representam alertas operacionais atuais/);
-    expect(source).not.toContain("risco atual de 2026");
+    expect(source).toContain("não representam alertas operacionais atuais nem risco individual");
+    expect(source).toContain("Não equivale a uma declaração oficial de");
   });
 
   it("mantém um nome acessível específico em cada link de área", async () => {

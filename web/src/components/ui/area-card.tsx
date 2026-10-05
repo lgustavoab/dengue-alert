@@ -5,8 +5,6 @@ type AreaCardProps = {
   title: string;
   description: string;
   href: string;
-  metric: string;
-  metricLabel: string;
 };
 
 export function AreaCard({
@@ -14,23 +12,14 @@ export function AreaCard({
   title,
   description,
   href,
-  metric,
-  metricLabel,
 }: AreaCardProps) {
   return (
     <article className="area-card">
       <span className="area-card__eyebrow">{eyebrow}</span>
 
       <div className="area-card__content">
-        <div>
-          <h2>{title}</h2>
-          <p>{description}</p>
-        </div>
-
-        <div className="area-card__metric">
-          <strong>{metric}</strong>
-          <span>{metricLabel}</span>
-        </div>
+        <h3>{title}</h3>
+        <p>{description}</p>
       </div>
 
       <Link

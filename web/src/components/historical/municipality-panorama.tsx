@@ -11,6 +11,9 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./municipality-panorama.module.css";
+import reading from "./historical-reading.module.css";
+import dashboard from "./historical-dashboard.module.css";
+import { HistoricalDetails } from "./historical-details";
 
 type MunicipalityPanoramaProps = {
   territory: TerritoryFilterItem;
@@ -218,7 +221,7 @@ export function MunicipalityPanorama({
   return (
     <>
       <section
-        className="metric-grid"
+        className={reading.keyMetrics}
         aria-label={`Indicadores de ${territory.nomeMunicipio}`}
       >
         {selectedSummary ? (
@@ -247,13 +250,6 @@ export function MunicipalityPanorama({
               )} casos na semana de maior volume.`}
             />
 
-            <MetricCard
-              label="População utilizada"
-              value={formatInteger(
-                selectedSummary.population,
-              )}
-              description="População associada ao ano epidemiológico."
-            />
           </>
         ) : (
           <>
@@ -283,13 +279,6 @@ export function MunicipalityPanorama({
               description={`Pico na SE ${latest.peakWeek}.`}
             />
 
-            <MetricCard
-              label="Semanas disponíveis"
-              value={formatInteger(
-                series.count,
-              )}
-              description="Cobertura epidemiológica da série municipal."
-            />
           </>
         )}
       </section>
@@ -310,7 +299,7 @@ export function MunicipalityPanorama({
             </span>
 
             <h2>
-              {territory.nomeMunicipio}
+              Como os casos variaram? · {territory.nomeMunicipio}
               {" — "}
               {territory.nomeUf}
             </h2>
@@ -319,8 +308,8 @@ export function MunicipalityPanorama({
           <p>
             {selectedYear
             === null
-              ? "Comparação do total anual de casos prováveis ao longo da série disponível."
-              : `Distribuição semanal dos casos prováveis no ano epidemiológico de ${selectedYear}.`}
+              ? "Cada barra mostra o total de casos prováveis de um ano. Escolha um ano no filtro para consultar suas semanas. Incidência, nos indicadores, expressa casos por 100 mil habitantes."
+              : `Cada barra mostra os casos prováveis de uma semana de ${selectedYear}. SE significa Semana Epidemiológica. A incidência anual, nos indicadores, expressa casos por 100 mil habitantes.`}
           </p>
         </div>
 
@@ -415,6 +404,9 @@ export function MunicipalityPanorama({
             className={
               styles.weeklyWrapper
             }
+            role="region"
+            aria-label={`Gráfico semanal de ${territory.nomeMunicipio}`}
+            tabIndex={0}
           >
             <div
               className={
@@ -494,11 +486,35 @@ export function MunicipalityPanorama({
                 styles.caption
               }
             >
-              SE = semana epidemiológica. Passe o cursor sobre uma
-              barra para consultar o número de casos daquela semana.
+              Eixo X: Semana Epidemiológica (SE) de {selectedYear}. Eixo Y: casos prováveis por semana, de 0 a {formatInteger(maxWeeklyCases)}.
+              {" "}Em telas pequenas, deslize este gráfico na horizontal. Os valores de cada semana também estão na tabela abaixo, acessível por toque e teclado.
             </p>
           </div>
         )}
+
+        <HistoricalDetails title={selectedYear === null ? "Consultar valores anuais e cobertura" : "Consultar valores semanais e cobertura"}>
+          <p>A série municipal completa contém {formatInteger(series.count)} semanas. Esse total descreve a cobertura de todos os anos disponíveis, não somente do ano selecionado.</p>
+          {selectedSummary ? <p>População utilizada em {selectedSummary.year}: {formatInteger(selectedSummary.population)} habitantes.</p> : null}
+          <p>Semanas preenchidas com zero no tratamento dos dados não comprovam ausência de transmissão nem um registro explícito de zero na fonte.</p>
+          <div className={dashboard.tableWrapper} role="region" aria-label="Valores da série municipal" tabIndex={0}>
+            <table className={dashboard.table}>
+              <thead>
+                <tr>
+                  <th>{selectedYear === null ? "Ano" : "Semana Epidemiológica"}</th>
+                  <th>Casos prováveis</th>
+                  {selectedYear === null ? <><th>Incidência anual (por 100 mil habitantes)</th><th>População utilizada</th><th>Semanas preenchidas com zero</th></> : <th>Preenchida com zero</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {selectedYear === null ? annual.map((item) => (
+                  <tr key={item.year}><td>{item.year}</td><td>{formatInteger(item.cases)}</td><td>{formatDecimal(item.incidence)}</td><td>{formatInteger(item.population)}</td><td>{formatInteger(item.zeroFilledWeeks)}</td></tr>
+                )) : weeklyIndices.map((index) => (
+                  <tr key={index}><td>SE {series.data.semana_epidemiologica[index]}</td><td>{formatInteger(series.data.casos_provaveis[index])}</td><td>{series.data.zero_preenchido[index] ? "Sim" : "Não"}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </HistoricalDetails>
       </section>
     </>
   );

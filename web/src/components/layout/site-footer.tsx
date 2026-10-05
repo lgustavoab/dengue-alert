@@ -5,13 +5,13 @@ export function SiteFooter() {
         <div>
           <strong>Dengue Alert</strong>
           <p>
-            Sistema acadêmico de análise epidemiológica e avaliação preditiva
-            municipal.
+            Trabalho de Conclusão de Curso em Ciência de Dados da UNIVESP,
+            2026.
           </p>
         </div>
 
         <p className="site-footer__note">
-          Dados históricos e resultados retrospectivos de modelagem.
+          Dados históricos e avaliação retrospectiva do modelo em 2025.
         </p>
       </div>
     </footer>

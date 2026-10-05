@@ -15,6 +15,8 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./historical-dashboard.module.css";
+import { HistoricalDetails } from "./historical-details";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type SeasonalityChartProps = {
   data:
@@ -160,12 +162,12 @@ export function SeasonalityChart({
           </span>
 
           <h2>
-            Como a incidência se distribui pelas semanas epidemiológicas
+            Em que épocas a incidência aumentou?
           </h2>
         </div>
 
         <p>
-          Cada ponto representa uma Semana Epidemiológica (SE). A linha mostra a incidência mediana observada naquela semana ao longo dos anos disponíveis, enquanto a faixa representa o intervalo entre Q25 e Q75.
+          Brasil, 2016–2025. A linha mostra a mediana: o valor central das incidências observadas na mesma semana em diferentes anos. A faixa mostra a metade central desses valores. A unidade é casos por 100 mil habitantes.
         </p>
       </div>
 
@@ -219,7 +221,7 @@ export function SeasonalityChart({
             {peak
               ? `SE ${peak.semana_epidemiologica} · ${formatDecimal(
                   peak.incidencia_mediana_100mil,
-                )}`
+                )} por 100 mil`
               : "—"}
           </strong>
 
@@ -236,19 +238,16 @@ export function SeasonalityChart({
           styles.chartCard
         }
       >
-        <div
-          className={
-            styles.svgWrapper
-          }
-        >
+        <HistoricalChartFrame label="Sazonalidade nacional: semana e incidência por 100 mil habitantes">
           <svg
             className={
               styles.svg
             }
-            viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+            viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
             role="img"
             aria-label="Sazonalidade nacional da incidência de dengue por semana epidemiológica"
           >
+            <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING} maximum={maxValue} xLabel="Semana Epidemiológica (SE) — diferentes anos" yLabel="Incidência semanal (casos por 100 mil habitantes)" />
             {[
               0,
               0.25,
@@ -409,7 +408,7 @@ export function SeasonalityChart({
               },
             )}
           </svg>
-        </div>
+        </HistoricalChartFrame>
 
         <div
           className={
@@ -441,7 +440,7 @@ export function SeasonalityChart({
               }
             />
 
-            Q25–Q75
+            Metade central dos valores (Q25–Q75)
           </span>
         </div>
       </div>
@@ -453,6 +452,10 @@ export function SeasonalityChart({
       >
         SE = Semana Epidemiológica. A sazonalidade utiliza o conjunto histórico completo e, por isso, não muda quando um único ano é selecionado. Ela resume o comportamento recorrente entre os anos disponíveis.
       </p>
+      <HistoricalDetails title="Como interpretar a mediana e a faixa?">
+        <p>Mediana não é média: ela divide os valores ordenados ao meio. Q25 e Q75 são os percentis 25 e 75; entre eles fica a metade central das incidências observadas para aquela semana. A faixa não é um intervalo de previsão.</p>
+        <p>Nem todas as semanas têm a mesma quantidade de anos disponíveis. A Semana Epidemiológica 53 ocorre apenas em alguns anos.</p>
+      </HistoricalDetails>
     </section>
   );
 }

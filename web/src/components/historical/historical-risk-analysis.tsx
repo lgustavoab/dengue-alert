@@ -31,6 +31,9 @@ import {
 } from "@/components/ui/metric-card";
 
 import styles from "./historical-risk-analysis.module.css";
+import reading from "./historical-reading.module.css";
+import { HistoricalDetails } from "./historical-details";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type HistoricalRiskAnalysisProps = {
   weeklyData:
@@ -181,12 +184,12 @@ function WeeklyRiskChart({
       >
         <div>
           <h3>
-            Evolução semanal da simultaneidade de risco
+            Quantos municípios estiveram em risco ao mesmo tempo?
           </h3>
         </div>
 
         <p>
-          Proporção das unidades elegíveis classificadas em risco elevado em cada Semana Epidemiológica.
+          Percentual dos municípios com histórico suficiente que estiveram em risco elevado em cada Semana Epidemiológica. A linha não mostra a quantidade de casos nem uma previsão.
         </p>
       </div>
 
@@ -262,16 +265,12 @@ function WeeklyRiskChart({
         </div>
       ) : null}
 
-      <div
-        className={
-          styles.svgWrapper
-        }
-      >
+      <HistoricalChartFrame label="Risco semanal: ano epidemiológico e percentual de municípios em risco">
         <svg
           className={
             styles.svg
           }
-          viewBox={`0 0 ${WEEKLY_WIDTH} ${WEEKLY_HEIGHT}`}
+          viewBox={historicalChartViewBox(WEEKLY_WIDTH, WEEKLY_HEIGHT)}
           role="img"
           aria-label={
             region
@@ -279,6 +278,7 @@ function WeeklyRiskChart({
               : "Proporção semanal de municípios em risco no Brasil"
           }
         >
+          <HistoricalChartAxes width={WEEKLY_WIDTH} height={WEEKLY_HEIGHT} padding={WEEKLY_PADDING} maximum={1} format="percent" xLabel="Tempo — ano epidemiológico" yLabel="Municípios em risco (% dos elegíveis)" />
           {[
             0,
             0.25,
@@ -429,7 +429,7 @@ function WeeklyRiskChart({
             },
           )}
         </svg>
-      </div>
+      </HistoricalChartFrame>
 
       <p
         className={
@@ -503,15 +503,21 @@ function EpisodeDurationChart({
       >
         <div>
           <h3>
-            Duração dos episódios históricos de risco
+            Quanto duraram os períodos de risco?
           </h3>
         </div>
 
         <p>
-          Distribuição nacional da quantidade de episódios segundo sua duração contínua em semanas.
+          Brasil, 2018–2025. Cada episódio reúne semanas consecutivas em risco elevado no mesmo município. As barras mostram quantos episódios tiveram cada duração.
         </p>
       </div>
 
+      <p className={styles.note}>
+        A duração mediana foi de {formatInteger(summary.mediana)} semanas: esse é o valor central das durações ordenadas, não a média. A maior duração não representa um episódio típico.
+      </p>
+
+      <HistoricalDetails title="Ver os indicadores completos de duração">
+      <p>Percentil 90 (P90) é a duração abaixo da qual, ou igual à qual, ficam aproximadamente 90% dos episódios.</p>
       <div
         className={
           styles.summaryGrid
@@ -582,20 +588,18 @@ function EpisodeDurationChart({
           </strong>
         </div>
       </div>
+      </HistoricalDetails>
 
-      <div
-        className={
-          styles.svgWrapper
-        }
-      >
+      <HistoricalChartFrame label="Duração do risco: semanas consecutivas e quantidade de episódios">
         <svg
           className={
             styles.svg
           }
-          viewBox={`0 0 ${EPISODE_WIDTH} ${EPISODE_HEIGHT}`}
+          viewBox={historicalChartViewBox(EPISODE_WIDTH, EPISODE_HEIGHT)}
           role="img"
           aria-label="Distribuição nacional da duração dos episódios históricos de risco"
         >
+          <HistoricalChartAxes width={EPISODE_WIDTH} height={EPISODE_HEIGHT} padding={EPISODE_PADDING} maximum={maxEpisodes} format="integer" xLabel="Duração do episódio (semanas consecutivas)" yLabel="Quantidade de episódios" />
           {[
             0,
             0.25,
@@ -739,7 +743,7 @@ function EpisodeDurationChart({
             },
           )}
         </svg>
-      </div>
+      </HistoricalChartFrame>
 
       <p
         className={
@@ -992,12 +996,12 @@ export function HistoricalRiskAnalysis({
           </span>
 
           <h2>
-            {scopeTitle}
+            Como os períodos de risco se repetiram? · {scopeTitle}
           </h2>
         </div>
 
         <p>
-          Frequência, simultaneidade e persistência dos estados históricos de risco epidemiológico definidos pelo projeto.
+          Análise de 2018–2025. Ela começa depois da série de casos porque a definição de risco exige dados de anos anteriores. O filtro de ano não muda esta seção.
         </p>
       </div>
 
@@ -1009,29 +1013,20 @@ export function HistoricalRiskAnalysis({
         <strong>
           Risco histórico não é previsão.
         </strong>{" "}
-        Nesta seção, uma observação é classificada em risco elevado quando a incidência acumulada em quatro semanas supera o limiar sazonal P90 histórico definido para o município. Os resultados abaixo descrevem estados já observados e são separados da área de Predição do sistema.
+        Aqui, risco elevado significa que a incidência acumulada em quatro semanas superou uma referência histórica do próprio município para aquela época do ano. Isso não equivale a uma declaração oficial de epidemia nem ao risco individual de uma pessoa.
       </div>
+
+      <HistoricalDetails title="Como o estudo definiu risco elevado?">
+        <p>A referência é o percentil 90 (P90) sazonal, calculado com dados de anos anteriores e uma janela de ±4 semanas em torno da semana analisada. A incidência acumulada em quatro semanas precisa ser estritamente maior que essa referência.</p>
+        <p>Uma observação elegível é uma combinação município–semana com histórico suficiente para aplicar essa definição. Não representa uma pessoa. Essa regra observada não é o limiar usado para emitir um alerta do modelo.</p>
+      </HistoricalDetails>
 
       {selectedMunicipality ? (
         municipalitySummary ? (
           <>
             <div
-              className="metric-grid"
+              className={reading.keyMetrics}
             >
-              <MetricCard
-                label="Observações elegíveis"
-                value={
-                  formatInteger(
-                    municipalitySummary
-                      .observacoes_elegiveis,
-                  )
-                }
-                description={`${formatInteger(
-                  municipalitySummary
-                    .anos_elegiveis,
-                )} anos com histórico elegível.`}
-              />
-
               <MetricCard
                 label="Semanas em risco"
                 value={
@@ -1051,7 +1046,7 @@ export function HistoricalRiskAnalysis({
                       .proporcao_semanas_risco,
                   )
                 }
-                description="Parcela das observações elegíveis classificadas em risco."
+                description={`${formatInteger(municipalitySummary.semanas_risco)} de ${formatInteger(municipalitySummary.observacoes_elegiveis)} semanas com histórico suficiente, em todo o período.`}
               />
 
               <MetricCard
@@ -1062,27 +1057,21 @@ export function HistoricalRiskAnalysis({
                       .anos_com_risco,
                   )
                 }
-                description="Número de anos elegíveis em que houve pelo menos uma semana em risco."
-              />
-
-              <MetricCard
-                label="Recorrência multianual"
-                value={
-                  municipalitySummary
-                    .recorrencia_multianual
-                    ? "Sim"
-                    : "Não"
-                }
-                description="Indica se o município apresentou risco em mais de um ano."
+                description={`Anos com pelo menos uma semana em risco, entre ${formatInteger(municipalitySummary.anos_elegiveis)} anos com histórico suficiente.`}
               />
             </div>
+
+            <HistoricalDetails title="Ver cobertura e recorrência municipal">
+              <p>Semanas com histórico suficiente: {formatInteger(municipalitySummary.observacoes_elegiveis)}, em {formatInteger(municipalitySummary.anos_elegiveis)} anos.</p>
+              <p>Risco em mais de um ano: {municipalitySummary.recorrencia_multianual ? "Sim" : "Não"}. Esse indicador resume se houve repetição em anos diferentes, não uma previsão de repetição futura.</p>
+            </HistoricalDetails>
 
             <p
               className={
                 styles.note
               }
             >
-              O resumo municipal de risco utiliza todo o período histórico elegível disponível. Por isso, ele não deve ser interpretado como a situação atual do município.
+              O resumo municipal de risco utiliza todo o período histórico elegível disponível, não somente o ano selecionado. Não é a situação atual do município. Não há curva semanal de risco nem distribuição de duração individual nesta visualização.
             </p>
           </>
         ) : (
@@ -1091,16 +1080,17 @@ export function HistoricalRiskAnalysis({
               styles.unavailable
             }
           >
-            Não existe resumo histórico de risco elegível disponível para este município. Isso pode ocorrer quando a unidade não possui histórico suficiente para a definição do alvo.
+            Não há resumo histórico de risco disponível para este município. Pode faltar histórico suficiente para aplicar a definição do estudo. Ausência de avaliação não significa ausência de risco.
           </div>
         )
       ) : (
         <>
+          <HistoricalDetails title="Ver o resumo dos municípios deste recorte">
           <div
             className="metric-grid"
           >
             <MetricCard
-              label="Municípios elegíveis"
+              label="Municípios com histórico suficiente"
               value={
                 formatInteger(
                   municipalityCount,
@@ -1120,7 +1110,7 @@ export function HistoricalRiskAnalysis({
             />
 
             <MetricCard
-              label="Recorrência multianual"
+              label="Risco em mais de um ano"
               value={
                 formatInteger(
                   municipalitiesWithRecurrence,
@@ -1130,7 +1120,7 @@ export function HistoricalRiskAnalysis({
             />
 
             <MetricCard
-              label="Média de semanas em risco"
+              label="Percentual médio de semanas em risco"
               value={
                 formatPercent(
                   averageRiskProportion,
@@ -1139,6 +1129,7 @@ export function HistoricalRiskAnalysis({
               description="Média municipal da proporção de observações elegíveis em risco."
             />
           </div>
+          </HistoricalDetails>
 
           {weeklyScope.length
             > 0 ? (
@@ -1152,12 +1143,6 @@ export function HistoricalRiskAnalysis({
             />
           ) : null}
 
-          <MunicipalityRanking
-            data={
-              scopedMunicipalities
-            }
-          />
-
           {!selectedRegion
             && !selectedUf ? (
             <EpisodeDurationChart
@@ -1170,13 +1155,21 @@ export function HistoricalRiskAnalysis({
             />
           ) : null}
 
+          <HistoricalDetails title="Comparar a frequência de risco entre municípios">
+            <MunicipalityRanking data={scopedMunicipalities} />
+          </HistoricalDetails>
+
+          {selectedRegion || selectedUf ? (
+            <p className={styles.note}>A distribuição da duração dos episódios está disponível apenas para o Brasil completo; não é uma distribuição específica deste território.</p>
+          ) : null}
+
           {selectedUf ? (
             <p
               className={
                 styles.note
               }
             >
-              O contrato semanal de risco possui séries agregadas para Brasil e regiões, mas não para UFs. Por isso, no recorte estadual são exibidos os resumos municipais disponíveis sem reconstruir artificialmente uma série semanal estadual.
+              A evolução semanal de risco está disponível para Brasil e regiões, não para estados. Aqui são apresentados somente os resumos municipais do estado selecionado.
             </p>
           ) : null}
         </>

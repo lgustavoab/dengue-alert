@@ -1,5 +1,6 @@
 .results {
-  margin-top: 1rem;
+  min-width: 0;
+  margin-top: 1.5rem;
 }
 
 .heading {
@@ -8,177 +9,113 @@
 
 .eyebrow {
   display: block;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   color: var(--brand-strong);
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .heading h2 {
   margin: 0;
   color: var(--foreground);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+}
+
+.heading p,
+.origin p,
+.card p,
+.note p {
+  margin: 0.5rem 0 0;
+  color: var(--foreground-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
 }
 
 .heading p {
   max-width: 780px;
-  margin: 0.45rem 0 0;
+}
+
+.origin {
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  padding: 1rem 1.15rem;
+}
+
+.origin span,
+.indication span {
+  display: block;
   color: var(--foreground-muted);
   font-size: 0.78rem;
-  line-height: 1.6;
+}
+
+.origin strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--foreground);
+  font-size: 1rem;
 }
 
 .grid {
   display: grid;
-  grid-template-columns:
-    repeat(
-      4,
-      minmax(0, 1fr)
-    );
-  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .card {
-  display: flex;
   min-width: 0;
-  min-height: 330px;
+  display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
+  border-top-width: 3px;
   border-radius: var(--radius-md);
   background: var(--surface);
-  padding: 1rem;
+  padding: 1.15rem;
   box-shadow: var(--shadow-sm);
+  overflow-wrap: anywhere;
 }
 
 .alertCard {
-  border-top: 3px solid var(--danger);
+  border-top-color: var(--danger);
 }
 
 .noAlertCard {
-  border-top: 3px solid var(--brand);
+  border-top-color: var(--brand);
 }
 
 .unavailableCard {
-  border-top: 3px solid var(--border-strong);
-  background: var(--surface-muted);
+  border-top-color: var(--border-strong);
 }
 
 .cardHeader {
   display: flex;
-  min-width: 0;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.horizon {
+.cardHeader h3 {
+  margin: 0;
   color: var(--foreground);
-  font-size: 1.05rem;
-  font-weight: 850;
-  letter-spacing: -0.02em;
+  font-size: 1.1rem;
 }
 
-.timeLabel {
+.cardHeader span {
   color: var(--foreground-muted);
-  font-size: 0.67rem;
-  font-weight: 650;
-  line-height: 1.35;
-  text-align: right;
+  font-size: 0.75rem;
 }
 
-.probability {
-  margin-top: 1.15rem;
-}
-
-.probability span {
-  display: block;
-  color: var(--foreground-muted);
-  font-size: 0.64rem;
-  font-weight: 750;
-  letter-spacing: 0.04em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
-.probability strong {
-  display: block;
-  margin-top: 0.3rem;
-  color: var(--foreground);
-  font-size: clamp(
-    1.7rem,
-    2.4vw,
-    2.15rem
-  );
-  font-weight: 760;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-}
-
-.details {
-  margin-top: 1rem;
-  border-top: 1px solid var(--border);
-  padding-top: 0.85rem;
-}
-
-.detailItem span {
-  display: block;
-  color: var(--foreground-muted);
-  font-size: 0.62rem;
-  font-weight: 750;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.detailItem strong {
-  display: block;
-  margin-top: 0.25rem;
-  color: var(--foreground);
-  font-size: 0.92rem;
-}
-
-.comparison {
-  display: flex;
-  margin-top: 0.75rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  border: 1px solid var(--border);
+.indication strong {
+  display: inline-block;
+  margin-top: 0.4rem;
   border-radius: var(--radius-sm);
-  background: var(--surface-muted);
-  padding: 0.55rem 0.6rem;
-  color: var(--foreground-soft);
-  font-size: 0.74rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.comparison strong {
-  color: var(--foreground);
-  font-size: 0.88rem;
-}
-
-.status {
-  display: flex;
-  margin-top: auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  border-radius: var(--radius-sm);
-  padding: 0.7rem 0.8rem;
-}
-
-.status span {
-  font-size: 0.61rem;
-  font-weight: 750;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.status strong {
-  font-size: 0.78rem;
-  font-weight: 850;
-  letter-spacing: 0.035em;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.9rem;
 }
 
 .alertStatus {
@@ -191,100 +128,80 @@
   color: var(--brand-strong);
 }
 
-.unavailableContent {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1.2rem 0.15rem;
-}
-
 .unavailableContent strong {
   color: var(--foreground-soft);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
-.unavailableContent p {
-  margin: 0.45rem 0 0;
-  color: var(--foreground-muted);
-  font-size: 0.72rem;
-  line-height: 1.6;
+.technicalDetails {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
 }
 
-.explanation {
-  display: grid;
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
-    );
-  margin-top: 1rem;
-  gap: 0.75rem;
+.technicalDetails summary {
+  color: var(--brand-strong);
+  font-size: 0.8rem;
+  font-weight: 750;
+  cursor: pointer;
 }
 
-.explanationItem {
-  border: 1px solid var(--border);
+.technicalDetails summary:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
   border-radius: var(--radius-sm);
-  background: var(--surface);
-  padding: 0.85rem 0.95rem;
 }
 
-.explanationItem strong {
-  display: block;
-  color: var(--foreground);
-  font-size: 0.76rem;
+.technicalValues {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0;
 }
 
-.explanationItem p {
-  margin: 0.35rem 0 0;
+.technicalValues div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
+.technicalValues dt {
   color: var(--foreground-muted);
-  font-size: 0.7rem;
-  line-height: 1.55;
+  font-size: 0.78rem;
 }
 
-.retrospectiveNote {
-  margin: 0.9rem 0 0;
-  border-left: 3px solid var(--accent);
-  border-radius:
-    0
-    var(--radius-sm)
-    var(--radius-sm)
-    0;
-  background: var(--accent-soft);
-  padding: 0.75rem 0.9rem;
-  color: var(--foreground-soft);
-  font-size: 0.72rem;
-  line-height: 1.55;
+.technicalValues dd {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
-@media (max-width: 1050px) {
-  .grid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-  }
+.note {
+  margin-top: 1rem;
+  border-left: 3px solid var(--brand);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface-muted);
+  padding: 0.7rem 1rem;
+}
+
+.note p:first-child {
+  margin-top: 0;
 }
 
 @media (max-width: 680px) {
+  .technicalDetails summary {
+    min-height: 44px;
+    padding-block: 0.75rem;
+  }
+
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .card {
-    min-height: 0;
-  }
-
-  .explanation {
-    grid-template-columns: 1fr;
-  }
-
-  .cardHeader {
-    align-items: flex-start;
-  }
-
-  .timeLabel {
-    max-width: 135px;
+  .card,
+  .origin {
+    padding: 1rem;
   }
 }

@@ -30,10 +30,6 @@ import {
 } from "@/components/prediction/prediction-results";
 
 import {
-  PredictionRetrospective,
-} from "@/components/prediction/prediction-retrospective";
-
-import {
   PredictionScoreEvolution,
 } from "@/components/prediction/prediction-score-evolution";
 
@@ -924,8 +920,8 @@ export function PredictionSelection() {
   return (
     <>
       <FilterBar
-        title="Consulta retrospectiva"
-        description="Selecione o município e a semana epidemiológica de referência para consultar como o modelo avaliou os horizontes futuros de 2025."
+        title="Consultar um município"
+        description="Escolha um município e uma semana de referência de 2025. Compare os alertas com o que foi observado de uma a quatro semanas depois."
         hasActiveFilters={
           hasActiveFilters
         }
@@ -1101,7 +1097,7 @@ export function PredictionSelection() {
           </h2>
 
           <p>
-            A avaliação preditiva é municipal. Depois da seleção, a aplicação carregará somente a série correspondente e permitirá escolher uma semana epidemiológica de 2025.
+            Escolha o município que deseja consultar. Depois, selecione uma semana de 2025 como ponto de partida para comparar os alertas do modelo com o que foi observado.
           </p>
         </section>
       ) : null}
@@ -1129,7 +1125,7 @@ export function PredictionSelection() {
           </h2>
 
           <p>
-            Agora selecione uma semana epidemiológica de referência para consultar os horizontes disponíveis.
+            Agora escolha uma semana de referência de 2025. Ela será o ponto de partida dos resultados para uma, duas, três e quatro semanas depois.
           </p>
 
           <p
@@ -1137,7 +1133,7 @@ export function PredictionSelection() {
               styles.note
             }
           >
-            As semanas finais de 2025 possuem menos horizontes disponíveis porque previsões de duas, três ou quatro semanas à frente exigiriam observações fora da janela retrospectiva utilizada na avaliação.
+            Nas semanas finais de 2025, alguns prazos não têm avaliação porque a comparação exigiria observações fora do período de teste. Ausência de avaliação não significa ausência de alerta.
           </p>
         </section>
       ) : null}
@@ -1173,7 +1169,7 @@ export function PredictionSelection() {
               }
             >
               <span>
-                Semana epidemiológica
+                Semana de referência
               </span>
 
               <strong>
@@ -1208,14 +1204,14 @@ export function PredictionSelection() {
               }
             >
               <span>
-                Horizontes disponíveis
+                Prazos com avaliação
               </span>
 
               <strong>
                 {availableHorizons
                   .map(
                     (horizon) =>
-                      horizon.toUpperCase(),
+                      ({ h1: "1 semana", h2: "2 semanas", h3: "3 semanas", h4: "4 semanas" })[horizon],
                   )
                   .join(
                     ", ",
@@ -1229,7 +1225,7 @@ export function PredictionSelection() {
               styles.note
             }
           >
-            Esta é uma consulta retrospectiva de 2025. Os resultados que serão exibidos representam como o modelo teria avaliado os horizontes futuros a partir desta semana de referência, e não um alerta atual.
+            A semana escolhida é o ponto de partida. A comparação abaixo mostra o estado observado em cada semana futura, no teste retrospectivo de 2025. Não é um alerta atual.
           </p>
         </section>
       ) : null}
@@ -1249,27 +1245,17 @@ export function PredictionSelection() {
       {selectedTerritory
         && selectedReferenceWeek
         && municipalitySeries ? (
-        <PredictionRetrospective
-          series={
-            municipalitySeries
-          }
-          week={
-            selectedReferenceWeek.week
-          }
-        />
-      ) : null}
-
-      {selectedTerritory
-        && selectedReferenceWeek
-        && municipalitySeries ? (
-        <PredictionScoreEvolution
-          series={
-            municipalitySeries
-          }
-          selectedWeek={
-            selectedReferenceWeek.week
-          }
-        />
+        <details className={styles.evolutionDetails}>
+          <summary>Acompanhar as probabilidades ao longo de 2025</summary>
+          <PredictionScoreEvolution
+            series={
+              municipalitySeries
+            }
+            selectedWeek={
+              selectedReferenceWeek.week
+            }
+          />
+        </details>
       ) : null}
     </>
   );

@@ -18,6 +18,8 @@ import type {
 } from "@/lib/serving/types";
 
 import styles from "./historical-climate-analysis.module.css";
+import { HistoricalDetails } from "./historical-details";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type HistoricalClimateAnalysisProps = {
   nationalData:
@@ -409,27 +411,24 @@ function ClimateVariableChart({
             </strong>
 
             <small>
-              lag {strongest.lag_semanas} semana{strongest.lag_semanas === 1 ? "" : "s"}
+              clima {strongest.lag_semanas} semana{strongest.lag_semanas === 1 ? "" : "s"} antes
             </small>
           </div>
         ) : null}
       </div>
 
-      <div
-        className={
-          styles.svgWrapper
-        }
-      >
+      <HistoricalChartFrame label={`${getClimateVariableLabel(variable)}: semanas de diferença e correlação municipal`}>
         <svg
           className={
             styles.svg
           }
-          viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+          viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
           role="img"
           aria-label={`${getClimateVariableLabel(
             variable,
           )}: associação histórica com dengue em ${scopeLabel}`}
         >
+          <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING} minimum={minimum} maximum={maximum} format="correlation" xLabel="Clima observado quantas semanas antes? (lag)" yLabel="Correlação de Spearman (sem unidade)" />
           {[
             0,
             0.25,
@@ -606,12 +605,12 @@ function ClimateVariableChart({
                 }
                 textAnchor="middle"
               >
-                {`L${item.lag_semanas}`}
+                {item.lag_semanas}
               </text>
             ),
           )}
         </svg>
-      </div>
+      </HistoricalChartFrame>
 
       <div
         className={
@@ -643,7 +642,7 @@ function ClimateVariableChart({
             }
           />
 
-          Q25–Q75
+          Metade central das correlações (Q25–Q75)
         </span>
       </div>
 
@@ -717,7 +716,7 @@ export function HistoricalClimateAnalysis({
             styles.unavailable
           }
         >
-          O contrato histórico atual não disponibiliza correlações clima × dengue individualizadas por município. Por isso, nenhuma associação municipal é reconstruída artificialmente na aplicação.
+          Esta visualização não disponibiliza associações climáticas individuais por município. Para explorar os resumos das correlações municipais, selecione Brasil ou uma região. Isso não significa ausência de relação entre clima e dengue neste município.
         </div>
       </section>
     );
@@ -761,7 +760,7 @@ export function HistoricalClimateAnalysis({
             styles.unavailable
           }
         >
-          O contrato histórico atual disponibiliza associações climáticas para Brasil e regiões, mas não para UFs. A aplicação não deriva uma correlação estadual a partir de resumos municipais.
+          Esta visualização disponibiliza resumos para Brasil e regiões, não para estados. Selecione Brasil ou uma região para explorá-los. A ausência de um resumo estadual não significa ausência de relação entre clima e dengue.
         </div>
       </section>
     );
@@ -796,12 +795,12 @@ export function HistoricalClimateAnalysis({
           </span>
 
           <h2>
-            Associação histórica · {scopeLabel}
+            O que observamos sobre o clima? · {scopeLabel}
           </h2>
         </div>
 
         <p>
-          Como temperatura, umidade relativa e precipitação se associaram historicamente ao indicador epidemiológico em diferentes deslocamentos semanais.
+          Análise exploratória de 2016–2025: comparamos temperatura, umidade e chuva com a incidência semanal de dengue (casos por 100 mil habitantes). O filtro de ano não muda esta seção.
         </p>
       </div>
 
@@ -816,9 +815,9 @@ export function HistoricalClimateAnalysis({
           }
         >
           <strong>
-            O que significa lag?
+            O clima veio antes ou na mesma semana?
           </strong>{" "}
-          Lag 0 compara as variáveis no mesmo período. Lag 4, por exemplo, compara a condição climática observada quatro semanas antes com o indicador epidemiológico posterior.
+          Comparamos o clima da mesma semana e de semanas anteriores. Quatro semanas de diferença, por exemplo, compara o clima de quatro semanas antes com a incidência da semana analisada. Essa diferença de tempo é chamada de lag.
         </div>
 
         <div
@@ -833,6 +832,12 @@ export function HistoricalClimateAnalysis({
         </div>
       </div>
 
+      <p className={styles.coverage}>Os gráficos resumem correlações calculadas separadamente em cada município. Não são uma única correlação de uma série agregada do Brasil ou da região, nem medem a contribuição do clima para o desempenho do modelo.</p>
+
+      <HistoricalDetails title="Explorar os gráficos de temperatura, umidade e chuva">
+        <p>A correlação de Spearman varia de −1 a 1. Valores positivos indicam que as duas medidas tenderam a crescer juntas; negativos, que tenderam a variar em sentidos opostos. Valores próximos de zero indicam associação fraca nessa medida, não ausência de qualquer relação.</p>
+        <p>A linha mostra a mediana (valor central) das correlações municipais. A faixa entre Q25 e Q75 reúne a metade central dessas correlações. O eixo horizontal mostra quantas semanas antes o clima foi observado.</p>
+        <p>Foram comparadas apenas as diferenças de 0, 1, 2, 3, 4, 6 e 8 semanas. O ponto destacado é a maior associação observada nessa janela, não um prazo ótimo definitivo.</p>
       <div
         className={
           styles.chartGrid
@@ -871,6 +876,7 @@ export function HistoricalClimateAnalysis({
           },
         )}
       </div>
+      </HistoricalDetails>
 
       <p
         className={

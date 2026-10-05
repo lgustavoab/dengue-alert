@@ -1,9 +1,12 @@
 .container {
   display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  min-width: 0;
   gap: 1rem;
 }
 
 .searchSection {
+  grid-column: 1 / -1;
   position: relative;
   z-index: 10;
   border: 1px solid var(--border);
@@ -197,6 +200,8 @@
 }
 
 .wrapper {
+  grid-column: 1;
+  grid-row: 3;
   position: relative;
   min-height: 430px;
   overflow: hidden;
@@ -263,12 +268,11 @@
 }
 
 .legend {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
+  grid-column: 1 / -1;
   display: grid;
-  gap: 0.45rem;
-  min-width: 180px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  min-width: 0;
   border: 1px solid rgb(216 226 229 / 0.9);
   border-radius: var(--radius-sm);
   background: rgb(255 255 255 / 0.94);
@@ -475,10 +479,7 @@
 .detailGrid {
   display: grid;
   grid-template-columns:
-    repeat(
-      4,
-      minmax(0, 1fr)
-    );
+    minmax(0, 1fr);
   gap: 0.75rem;
   margin-top: 1rem;
 }
@@ -644,17 +645,74 @@
   border: 0;
 }
 
+
+.legendItem small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.selectionPanel, .emptySelection {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+  min-width: 0;
+}
+
+.interactionError { grid-column: 1 / -1; }
+
+.selectionHeader > div { min-width: 0; overflow-wrap: anywhere; }
+
+.detailPrimary p, .resultDetails p {
+  margin: 0.35rem 0 0;
+  color: var(--foreground-soft);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.resultDetails {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+.resultDetails summary {
+  cursor: pointer;
+  color: var(--brand-strong);
+  font-weight: 750;
+  font-size: 0.85rem;
+}
+
+.resultDetails summary:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.numericDetails { display: grid; gap: 0.75rem; margin-bottom: 0; }
+.numericDetails dt { color: var(--foreground-soft); font-size: 0.8rem; }
+.numericDetails dd { margin: 0.25rem 0 0; font-weight: 750; }
+
+
 @media (max-width: 900px) {
-  .detailGrid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+  .container { grid-template-columns: minmax(0, 1fr); }
+  .wrapper, .selectionPanel, .emptySelection {
+    grid-column: 1;
+    grid-row: auto;
   }
 }
 
 @media (max-width: 680px) {
+  .resultDetails summary {
+    min-height: 44px;
+    padding-block: 0.75rem;
+  }
+
+  .clearButton {
+    min-height: 44px;
+  }
+
   .searchSection {
     padding: 0.9rem;
   }
@@ -687,9 +745,7 @@
   }
 
   .legend {
-    top: 0.75rem;
-    left: 0.75rem;
-    min-width: 150px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hoverCard {

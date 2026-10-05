@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/metric-card";
 
 import styles from "./territorial-analysis.module.css";
+import { HistoricalChartAxes, HistoricalChartFrame, historicalChartViewBox } from "./historical-chart-axes";
 
 type TerritorialAnalysisProps = {
   regions:
@@ -174,28 +175,25 @@ function RegionalSeasonality({
       >
         <div>
           <h3>
-            Sazonalidade · {region}
+            Em que épocas a incidência aumentou? · {region}
           </h3>
         </div>
 
         <p>
-          Incidência mediana histórica por Semana Epidemiológica (SE), com faixa entre Q25 e Q75.
+          Região {region}, 2016–2025. A linha mostra a mediana (valor central) das incidências da mesma semana em diferentes anos, em casos por 100 mil habitantes. A faixa entre Q25 e Q75 reúne a metade central dos valores; não é um intervalo de previsão.
         </p>
       </div>
 
-      <div
-        className={
-          styles.svgWrapper
-        }
-      >
+      <HistoricalChartFrame label={`Sazonalidade de ${region}: semana e incidência por 100 mil habitantes`}>
         <svg
           className={
             styles.svg
           }
-          viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+          viewBox={historicalChartViewBox(CHART_WIDTH, CHART_HEIGHT)}
           role="img"
           aria-label={`Sazonalidade histórica da região ${region}`}
         >
+          <HistoricalChartAxes width={CHART_WIDTH} height={CHART_HEIGHT} padding={PADDING} maximum={maxValue} xLabel="Semana Epidemiológica (SE) — diferentes anos" yLabel="Incidência semanal (casos por 100 mil habitantes)" />
           {[
             0,
             0.25,
@@ -356,7 +354,7 @@ function RegionalSeasonality({
             },
           )}
         </svg>
-      </div>
+      </HistoricalChartFrame>
 
       <div
         className={
@@ -388,7 +386,7 @@ function RegionalSeasonality({
             }
           />
 
-          Q25–Q75
+          Metade central dos valores (Q25–Q75)
         </span>
       </div>
 
@@ -483,12 +481,12 @@ export function TerritorialAnalysis({
             </span>
 
             <h2>
-              {stateSummary.nome_uf}
+              Como os casos variaram entre lugares? · {stateSummary.nome_uf}
             </h2>
           </div>
 
           <p>
-            Resumo consolidado do período histórico disponível para a unidade federativa.
+            Resumo do estado no período completo de 2016–2025. Incidência expressa casos por 100 mil habitantes e permite comparar volumes em relação à população. Não é uma medida do risco individual.
           </p>
         </div>
 
@@ -558,7 +556,7 @@ export function TerritorialAnalysis({
             </h3>
 
             <p>
-              UFs ordenadas pela incidência média anual no período.
+              Estados ordenados pela incidência média anual de 2016–2025, em casos por 100 mil habitantes.
             </p>
           </div>
 
@@ -684,12 +682,12 @@ export function TerritorialAnalysis({
             </span>
 
             <h2>
-              {regionSummary.regiao}
+              Como os casos variaram entre lugares? · {regionSummary.regiao}
             </h2>
           </div>
 
           <p>
-            Resumo histórico regional e comparação entre suas unidades federativas.
+            Região {regionSummary.regiao}, 2016–2025. Os indicadores e a comparação entre estados resumem todo o período; a sazonalidade, abaixo, reúne diferentes anos. Não há uma curva semanal de casos da região nesta visualização.
           </p>
         </div>
 
@@ -759,7 +757,7 @@ export function TerritorialAnalysis({
             </h3>
 
             <p>
-              Comparação pela incidência média anual no período.
+              Comparação pela incidência média anual de 2016–2025, em casos por 100 mil habitantes.
             </p>
           </div>
 
@@ -881,12 +879,12 @@ export function TerritorialAnalysis({
           </span>
 
           <h2>
-            Como as cinco regiões se diferenciam
+            Como os casos variaram entre lugares?
           </h2>
         </div>
 
         <p>
-          Comparação histórica baseada na incidência média anual por 100 mil habitantes.
+          As cinco regiões, 2016–2025. Comparamos a incidência média anual: casos por 100 mil habitantes, levando em conta a população. Esta comparação usa o período completo, mesmo quando um ano é selecionado, e não mostra o risco individual.
         </p>
       </div>
 

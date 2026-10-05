@@ -34,14 +34,14 @@ describe(
           },
           {
             label:
-              "Dados & Qualidade",
+              "Dados e método",
 
             href:
               "/dados-qualidade",
           },
           {
             label:
-              "Predição",
+              "Resultados",
 
             href:
               "/predicao",

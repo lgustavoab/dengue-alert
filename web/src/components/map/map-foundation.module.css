@@ -1,7 +1,28 @@
 .foundation {
   display: grid;
   gap: 1.5rem;
+  min-width: 0;
 }
+
+.workspaceHeader > div { min-width: 0; }
+
+.coverageDetails {
+  padding: 1.25rem 1.35rem;
+  border-top: 1px solid var(--border);
+}
+
+.coverageDetails summary {
+  cursor: pointer;
+  color: var(--brand-strong);
+  font-weight: 750;
+}
+
+.coverageDetails summary:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.coverageDetails p { color: var(--foreground-soft); line-height: 1.65; }
 
 .statusCard,
 .workspace,
