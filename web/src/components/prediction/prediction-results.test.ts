@@ -63,10 +63,10 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
   });
 
   it.each([
-    [true, true, "ALERTA", "Risco elevado observado", "Alerta confirmado"],
-    [true, false, "ALERTA", "Sem risco elevado observado", "Alerta não confirmado"],
-    [false, true, "SEM ALERTA", "Risco elevado observado", "Risco elevado não identificado"],
-    [false, false, "SEM ALERTA", "Sem risco elevado observado", "Sem alerta e sem risco elevado observado"],
+    [true, true, "ALERTA", "Os registros indicaram risco elevado nessa semana.", "O alerta se confirmou nos dados observados."],
+    [true, false, "ALERTA", "Os registros não indicaram risco elevado nessa semana.", "O alerta não se confirmou nos dados observados."],
+    [false, true, "SEM ALERTA", "Os registros indicaram risco elevado nessa semana.", "O risco elevado foi observado, mas o modelo não emitiu alerta."],
+    [false, false, "SEM ALERTA", "Os registros não indicaram risco elevado nessa semana.", "O modelo não emitiu alerta e os registros não indicaram risco elevado."],
   ] as const)(
     "compara predicao=%s e target=%s sem trocar a classificação",
     (prediction, target, classification, observed, outcome) => {
@@ -77,12 +77,46 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
       results.forEach((card, index) => {
         expect(card).toContain(`${index + 1} semana${index === 0 ? "" : "s"} depois</h3>`);
         expect(card).toContain(`H${index + 1}</span>`);
+        expect(card).toContain("Previsão do modelo</span>");
+        expect(card).toContain("Resultado nos dados reais</dt>");
+        expect(card).toContain("Comparação entre previsão e dados reais</span>");
         expect(card).toContain(`>${classification}</strong>`);
         expect(card).toContain(`${observed}</dd>`);
         expect(card).toContain(`${outcome}</strong>`);
       });
     },
   );
+
+  it("explica que a comparação usa registros reais de 2025 com limitações", () => {
+    const visible = render(series()).replace(/<details\b[^>]*>[\s\S]*?<\/details>/g, "");
+    expect(visible).toContain("comparar a previsão do modelo com os dados reais registrados em 2025");
+    expect(visible).toContain("Cada prazo mostra uma semana futura em relação à semana de referência selecionada");
+    expect(visible).toContain("Os dados reais são registros de dengue tratados para a pesquisa");
+    expect(visible).toContain("sujeitos às limitações das notificações");
+    expect(visible).toContain("Sem risco elevado nos registros não significa ausência de casos de dengue");
+    expect(visible).toContain("Não são alertas atuais");
+  });
+
+  it("mantém H1 confirmado e H2 não confirmado quando ambos emitiram alerta", () => {
+    const data = series();
+    data.horizontes.h1 = horizon({ prediction: true, target: true, score: 0.356 });
+    data.horizontes.h2 = {
+      ...horizon({ prediction: true, target: false, score: 0.409 }),
+      threshold: 0.1908,
+    };
+    const results = cards(render(data));
+    for (const card of results.slice(0, 2)) {
+      expect(card).toContain(">ALERTA</strong>");
+      expect(card).toContain("O modelo emitiu um alerta para essa semana futura.");
+    }
+    expect(results[0]).toContain("Os registros indicaram risco elevado nessa semana.</dd>");
+    expect(results[0]).toContain("O alerta se confirmou nos dados observados.</strong>");
+    expect(results[1]).toContain("Os registros não indicaram risco elevado nessa semana.</dd>");
+    expect(results[1]).toContain("O alerta não se confirmou nos dados observados.</strong>");
+    expect(results[1]).toContain("40,9%");
+    expect(results[1]).toContain("19,08%");
+    expect(results[1]).not.toContain(">SEM ALERTA</strong>");
+  });
 
   it("não reclassifica SEM ALERTA usando percentuais arredondados", () => {
     // 18,8% parece superar 18,77%, mas o score real é menor que o limite.
@@ -92,7 +126,7 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
     for (const card of cards(html)) {
       expect(card).toContain(">SEM ALERTA</strong>");
       expect(card).not.toContain(">ALERTA</strong>");
-      expect(card).toContain("Risco elevado não identificado");
+      expect(card).toContain("O risco elevado foi observado, mas o modelo não emitiu alerta.");
       expect(card).not.toContain("aria-label=\"Probabilidade");
     }
   });
@@ -104,7 +138,7 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
     for (const card of cards(html)) {
       expect(card).toContain(">SEM ALERTA</strong>");
       expect(card).not.toContain(">ALERTA</strong>");
-      expect(card).toContain("Risco elevado não identificado");
+      expect(card).toContain("O risco elevado foi observado, mas o modelo não emitiu alerta.");
     }
   });
 
@@ -124,11 +158,12 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
     data.horizontes.h4 = horizon({ available: false });
     data.count = 1;
     const results = cards(render(data));
-    expect(results[0]).toContain("Alerta confirmado");
+    expect(results[0]).toContain("O alerta se confirmou nos dados observados.");
     for (const card of results.slice(1)) {
       expect(card).toContain("Sem avaliação neste prazo");
-      expect(card).not.toContain("O que o modelo indicou");
-      expect(card).not.toContain("O que foi observado");
+      expect(card).not.toContain("Previsão do modelo");
+      expect(card).not.toContain("Resultado nos dados reais");
+      expect(card).not.toContain("Comparação entre previsão e dados reais");
       expect(card).not.toContain(">SEM ALERTA</strong>");
       expect(card).not.toContain("<details");
     }
@@ -136,8 +171,8 @@ describe("consulta municipal: alerta e observado no mesmo resultado", () => {
 
   it("não reutiliza resultados de outra semana", () => {
     const html = render(series(), 50);
-    expect(html).not.toContain("Alerta confirmado");
-    expect(html).not.toContain("O que foi observado nessa semana futura");
+    expect(html).not.toContain("O alerta se confirmou nos dados observados.");
+    expect(html).not.toContain("Resultado nos dados reais");
     expect(cards(html).every((card) => card.includes("Sem avaliação neste prazo"))).toBe(true);
   });
 
